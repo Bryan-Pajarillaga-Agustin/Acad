@@ -58,8 +58,8 @@ export default function SignIn({page, setPage}){
                         <h3>Password :</h3>
                         <input type={showPass ? "text" : "password"} ref={password_inp} onInput={()=>{passTestValue(e)}} className={s.Password}></input>
                         <span ref={refInvalid2}></span>
-                        <img src={showPass ? "../../../public/password/visible.png" :
-                                             "../../../public/password/unsee.png"}
+                        <img src={showPass ? "./public/password/visible.png" :
+                                             "./public/password/unsee.png"}
                              className={s.see_password} onClick={()=>{showPass ? setShowPass(false) : setShowPass(true)}}/>
                     </div>
                     <div className={s.more_actions}>
@@ -71,9 +71,9 @@ export default function SignIn({page, setPage}){
 
                 <div className={s.other_platforms_container}>
                     <div className={s.icon_wrapper}>
-                        <div className={s.wrapper}><img src="../public/platforms/GG.png "/></div>
-                        <div className={s.wrapper}><img src="../public/platforms/facebook.png"/></div>
-                        <div className={s.wrapper}><img src="../public/platforms/Instagram.png"/></div>
+                        <div className={s.wrapper}><img src="./public/platforms/GG.png "/></div>
+                        <div className={s.wrapper}><img src="./public/platforms/facebook.png"/></div>
+                        <div className={s.wrapper}><img src="./public/platforms/Instagram.png"/></div>
                     </div>
                     <h3>SIGN IN WITH DIFFERENT PLATFORMS</h3>
                 </div>
