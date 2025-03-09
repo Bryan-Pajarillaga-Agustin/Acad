@@ -1,7 +1,7 @@
 import s from "../SignIn/SignIn.module.css"
 import Button from "../../Components/Button.jsx"
-import { useReducer, useRef, useState } from "react"
-import {db, firebase} from "../../Firebase/Firebase.js"
+import { useRef, useState } from "react"
+import {db} from "../../Firebase/Firebase.js"
 import { ref, get } from "firebase/database"
 
 export default function SignIn({page, setPage}){
@@ -44,7 +44,7 @@ export default function SignIn({page, setPage}){
         }
     }
 
-    return(
+    if (page == 0) return(
         <>
             <div className={s.sign_up_container}>
                 <div className={s.top_arc}>SIGN IN</div>

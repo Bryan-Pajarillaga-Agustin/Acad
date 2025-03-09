@@ -1,0 +1,127 @@
+.sign_up_wrapper {
+    display: flex;
+    flex-direction: column;
+    color: #B658E2;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    font-family: "Kulim Park", sans-serif;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form {
+    width: 400px;
+    height: 450px;
+    background-color: #B658E2;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-between;
+}
+
+form > * {
+    margin: 1.5rem;
+}
+
+
+form > header {
+    color: white;
+    font-size: 2.85rem;
+    letter-spacing: 5px;
+    text-align: center;
+}
+
+form .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+form .inputs > div {
+    display: flex;
+    flex-direction: column;
+    row-gap: .5rem;
+    color: white;
+    position: relative;
+    margin: 0 1.2rem ;
+}
+
+form .inputs > div > input {
+    outline: none;
+    border: none;
+    border-bottom: 1px solid white;
+    background-color: transparent;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-indent: 1rem;
+}
+
+
+form .inputs > div > img {
+    width: 30px;
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+}
+
+form .bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form .bottom .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 1.2rem;
+}
+
+form .bottom .buttons > button {
+    background-color: #fff;
+    color: #B658E2;
+    border: none;
+    font-weight: bold;
+    font-size: 12px;
+    padding: .5rem 2rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px -1px black;
+}
+
+form .bottom .buttons > button:hover {
+    background-color: #B658E2;
+    color: #fff;
+}
+
+form .bottom .indicator {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    gap: .5rem;
+}
+
+form .bottom .indicator > div {
+    width: 20px;
+    height: 7px;
+    border-radius: 1rem;
+}
+
+
+form .bottom .indicator > .indicated {
+    background-color: #D9D9D9;
+}
+
+form .bottom .indicator > .not_indicated {
+    background-color: #00000066;
+}
+
+
+@media (max-width: 400px) {
+    .sign_up_wrapper {
+        width: 500px;
+    }
+}
