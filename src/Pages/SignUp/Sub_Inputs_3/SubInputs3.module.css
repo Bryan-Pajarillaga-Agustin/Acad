@@ -1,0 +1,98 @@
+.hide {
+    display: none;
+}
+
+.inputs_3 {
+    font-family: "Kulim Park", sans-serif;
+    font-weight: bold;
+}
+
+.inputs_3 > div {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin: 0 1.2rem;
+    gap: .5rem;
+}
+
+.inputs_3 > div > h4 {
+    color: white;
+    margin-top: .5rem;
+    text-align: center;
+    font-size: 1.25rem;
+} 
+
+.inputs_3 > div > input {
+    border: none;
+    outline: none;
+    color: white;
+    font-size: .95rem;
+    text-indent: 1rem;
+    font-weight: bold;
+    border-bottom: .2rem solid white;
+    background-color: transparent;
+}
+
+.inputs_3 .wrapper > div {
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.inputs_3 .wrapper > div > button {
+    background-color: #fff;
+    width: 100px;
+    color: #B658E2;
+    border: none;
+    font-weight: bolder;
+    font-size: .75rem;
+    padding: .5rem 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px -1px black;
+}
+
+.inputs_3 .wrapper > div > .IndicatedButt {
+    background-color: #9658E2;
+    color: white;
+}
+
+.inputs_3 .wrapper > div > button:hover {
+    background-color: #B658E2;
+    color: #fff;
+}
+
+.inputs_3 .wrapper > div > .IndicatedButt:hover {
+    background-color: rgb(90, 57, 197);
+    color: white;
+}
+
+
+
+@media (max-width: 400px) {
+    .inputs_3 {
+        gap: 0.25rem;
+    }
+    
+    .inputs_3 > div {
+        gap: 0.25rem;
+    }
+
+    .inputs_3 > div > h4 {
+        font-size: 1rem;
+        word-spacing: -2.5px;
+        margin-bottom: 1.5rem;
+    }
+
+    .inputs_3 .wrapper > div > button {
+        background-color: #fff;
+        width: 80px;
+        color: #B658E2;
+        border: none;
+        font-weight: bolder;
+        font-size: .5rem;
+        padding: .25rem 0;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px -1px black;
+    }
+}

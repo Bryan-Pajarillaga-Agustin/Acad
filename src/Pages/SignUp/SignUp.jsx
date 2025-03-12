@@ -1,44 +1,48 @@
 import { useState } from "react"
-import Button from "../../Components/Button"
+import Form_1 from "./Sub_Inputs_1/SubInputs1"
+import Form_2 from "./Sub_Inputs_2/SubInputs2"
+import Form_3 from "./Sub_Inputs_3/SubInputs3"
 import s from "../SignUp/SignUp.module.css"
+import Button from "../../Components/Button"
 const Signup = ({page, setPage}) => {
     const [show, setShow] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
-    const [indicated, setIndication] = useState(0)
+    const [indicated, setIndication] = useState(1)
+
+    const handleIndication = (par) => {
+        console.log("type")
+        if(par == "next" && indicated != 2){
+            setIndication(indicated + 1)
+        } else if (par == "back" && indicated != 0) {
+            setIndication(indicated - 1)
+        }
+    }
     if (page == 1) return (
         <>
             <div className={s.sign_up_wrapper}>
-                <form>
+                
+                <form onSubmit={(e)=>{e.preventDefault()}} className={s.form_1}>
                     <header>SIGN UP</header>
-                    <div className={s.inputs}>
-                        <div className={s.username}>
-                            <h4>Username</h4>
-                            <input type="text" />
-                        </div>
-                        <div className={s.password}>
-                            <h4>Password</h4>
-                            <input type={show ? "text" : "password"} />
-                            <img src={show ? "./password/visible.png" :
-                                             "./password/unsee.png"}
-                                 className={s.see_password} onClick={()=>{show ? setShow(false) : setShow(true)}}/>
-                        </div>
-                        <div className={s.confirm}>
-                            <h4>Confirm Password</h4>
-                            <input type={showConfirm ? "text" : "password"} /> 
-                            <img src={showConfirm ? "./password/visible.png" :
-                                                    "./password/unsee.png"}
-                                 className={s.see_confirm} onClick={()=>{showConfirm ? setShowConfirm(false) : setShowConfirm(true)}}/> 
-                        </div>
-                    </div>
-                    <div className={s.bottom}>
-                        <div className={s.buttons}>
-                            <Button content={"BACK"} ></Button>
-                            <Button content={"NEXT"} ></Button>
-                        </div>
-                        <div className={s.indicator}>
-                            <div className={indicated == 0 ? s.indicated : s.not_indicated}></div>
-                            <div className={indicated == 1 ? s.indicated : s.not_indicated}></div>
-                            <div className={indicated == 2 ? s.indicated : s.not_indicated}></div>
+                    <div className={s.to_bottom}>
+                        <Form_1 indicated={indicated} show={show} showConfirm={showConfirm}
+                            setIndication={(e)=>{setIndication(e)}} setShow={(e)=>{setShow(e)}}
+                            setIndicated={(e)=>{setIndication(e)}} setShowConfirm={(e)=>{setShowConfirm(e)}}  />
+                        <Form_2 indicated={indicated} show={show} showConfirm={showConfirm}
+                            setIndication={(e)=>{setIndication(e)}} setShow={(e)=>{setShow(e)}}
+                            setIndicated={(e)=>{setIndication(e)}} setShowConfirm={(e)=>{setShowConfirm(e)}}  />
+                        <Form_3 indicated={indicated} show={show} showConfirm={showConfirm}
+                            setIndication={(e)=>{setIndication(e)}} setShow={(e)=>{setShow(e)}}
+                            setIndicated={(e)=>{setIndication(e)}} setShowConfirm={(e)=>{setShowConfirm(e)}}  />
+                        <div className={s.bottom}>
+                            <div className={s.buttons}>
+                                <Button content={"BACK"} func={()=>{handleIndication("back")}}></Button>
+                                <Button content={"NEXT"} func={()=>{handleIndication("next")}} ></Button>
+                            </div>
+                            <div className={s.indicator}>
+                                <div className={indicated == 0 ? s.indicated : s.not_indicated}></div>
+                                <div className={indicated == 1 ? s.indicated : s.not_indicated}></div>
+                                <div className={indicated == 2 ? s.indicated : s.not_indicated}></div>
+                            </div>
                         </div>
                     </div>
                 </form>
