@@ -2,7 +2,7 @@ import s from "../SignIn/SignIn.module.css"
 import Button from "../../Components/Button.jsx"
 import { useRef, useState } from "react"
 import {db} from "../../Firebase/Firebase.js"
-import { ref, get } from "firebase/database"
+import { ref, get, set } from "firebase/database"
 
 export default function SignIn({page, setPage}){
     const [showPass, setShowPass] = useState(false)
@@ -44,9 +44,10 @@ export default function SignIn({page, setPage}){
         }
     }
 
-    if (page == 0) return(
+    if (page == 0.1) return(
         <>
             <div className={s.sign_up_container}>
+                <Button func={()=>{setPage(1)}} content={"X"} className={s.goToStartingPage}></Button>
                 <div className={s.top_arc}>SIGN IN</div>
                 <div className={s.form}>
                     <div className={s.username_con}>
@@ -64,7 +65,7 @@ export default function SignIn({page, setPage}){
                     </div>
                     <div className={s.more_actions}>
                         <span className={s.forgot_pass}>Forgot Password</span>
-                        <span className={s.create_acc}>Doesn't Have An Account?</span>
+                        <span className={s.create_acc} onClick={()=>{setPage(0.2)}}>Doesn't Have An Account?</span>
                     </div>
                     <Button className={s.sign_in_button} func={()=>{signIn()}} content={"SIGN IN"}></Button>
                 </div>

@@ -4,8 +4,6 @@
 }
 body {
     height: 100vh;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed;    
-    background-image: linear-gradient(to bottom, #FDF9FF, #FDF9FF, #CAA0DD, #F8EDFD);
+    background-color: #f9f5f1da;
+    overflow-x: hidden;
 }

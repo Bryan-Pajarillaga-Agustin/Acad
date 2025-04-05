@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Kulim+Park:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&family=Martian+Mono:wght@100..800&display=swap');
+:root {
+    --color_1: #F5AE6F;
+    --color_2: white;
+    --color_3: black;
+    --color_4: #975203;
+    --bg-indicator: #d67b13;
+}
+
+li{
+    cursor: pointer;
+    transition: all .3s ease-in;
+}
+li:hover {
+    text-shadow: 0 0 1rem #9a6503;
+}
+
+button{
+    transition: all .15s ease-in;
+}
+
+.nav {
+    display: flex;
+}
+
+.hideNav{
+    display: none;
+}
+
+nav {
+    height: 5.85rem;
+    width: 100vw;
+    font-weight: bold;
+    font-family: "Kanit", sans-serif;
+    font-weight: 700;
+    position: absolute;
+    display: flex;
+    background-color: var(--color_1);
+    justify-content: space-between;
+    top: 0;
+}
+
+
+nav > div {
+    display: flex;
+    align-items: center;
+}
+
+nav .left {
+    margin-left: 1rem;
+    font-family: "Martian Mono", monospace;
+    font-size: xx-large;
+    color: var(--color_2);
+    gap: 1rem;
+}
+
+nav .left > img {
+    width: 50px;
+}
+
+nav .middle .NavLinks {
+    display: flex;
+    gap: 2.5rem;
+    font-size: 1.5rem;
+    color: var(--color_4);
+}
+
+nav .middle .NavLinks > li > img {
+    width: 20px;
+}
+
+nav .middle .NavLinks > li {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    position: relative;
+}
+
+nav .middle .NavLinks > li > span {
+    position: relative;
+}
+
+.indicated {
+    color: #695033;
+    text-shadow: 0 0 5px var(--color_4);
+}
+
+.indicated .indication {
+    position: absolute;
+    width: 100%;
+    border-bottom: .2rem solid var(--color_4);
+    animation: indic .75s forwards ease-out;
+    bottom: -.25rem;
+    left: 0;
+}
+
+nav .right {
+    margin-right: 1rem;
+    gap: 1rem;
+}
+
+nav .right > button {
+    font-size: 1.1rem ;
+    font-family: "Kanit", sans-serif;
+    font-weight: bold;
+    padding: .5rem 1.2rem ;
+    border-radius: 12px;
+    outline: none;
+    border: none;
+}
+
+nav .HamburgerButt{
+    display: none;
+}
+
+
+/* Left Button for Sign In */
+
+
+nav .right .SignInButt {
+    background-color: var(--color_2);
+    color: var(--color_1);
+}
+
+nav .right .SignInButt:hover {
+    color: var(--color_2);
+    background-color: var(--color_4);
+}
+
+nav .right .SignInButt:active {
+    background-color: #f7cdcd;
+    color: #975203;
+}
+
+/* Right Button for Sign Up */
+
+nav .right .SignUpButt {
+    background-color: black;
+    color: white;
+}
+
+nav .right .SignUpButt:hover {
+    background-color: white;
+    color: black;
+}
+
+nav .right .SignUpButt:active {
+    background-color: #f7cdcd;
+    color: #975203;
+}
+
+
+.sidebar {
+    opacity: 0;
+    animation: popUp .8s forwards ease-out;
+}
+
+.hideSideBar {
+    animation: popDown .8s forwards ease-out;
+}
+
+.sidebar > ul, .hideSideBar > ul {
+    width: 7.5rem;
+    height: 100vh;
+    position: absolute;
+    right: 0;
+}
+
+.sidebar > ul {
+    background-color: #F5AE6F;
+    font-weight: bolder;
+    animation: slideSideBar .5s forwards ease-out;
+}
+
+.hideSideBar > ul {
+    background-color: #F5AE6F;
+    font-weight: bolder;
+    animation: hideSidebarSlide .5s forwards ease-out;
+}
+
+@keyframes slideSideBar {
+    from {
+        transform: translateX(7.5rem);
+    }
+    to {
+        transform: translateX(0rem);
+    }
+}
+
+@keyframes hideSidebarSlide {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(7.5rem);
+    }
+}
+
+@keyframes popUp {
+    to {
+        display: block;
+        opacity: 1;
+    }
+}
+
+@keyframes popDown {
+    to {
+        display: none;
+        opacity: 0;
+    }
+}
+
+
+
+@keyframes indic {
+    from {
+        transform: rotateY(90deg);
+    } to {
+        transform: rotateY(00deg);
+    }
+}
+
+
+@media (min-width: 505px) {
+    .sidebar > ul, .hideSideBar > ul {
+        display: none;
+    }
+}
+
+/* Mobile View */
+@media (max-width: 500px) and (max-height: 800px) {
+    nav {
+        height: 3.5rem;
+    }
+
+    /* Left */
+
+    nav .left {
+        gap: 0.2rem;
+    }
+
+    nav .left > img {
+        width: 30px;
+    }
+
+    nav .left > h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Middle */
+
+    nav .middle {
+        display: none;
+    }
+
+    /* Right */
+
+    nav .right {
+        gap: .5rem;
+    }
+
+    nav .right > button {
+        font-size: .5rem;
+        padding: .5rem .75rem;
+    }
+
+    nav .right .HamburgerButt {
+        display: block;
+    }
+
+    /* Side Bar */
+
+    .sidebar, .hideSideBar {
+        width: 100vw;
+        height: 100vh;
+        background-color: #f1c386bd;
+        position: fixed;
+    }
+
+    .sidebar > ul, .hideSideBar > ul {
+        background-color: #F5AE6F;
+        font-weight: bolder;
+    }
+
+    .sidebar > ul > .HamburgerButt, .hideSideBar > ul > .HamburgerButt {
+        width: 100%;
+        background-color: var(--color_1);
+        color: wheat;
+        font-size: 2rem;
+        border: none;
+        height: 9rem;
+    }
+
+    .sidebar > ul > .HamburgerButt:hover, .hideSideBar > ul > .HamburgerButt:hover {
+        background-color: var(--color_4);
+        color: var(--color_3);
+    }
+
+    .sidebar > ul > li, .hideSideBar > ul > li {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        height: 5rem;
+        padding: 2rem 0;
+    }
+
+    .sidebar > ul > .indicated, .hideSideBar > ul > .indicated {
+        background-color: var(--bg-indicator);
+        color: white;
+    }
+
+    .sidebar > ul > li > img, .hideSideBar > ul > li > img {
+        width: 30px;
+        display: block;
+        margin: auto;
+    }
+
+}

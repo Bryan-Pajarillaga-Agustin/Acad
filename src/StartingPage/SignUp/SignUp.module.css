@@ -10,13 +10,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #eaae2c;
 }
 
 .form_1 {
     width: 400px;
-    height: 450px;
-    background-color: #B658E2;
-    border-radius: 20px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -106,6 +105,57 @@ form .bottom .buttons > button {
     box-shadow: 0 2px 5px -1px black;
 }
 
+.other_platforms_container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    margin-top: 2rem;
+}
+
+.other_platforms_container > h3 {
+    text-align: center;
+    color: white;
+    font-weight: bolder;
+}
+
+.other_platforms_container > h3:last-of-type {
+    text-decoration: underline;
+    color: #B658E2;
+    cursor: pointer;
+}
+
+.icon_wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.wrapper {
+    width: fit-content;
+    height: fit-content;
+    overflow: hidden;
+    border-radius: 50%;
+    border: .25rem #b97215 solid;
+    display: flex;
+    align-items: center;
+    background: white;
+}
+
+.icon_wrapper > .wrapper > img {
+    width: 50px;
+    cursor: pointer;
+}
+
+.icon_wrapper > .wrapper:hover  {
+    animation: up .2s ease-out forwards;
+}
+
+@keyframes up {
+    to {
+        transform: translateY(-7.5px);
+    }
+}
+
 form .bottom .buttons > button:hover {
     background-color: #B658E2;
     color: #fff;
@@ -113,12 +163,12 @@ form .bottom .buttons > button:hover {
 
 @media (max-width: 400px) {
     .form_1 {
-        width: 300px;
-        height: 350px;
+        width: 100vw;
+        height: 100vh;
     }
 
     .form_1 > header {
-        font-size: 1.5rem;
+        font-size: 3rem;
     }
 
     .form_1 .to_bottom {
@@ -127,29 +177,30 @@ form .bottom .buttons > button:hover {
         row-gap: 2rem;
     }
 
-    
-    form .bottom .buttons > button {
-        background-color: #fff;
-        color: #B658E2;
-        border: none;
-        font-weight: bold;
-        font-size: 12px;
-        padding: .5rem 2rem;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px -1px black;
-    }
-}
 
-
-@media (max-width: 400px) {
     .form_1 .bottom .buttons > button {
         background-color: #fff;
         color: #B658E2;
         border: none;
-        font-weight: bold;
-        font-size: 12px;
+        font-weight: bolder;
+        font-size: .8rem;
         padding: .5rem 2rem;
         border-radius: 5px;
         box-shadow: 0 2px 5px -1px black;
-    }
+    }    
+    /* form .bottom .buttons > button {
+        background-color: #fff;
+        color: #B658E2;
+        border: none;
+        font-weight: bolder;
+        font-size: .8rem;
+        padding: .5rem 2rem;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px -1px black;
+    } */
+}
+
+
+@media (max-width: 400px) {
+    
 }

@@ -1,10 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Kulim+Park:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap');
 
+:root{
+    --bg-color: #eaae2c;
+    --f-color: #fff;
+    --button-bg-color: #eaae2c; 
+    --button-color: #B658E2;
+}
 
 .sign_up_container {
     display: flex;
     flex-direction: column;
-    color: #B658E2;
+    color: var(--button-color);
     align-items: center;
     justify-content: space-between;
     height: 100vh;
@@ -12,11 +18,23 @@
     font-weight: bold;
 }
 
+.goToStartingPage {
+    width: 5.5rem;
+    height: 5.5rem;
+    font-size: 2rem;
+    border: none;
+    background-color: #e1e0e0d6;
+    border-bottom-left-radius: 2.5rem;
+    position: absolute;
+    right: 0;
+    color: var(--button-color);
+}
+
 .top_arc {
     width: 100%;
     height: 160px;
     border-radius: 0% 100% 50% 50% / 0% 0% 100% 100% ;
-    background-color: #B658E2;
+    background-color: var(--bg-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,6 +55,7 @@
     display: flex;
     flex-direction: column;
     margin-bottom: .5rem;
+    color: var(--bg-color);
 }
 
 .form .more_actions {
@@ -49,23 +68,24 @@
 .form .more_actions > * {
     cursor: pointer;
     transition: all .15s ease-in;
+    color: var(--bg-color);
 }
 
 .form .more_actions > *:hover {
     color: white;
-    text-shadow: 0 0 1rem #B658E2;
+    text-shadow: 0 0 1rem var(--bg-color);
 }
 
 .form .username_con > input , 
 .form .password_con > input {
     outline: none;
     border: 0;
-    border-bottom: .25rem #B658E2 solid;
+    border-bottom: .25rem var(--bg-color) solid;
     background: none;
     margin-top: .9rem;
     font-size: 1rem;
     font-weight: 600;
-    color: #B658E2;
+    color: var(--bg-color);
     text-indent: 1rem;
 }
 
@@ -92,15 +112,15 @@
     font-weight: bold;
     color: white;
     padding: .5rem;
-    background-color: #B658E2;
+    background-color: var(--bg-color);
     border-radius: .3rem;
     border: .2rem solid transparent;
 }
 
 .sign_in_button:hover {
-    color: #B658E2;
+    color: var(--bg-color);
     background-color: white;
-    border: .2rem solid #B658E2;
+    border: .2rem solid var(--bg-color);
 }
 
 .other_platforms_container {
@@ -108,6 +128,10 @@
     flex-direction: column;
     row-gap: 1rem;
     margin-bottom: 1rem;
+}
+
+.other_platforms_container > h3{
+    color: var(--bg-color);
 }
 
 .icon_wrapper {
@@ -121,7 +145,7 @@
     height: fit-content;
     overflow: hidden;
     border-radius: 50%;
-    border: .25rem #B658E2 solid;
+    border: .25rem var(--bg-color) solid;
     display: flex;
     align-items: center;
     background: white;
