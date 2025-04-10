@@ -15,12 +15,14 @@
 
 .form_1 {
     width: 400px;
-    height: 100vh;
+    height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-content: space-between;
     overflow: hidden;
+    background-color: #B658E2;
+    border-radius: 1rem;
 }
 
 .form_1 .to_bottom {
@@ -105,55 +107,12 @@ form .bottom .buttons > button {
     box-shadow: 0 2px 5px -1px black;
 }
 
-.other_platforms_container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 1rem;
-    margin-top: 2rem;
-}
-
-.other_platforms_container > h3 {
+form .bottom > h4 {
     text-align: center;
     color: white;
     font-weight: bolder;
-}
-
-.other_platforms_container > h3:last-of-type {
     text-decoration: underline;
-    color: #B658E2;
-    cursor: pointer;
-}
-
-.icon_wrapper {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-}
-
-.wrapper {
-    width: fit-content;
-    height: fit-content;
-    overflow: hidden;
-    border-radius: 50%;
-    border: .25rem #b97215 solid;
-    display: flex;
-    align-items: center;
-    background: white;
-}
-
-.icon_wrapper > .wrapper > img {
-    width: 50px;
-    cursor: pointer;
-}
-
-.icon_wrapper > .wrapper:hover  {
-    animation: up .2s ease-out forwards;
-}
-
-@keyframes up {
-    to {
-        transform: translateY(-7.5px);
-    }
+    margin-top: 2rem;
 }
 
 form .bottom .buttons > button:hover {
@@ -161,14 +120,14 @@ form .bottom .buttons > button:hover {
     color: #fff;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 400px) and (max-height: 600px)  {
     .form_1 {
-        width: 100vw;
-        height: 100vh;
+        width: 345px;
+        height: 450px;
     }
 
     .form_1 > header {
-        font-size: 3rem;
+        font-size: 2rem;
     }
 
     .form_1 .to_bottom {
@@ -188,16 +147,6 @@ form .bottom .buttons > button:hover {
         border-radius: 5px;
         box-shadow: 0 2px 5px -1px black;
     }    
-    /* form .bottom .buttons > button {
-        background-color: #fff;
-        color: #B658E2;
-        border: none;
-        font-weight: bolder;
-        font-size: .8rem;
-        padding: .5rem 2rem;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px -1px black;
-    } */
 }
 
 

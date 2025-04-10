@@ -43,16 +43,8 @@ const Signup = ({page, setPage}) => {
                                 <div className={indicated == 1 ? s.indicated : s.not_indicated}></div>
                                 <div className={indicated == 2 ? s.indicated : s.not_indicated}></div>
                             </div>
-
-                            <div className={s.other_platforms_container}>
-                                <div className={s.icon_wrapper}>
-                                    <div className={s.wrapper}><img src="./platforms/GG.png "/></div>
-                                    <div className={s.wrapper}><img src="./platforms/facebook.png"/></div>
-                                    <div className={s.wrapper}><img src="./platforms/Instagram.png"/></div>
-                                </div>
-                                <h3>SIGN IN WITH DIFFERENT PLATFORMS</h3>
-                                <h3 id={s.SignIn} onClick={()=>setPage(.1)}> <a>Already Have an Account?</a> </h3>
-                            </div>
+                            <h4 id={s.SignIn} onClick={()=>setPage(.1)}> <a>Already Have an Account?</a> </h4>
+                            
                         </div>
                     </div>
                 </form>

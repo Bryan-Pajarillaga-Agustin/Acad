@@ -231,6 +231,7 @@ nav .right .SignUpButt:active {
 @media (max-width: 500px) and (max-height: 800px) {
     nav {
         height: 3.5rem;
+        position: relative;
     }
 
     /* Left */

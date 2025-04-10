@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 const StartingNavbar = ({setStartingPage, page}) => {
     const [indicated, setIndicated] = useState(0)
     const [showSideBar, setShowSideBar] = useState(false)
-    const [screenW, setScreenW] = useState(0)
 
     return (
         <>
