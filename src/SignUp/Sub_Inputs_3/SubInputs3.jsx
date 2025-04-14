@@ -1,5 +1,5 @@
 import s from "../Sub_Inputs_3/SubInputs3.module.css"
-import Button from "../../../Components/Button"
+import Button from "../../Components/Button"
 import { useEffect, useState } from "react"
 const Form_3 = ({indicated}) => {
 

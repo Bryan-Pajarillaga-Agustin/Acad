@@ -1,0 +1,45 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Kulim+Park:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&family=Martian+Mono:wght@100..800&display=swap');
+
+.Hide_Task_Wrapper {
+    display: none;
+}
+
+.Task_Wrapper{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    font-weight: bold;
+    font-family: "Kanit", sans-serif;
+    margin-top: 10rem;
+}
+
+.Task_Wrapper .Tasks_Editor {
+    display: flex;
+    flex-direction: column;
+    width: 95vw;
+    height: 95vh;
+    border-radius: 1rem;
+}
+
+.Task_Wrapper .Tasks_Editor > h2{
+    background-color: #975203;
+    text-align: center;
+    height: 5rem;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
+    border-radius: 1rem 1rem 0 0;
+}
+
+
+@media (max-width: 500px) and (max-height: 800px) {
+    
+    .Task_Wrapper {
+        margin-top: 5rem;
+    }
+}

@@ -21,7 +21,7 @@
 
 .home_wrapper .left {
     width: 50vw;
-    height: 90vh;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

@@ -1,0 +1,173 @@
+.Options_tab {
+    height: 4.5rem;
+    width: 100%;
+    display: flex;
+    margin: 0 auto;
+    background-color: #D9D9D9;
+    gap: 21px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1rem, 10vw, .5rem);
+}
+
+.Options_tab > button {
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background-color: #F0AB3C;
+    padding: .5rem;
+    border: .3rem solid black;
+    border-radius: .3rem;
+    gap: .5rem;
+    height: 2.5rem;
+}
+
+.Options_tab > button:hover {
+    color: #F0AB3C;
+    background-color: white;
+    border: .3rem solid #F0AB3C;
+}
+
+.Options_tab *{
+    font-size: clamp(.6rem, 1vw, 1rem);
+    font-weight: bold;
+}
+
+.Options_tab .createTask{
+    width: fit-content;
+}
+
+.Search_wrapper {
+    display: flex;
+    flex-shrink: 3rem;
+}
+
+.Search_wrapper * {
+    padding: clamp(0rem, 2vw, .25rem)
+}
+
+.Search_wrapper > label {
+    border-bottom: .3rem solid black;
+    border-left: .3rem solid black;
+    border-top: .3rem solid black;
+    padding: .3rem .3rem;
+    border-radius: .5rem 0 0 .5rem;
+}
+
+.Search_wrapper > input {
+    border: 0;
+    border-bottom: .3rem solid black;
+    border-top: .3rem solid black;
+    outline: none;
+    width: 100%;
+}
+
+.Search_wrapper > button {
+    border: 0;
+    border-top: .3rem solid black;
+    border-bottom: .3rem solid black;
+    border-right: .3rem solid black;
+    border-radius: 0 .5rem .5rem 0;
+    background-color: #F0AB3C;
+    color: white;
+    transition: all .3s ease-in
+}
+
+
+.Options_tab .ChangeOptionsLevel{
+    display: flex;
+    gap: .5rem;
+}
+
+.Options_tab .ChangeOptionsLevel > button {
+    border-radius: 50%;
+    width: fit-content;
+    height: fit-content;
+    border: 0;
+    color: #F0AB3C;
+}
+
+.Options_tab .ChangeOptionsLevel > button > i:hover {
+    color: white;
+    background-color: #F0AB3C;
+    border: .3rem solid #F0AB3C;
+}
+
+.Options_tab .ChangeOptionsLevel > button > i {
+    color: #F0AB3C;
+    background-color: white;
+    font-size: clamp(.5rem, 3vw, 1.9rem);
+    border-radius: 50%;
+    border: .25rem solid black;
+    transition: all .3s ease-out;
+}
+
+.Options_tab > label {
+    color: white;
+    background-color: #F0AB3C;
+    border: .3rem solid black;
+    border-radius: .3rem;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding: clamp(0rem, 2vw, .25rem) clamp(.05rem, 2vw, .5rem);
+    cursor: pointer;
+    transition: all .3s ease-out;
+}
+
+.Options_tab > label:hover {
+    color: #F0AB3C;
+    background-color: white;
+    border: .3rem solid #F0AB3C;
+}
+
+.Options_tab > label *{
+    font-size: clamp(.4rem, 2vw, 1rem);
+    font-weight: bold;
+    height: fit-content;
+}
+
+.Options_tab > label > input {
+    width: clamp(.7rem, 2vw, 1rem);
+    height: clamp(.9rem, 2vw, 1.2rem);
+    border: none;
+    background-color: transparent;
+}
+
+.Options_tab > label > span {
+    font-weight: 500;
+}
+
+
+@media (max-width: 600px) and (max-height: 800px) {
+    .Options_tab {
+        gap: .2rem;
+    }
+
+    .Options_tab  > button{
+        padding: .3rem;
+        height: fit-content;
+    }
+    
+    .Options_tab > button > span {
+        display: none;
+    }
+
+    .Options_tab .ChangeOptionsLevel {
+        gap: .2rem;
+    }
+
+    .Options_tab .ChangeOptionsLevel > button > i {
+        color: #F0AB3C;
+        background-color: white;
+        font-size: clamp(1rem, 2vw,  1.9rem);
+        border-radius: 50%;
+        border: .25rem solid black;
+        transition: all .3s ease-out;
+    }
+}

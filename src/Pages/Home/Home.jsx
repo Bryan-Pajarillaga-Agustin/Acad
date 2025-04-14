@@ -1,9 +1,9 @@
 import s from "../Home/Home.module.css"
-import Button from "../../../Components/Button"
+import Button from "../../Components/Button"
 import StartingNavbar from "../Starting_Navbar/StartingNavbar"
 const Home = ({page}) => {
     return (
-        <div className={page == 1 ? s.home_wrapper : s.hideHome}>
+        <div className={page == 1 ? s.home_wrapper : s.hideHome} id="Home">
             <div className={s.left}>
                 <div className={s.wrapTop}>
                     <h1>

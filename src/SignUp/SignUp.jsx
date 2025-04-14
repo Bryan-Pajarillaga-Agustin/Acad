@@ -3,7 +3,7 @@ import Form_1 from "./Sub_Inputs_1/SubInputs1"
 import Form_2 from "./Sub_Inputs_2/SubInputs2"
 import Form_3 from "./Sub_Inputs_3/SubInputs3"
 import s from "../SignUp/SignUp.module.css"
-import Button from "../../Components/Button"
+import Button from "../Components/Button"
 const Signup = ({page, setPage}) => {
     const [show, setShow] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
@@ -21,6 +21,7 @@ const Signup = ({page, setPage}) => {
         <>
             <div className={s.sign_up_wrapper}>
                 
+            <Button func={()=>{setPage(1)}} content={"X"} className={s.goToStartingPage}></Button>
                 <form onSubmit={(e)=>{e.preventDefault()}} className={s.form_1}>
                     <header>SIGN UP</header>
                     <div className={s.to_bottom}>

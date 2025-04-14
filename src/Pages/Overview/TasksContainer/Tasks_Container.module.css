@@ -1,0 +1,45 @@
+.Task_Container {
+    width: 95%;
+    height: 100%;
+    font-size: clamp(.5rem, 2vw, 3rem);
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    gap: .25rem;
+    align-items: center;
+    border-left: .5rem solid #f09c2e;
+    border-right: .5rem solid #f09c2e;
+}
+
+.Task_Container > ul {
+    width: 100%;
+}
+
+.Task_Container .tasks {
+    width: 90%;
+    height: fit-content;
+    padding: .5rem;
+    display: flex;
+    gap: 1rem;
+    border: .25rem solid rgb(209, 108, 6);
+    background-color: #f09c2e;
+    color: white;
+    border-radius: 1rem;
+    align-items: center;
+}
+
+.Task_Container .tasks > i{
+    height: fit-content;
+    width: fit-content;
+    padding: 0;
+    margin: 0;
+}
+
+
+.unchecked {
+    color: transparent;
+}
+
+.checked {
+    color: white;
+}

@@ -1,7 +1,7 @@
 import s from "../SignIn/SignIn.module.css"
-import Button from "../../Components/Button.jsx"
+import Button from "../Components/Button.jsx"
 import { useRef, useState } from "react"
-import {db} from "../../Firebase/Firebase.js"
+import {db} from "../Firebase/Firebase.js"
 import { ref, get, set } from "firebase/database"
 
 export default function SignIn({page, setPage}){
