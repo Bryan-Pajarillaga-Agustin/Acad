@@ -28,7 +28,7 @@
     align-items: center;
     color: white;
     background-color: #F0AB3C;
-    padding: .5rem;
+    padding: clamp(0rem, 2vw, .25rem) clamp(.05rem, 2vw, .5rem);
     border: .3rem solid black;
     border-radius: .3rem;
     gap: .5rem;
@@ -45,7 +45,7 @@
 }
 
 .Wrap_Options_Tab *{
-    font-size: clamp(.6rem, 1vw, 1rem);
+    font-size: clamp(.9rem, 2vw, 1.3rem);
     font-weight: bold;
 }
 
@@ -58,7 +58,8 @@
 }
 
 .Search_wrapper > * {
-    padding: .5rem;
+    font-size: clamp(.9rem, 2vw, 1.3rem);
+    padding: clamp(0rem, 2vw, .25rem) clamp(.05rem, 2vw, .5rem);
 }
 
 .Search_wrapper > label {
@@ -110,7 +111,7 @@
 .Wrap_Options_Tab .ChangeOptionsLevel > button > i {
     color: #F0AB3C;
     background-color: white;
-    font-size: clamp(.5rem, 3vw, 1.9rem);
+    font-size: clamp(1.65rem, 2vw, 4rem);
     border-radius: 50%;
     border: .25rem solid black;
     transition: all .3s ease-out;
@@ -126,7 +127,6 @@
     justify-content: center;
     align-items: center;
     gap: .5rem;
-    padding: clamp(0rem, 2vw, .25rem) clamp(.05rem, 2vw, .5rem);
     cursor: pointer;
     transition: all .3s ease-out;
 }
@@ -138,49 +138,55 @@
 }
 
 .Wrap_Options_Tab > label *{
-    font-size: clamp(.4rem, 2vw, 1rem);
     font-weight: bold;
     height: fit-content;
-}
-
-.Wrap_Options_Tab > label > input {
-    width: clamp(.7rem, 2vw, 1rem);
-    height: clamp(.9rem, 2vw, 1.2rem);
-    border: none;
-    background-color: transparent;
 }
 
 .Wrap_Options_Tab > label > span {
     font-weight: 500;
 }
 
+.Wrap_Options_Tab .colorPicker {
+    position: relative;
+    width: fit-content;
+}
+
+.Wrap_Options_Tab .colorPicker > span{
+    padding-left: 2rem;
+    padding-bottom: clamp(0rem, 2vw, .125rem);
+    padding-top: clamp(0rem, 2vw, .125rem);
+    padding-right: clamp(.05rem, 2vw, .5rem);
+}
+
+.Wrap_Options_Tab .colorPicker > input {
+    position: absolute;
+    border: none;
+    background-color: transparent;
+    width: 1rem;
+    height: 1rem;
+    left: .5rem;
+}
+
 
 @media (max-width: 600px) and (max-height: 800px) {
     .Wrap_Options_Tab {
-        gap: .2rem;
+        gap: .75rem;
+        flex-wrap: wrap;
     }
 
     .Wrap_Options_Tab  > button{
         padding: .3rem;
     }
     
-    .Wrap_Options_Tab > button > span {
-        display: none;
-    }
-
     .Wrap_Options_Tab .ChangeOptionsLevel {
-        gap: .2rem;
+        gap: .5rem;
     }
 
     .Wrap_Options_Tab .ChangeOptionsLevel > button > i {
         color: #F0AB3C;
         background-color: white;
-        font-size: clamp(1rem, 2vw,  1.9rem);
         border-radius: 50%;
         border: .25rem solid black;
         transition: all .3s ease-out;
-    }
-    .Search_wrapper > * {
-        padding: .3rem;
     }
 }

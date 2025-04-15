@@ -22,7 +22,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt}) => {
     const [optionTabNumber, setOptionTabNumber] = useState(1)
     const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("dataTask")) != null ? JSON.parse(localStorage.getItem("dataTask")) : [])
     const [updateTasks, setUpdateTasks] = useState(tasks.map(task => ({ ...task, isChecked: false })));
-
+    const [filteredTasks, setFilteredTasks] = useState(null)
     function writeTask(data){
         let dataTask = tasks
         let letters = "qwertyuiopasdfghjklzxcvbnm"
@@ -31,25 +31,36 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt}) => {
             let random = Math.floor(Math.random()*(letters.length - 1))
             randId = randId.concat(letters[random])
         }
-        let newTask = { id: randId, task: data, date: null, selected: false }
+        let newTask = { id: randId, task: data, date: null, selected: false, isChecked: false }
         dataTask.unshift(newTask)
         localStorage.setItem("dataTask", JSON.stringify(dataTask))
         setUpdateTasks([...dataTask])
     }
 
-    const search = () => {
+    const handleSearch = () => {
+        if(searchValue.current.value == "") {
+            setSearching(false)
+        } else {
+            setSearching(true)
+            setFilteredTasks(tasks.filter((task) => task.task.toLowerCase().includes(searchValue.current.value.toLowerCase())))
+        }
     }
 
     const selectAll = () => {
-        
         let data = tasks
+        let checkedData = []
         data = data.map(task => {
             return { ...task, isChecked: true };;
         });
         console.log(data)
         for(let i = 0; i < data.length; i++) {
             if(data[i].isChecked) {
-                handleSelectedTasks(data[i].id)
+                checkedData.push(data[i].id)
+            }
+
+            if(i == data.length - 1) {
+                handleSelectedTasks(checkedData)
+                checkedData = []
             }
         }
 
@@ -65,12 +76,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt}) => {
         data = data.map(task => {
             return { ...task, isChecked: false };;
         });
-        console.log(data)
-        for(let i = 0; i < data.length; i++) {
-            if(!data[i].isChecked) {
-                handleSelectedTasks(null)
-            }
-        }
+        handleSelectedTasks(null)
 
         setUpdateTasks(prevCheckboxes => {
             return prevCheckboxes.map(task => {
@@ -80,23 +86,14 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt}) => {
     };
 
     function handleSelectedTasks(val){
-        setSelectedTasks(val == null ? [] : prev=>[...prev, val])
-        setUpdatedSelectedTasks(val == null ? [] : prev=>[...prev, val])
+        setSelectedTasks(val == null ? [] : [...val])
+        setUpdatedSelectedTasks(val == null ? [] : [...val])
     }
 
     useEffect(() => {
         // Update parent component with changes
         setTasks([...updateTasks]);
     }, [updateTasks]);
-
-    
-    useEffect(()=>{
-        if(searchValue.current.value == "") {
-            console.log("not")
-        } else {
-            console.log(searching, searchValue.current.value)
-        }
-    },[searching])
 
     return  (
         <>
@@ -105,13 +102,13 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt}) => {
                 <div className={s.Tasks_Editor}>
                     <h2 className={s.Title_wrapper}>Tasks</h2>
                     <OptionsTab 
-                        search={search} 
                         optionTabNumber={optionTabNumber} 
                         setOptionTabNumber={(i)=>setOptionTabNumber(i)} 
                         setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
                         searchValue={searchValue} 
                         searching={searching} 
-                        setSearching={(val)=>setSearching(val)}/>
+                        setSearching={(val)=>setSearching(val)}
+                        handleSearch={()=>{handleSearch()}}/>
                     <BottomOptions 
                         selectedTask={selectedTasks} 
                         handleSelectedTasks={(val)=>handleSelectedTasks(val)} 
@@ -129,7 +126,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt}) => {
                         setTasks={(val)=>{setTasks(val)}} 
                         del={(i)=>{del(i)}} 
                         handleSelectedTasks={(val)=>handleSelectedTasks(val)}
-                        searchValue={searchValue} 
+                        filteredTask={filteredTasks} 
                         searching={searching}
                         setOpenedTask={()=>{setOpenedTask}} />
                 </div>

@@ -44,6 +44,10 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
         setTasks([...data])
         handleSelectedTasks(null)
     }
+
+    useEffect(()=>{
+        console.log(selectedTask)
+    },[selectedTask])
     
     return (
         <>

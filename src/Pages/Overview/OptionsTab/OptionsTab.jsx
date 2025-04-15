@@ -1,24 +1,9 @@
 import s from "./OptionsTab.module.css"
 import Button from "../../../Components/Button"
 import { useEffect, useState } from "react"
-export const OptionsTab = ({selectedTask, search, edit, optionTabNumber, setOptionTabNumber, setShowTaskPrompt, searchValue, setSearching}) => {
+export const OptionsTab = ({selectedTask, search, edit, optionTabNumber, setOptionTabNumber, setShowTaskPrompt, searchValue, handleSearch}) => {
     const [optionDataVal, setOptionDataVal] = useState(optionTabNumber)
-
-    function handleSearching() {
-        if(searchValue.current.value == "") {
-            setSearching(false)
-        } else {
-            setSearching(true)
-        }
-    }
-
-    function printValue(e) {
-    }
-
-    function handleTabBar(i){
-        setOptionTabNumber(i)
-    }
-
+    
     useEffect(()=>{
         setOptionDataVal(optionTabNumber)
     },[optionTabNumber])
@@ -35,7 +20,7 @@ export const OptionsTab = ({selectedTask, search, edit, optionTabNumber, setOpti
                     id="search-bar"
                     type="text" 
                     placeholder={"Search Task"} 
-                    onChange={()=>handleSearching()}/>
+                    onChange={()=>{handleSearch()}}/>
                 <Button content={"Search"} func={search} className={s.Search_button}/>
                 </div>
                 <Button icon={(<i className="fa fa-plus"></i>)}
@@ -60,11 +45,11 @@ export const OptionsTab = ({selectedTask, search, edit, optionTabNumber, setOpti
     ) } else { return (
         <div className={s.Options_tab}>
             <div className={s.Wrap_Options_Tab}>
-                <label htmlFor="colorPicker">
+                <label htmlFor="colorPicker" className={s.colorPicker}>
                     <input type="color" id="colorPicker" />
                     <span>Font Color</span>
                 </label>
-                <label htmlFor="colorPicker">
+                <label htmlFor="colorPicker" className={s.colorPicker}>
                     <input type="color" id="colorPicker" onChange={(e)=>printValue(e)} />
                     <span>BG Color</span>
                 </label>
