@@ -1,17 +1,27 @@
 .Options_tab {
-    height: 4.5rem;
+    height: fit-content;
     width: 100%;
     display: flex;
     margin: 0 auto;
     background-color: #D9D9D9;
-    gap: 21px;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     font-size: clamp(1rem, 10vw, .5rem);
+    padding: clamp(.5rem, 2vw, 1.3rem) 0;
 }
 
-.Options_tab > button {
+.Wrap_Options_Tab {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: 0 .5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 21px;
+}
+
+.Wrap_Options_Tab > button {
     height: fit-content;
     display: flex;
     justify-content: center;
@@ -22,38 +32,39 @@
     border: .3rem solid black;
     border-radius: .3rem;
     gap: .5rem;
-    height: 2.5rem;
 }
 
-.Options_tab > button:hover {
+.Wrap_Options_Tab > button > span {
+    text-wrap: nowrap;
+}
+
+.Wrap_Options_Tab > button:hover {
     color: #F0AB3C;
     background-color: white;
     border: .3rem solid #F0AB3C;
 }
 
-.Options_tab *{
+.Wrap_Options_Tab *{
     font-size: clamp(.6rem, 1vw, 1rem);
     font-weight: bold;
 }
 
-.Options_tab .createTask{
+.Wrap_Options_Tab .createTask{
     width: fit-content;
 }
 
 .Search_wrapper {
     display: flex;
-    flex-shrink: 3rem;
 }
 
-.Search_wrapper * {
-    padding: clamp(0rem, 2vw, .25rem)
+.Search_wrapper > * {
+    padding: .5rem;
 }
 
 .Search_wrapper > label {
     border-bottom: .3rem solid black;
     border-left: .3rem solid black;
     border-top: .3rem solid black;
-    padding: .3rem .3rem;
     border-radius: .5rem 0 0 .5rem;
 }
 
@@ -77,12 +88,12 @@
 }
 
 
-.Options_tab .ChangeOptionsLevel{
+.Wrap_Options_Tab .ChangeOptionsLevel{
     display: flex;
     gap: .5rem;
 }
 
-.Options_tab .ChangeOptionsLevel > button {
+.Wrap_Options_Tab .ChangeOptionsLevel > button {
     border-radius: 50%;
     width: fit-content;
     height: fit-content;
@@ -90,13 +101,13 @@
     color: #F0AB3C;
 }
 
-.Options_tab .ChangeOptionsLevel > button > i:hover {
+.Wrap_Options_Tab .ChangeOptionsLevel > button > i:hover {
     color: white;
     background-color: #F0AB3C;
     border: .3rem solid #F0AB3C;
 }
 
-.Options_tab .ChangeOptionsLevel > button > i {
+.Wrap_Options_Tab .ChangeOptionsLevel > button > i {
     color: #F0AB3C;
     background-color: white;
     font-size: clamp(.5rem, 3vw, 1.9rem);
@@ -105,7 +116,7 @@
     transition: all .3s ease-out;
 }
 
-.Options_tab > label {
+.Wrap_Options_Tab > label {
     color: white;
     background-color: #F0AB3C;
     border: .3rem solid black;
@@ -120,54 +131,56 @@
     transition: all .3s ease-out;
 }
 
-.Options_tab > label:hover {
+.Wrap_Options_Tab > label:hover {
     color: #F0AB3C;
     background-color: white;
     border: .3rem solid #F0AB3C;
 }
 
-.Options_tab > label *{
+.Wrap_Options_Tab > label *{
     font-size: clamp(.4rem, 2vw, 1rem);
     font-weight: bold;
     height: fit-content;
 }
 
-.Options_tab > label > input {
+.Wrap_Options_Tab > label > input {
     width: clamp(.7rem, 2vw, 1rem);
     height: clamp(.9rem, 2vw, 1.2rem);
     border: none;
     background-color: transparent;
 }
 
-.Options_tab > label > span {
+.Wrap_Options_Tab > label > span {
     font-weight: 500;
 }
 
 
 @media (max-width: 600px) and (max-height: 800px) {
-    .Options_tab {
+    .Wrap_Options_Tab {
         gap: .2rem;
     }
 
-    .Options_tab  > button{
+    .Wrap_Options_Tab  > button{
         padding: .3rem;
-        height: fit-content;
     }
     
-    .Options_tab > button > span {
+    .Wrap_Options_Tab > button > span {
         display: none;
     }
 
-    .Options_tab .ChangeOptionsLevel {
+    .Wrap_Options_Tab .ChangeOptionsLevel {
         gap: .2rem;
     }
 
-    .Options_tab .ChangeOptionsLevel > button > i {
+    .Wrap_Options_Tab .ChangeOptionsLevel > button > i {
         color: #F0AB3C;
         background-color: white;
         font-size: clamp(1rem, 2vw,  1.9rem);
         border-radius: 50%;
         border: .25rem solid black;
         transition: all .3s ease-out;
+    }
+    .Search_wrapper > * {
+        padding: .3rem;
     }
 }

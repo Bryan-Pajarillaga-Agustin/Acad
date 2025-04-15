@@ -38,7 +38,7 @@ nav {
     background-color: var(--color_1);
     justify-content: space-between;
     top: 0;
-    position: absolute;
+    position: relative;
 }
 
 
@@ -52,19 +52,18 @@ nav .left {
     font-family: "Martian Mono", monospace;
     font-size: xx-large;
     color: var(--color_2);
-    gap: 1rem;
+    gap: clamp(.1rem, 2vw, 1rem);
     font-size: clamp(1rem, 2vw, 2rem);
 }
 
 nav .left > img {
     display: flex;
-    flex-shrink: 30px;
-    width: 50px;
+    width: 45px;
 }
 
 nav .middle .NavLinks {
     display: flex;
-    gap: clamp(1rem, 2vw, 2.5rem);
+    gap: clamp(.5rem, 2vw, 2.5rem);
     font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
@@ -75,7 +74,7 @@ nav .middle .NavLinks > li > a > img {
 nav .middle .NavLinks > li > a {
     display: flex;
     align-items: center;
-    gap: .5rem;
+    gap: clamp(.25rem, 2vw, .5rem);
     position: relative;
     text-decoration: none;
     color: var(--color_4);
@@ -101,14 +100,14 @@ nav .middle .NavLinks > li > a > span {
 
 nav .right {
     margin-right: 1rem;
-    gap: 1rem;
+    gap: clamp(.1rem, 2vw, 1rem);
 }
 
 nav .right > button {
-    font-size: 1.1rem ;
+    font-size: clamp(.5rem, 2vw, 1.1rem) ;
     font-family: "Kanit", sans-serif;
     font-weight: bold;
-    padding: .5rem 1.2rem ;
+    padding: clamp(.3rem, 2vw, .5rem) clamp(.5rem, 2vw, 1.2rem) ;
     border-radius: 12px;
     outline: none;
     border: none;

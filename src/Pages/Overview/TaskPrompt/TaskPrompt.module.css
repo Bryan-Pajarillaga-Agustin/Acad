@@ -1,6 +1,5 @@
 .Task_prompt_wrapper, .Hide_task_prompt_wrapper {
     flex-direction: column;
-    
     position: absolute;
     background-color: white;
     overflow-y: scroll;

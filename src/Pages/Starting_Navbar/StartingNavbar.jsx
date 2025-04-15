@@ -1,13 +1,13 @@
 import s from './StartingNavbar.module.css'
 import Button from "../../Components/Button"
 import { useEffect, useState } from 'react'
-const StartingNavbar = ({setStartingPage, page}) => {
+const StartingNavbar = ({setStartingPage, page, showTaskPrompt}) => {
     const [indicated, setIndicated] = useState(0)
     const [showSideBar, setShowSideBar] = useState(false)
 
     return (
         <>
-            <nav className={page > .2 ? s.nav : s.hideNav}>
+            <nav className={page > .2 && !showTaskPrompt ? s.nav : s.hideNav}>
                 <div className={s.left}>
                     <img src="./web-icon.png" className={s.icon} />
                     <h1>ACAD</h1>

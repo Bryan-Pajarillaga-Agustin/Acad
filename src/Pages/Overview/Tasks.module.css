@@ -9,10 +9,9 @@
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-content: center;
+    align-items: center;
     font-weight: bold;
     font-family: "Kanit", sans-serif;
-    margin-top: 10rem;
 }
 
 .Task_Wrapper .Tasks_Editor {
@@ -26,7 +25,7 @@
 .Task_Wrapper .Tasks_Editor > h2{
     background-color: #975203;
     text-align: center;
-    height: 5rem;
+    height: 10rem;
     font-size: 2rem;
     display: flex;
     align-items: center;
@@ -38,8 +37,7 @@
 
 
 @media (max-width: 500px) and (max-height: 800px) {
-    
-    .Task_Wrapper {
-        margin-top: 5rem;
+    .Task_Wrapper .Tasks_Editor > h2 {
+        height: 7rem;
     }
 }

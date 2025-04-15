@@ -31,7 +31,19 @@ const Options = ({selectedTask, selectTask, setSelectTask, selectAll, unselectAl
     }
 }
  
-export const BottomOptions = ({ selectTask, setSelectTask, Tasks, setTasks, selectAll, unselectAll }) => {
+export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, setSelectTask, Tasks, setTasks, selectAll, unselectAll }) => {
+    
+    const del = () => {
+        let data = Tasks
+        for(let i in Tasks){
+            for(let j in selectedTask) {
+                if(data[i].id === selectedTask[j]) data.splice(i, 1)
+            }
+        }
+        localStorage.setItem("dataTask", JSON.stringify(data))
+        setTasks([...data])
+        handleSelectedTasks(null)
+    }
     
     return (
         <>
@@ -44,7 +56,8 @@ export const BottomOptions = ({ selectTask, setSelectTask, Tasks, setTasks, sele
                          unselectAll={()=>unselectAll()}/>               
                 <div className={selectTask == true ? s.toRight : s.hide}>
                     <Button icon={(<i className="fa fa-trash-alt"></i>)}
-                                    content={" Delete"}/>
+                            content={" Delete"}
+                            func={(i)=>{selectTask ? del() : console.log("No update")}}/>
                     <Button icon={(
                         <i className="fa fa-close"></i>)}
                             content={" Cancel"}

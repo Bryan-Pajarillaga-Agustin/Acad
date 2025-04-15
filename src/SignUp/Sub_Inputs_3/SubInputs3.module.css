@@ -1,3 +1,10 @@
+:root{
+    --bg-color: #eaae2c;
+    --f-color: #fff;
+    --button-bg-color: #eaae2c; 
+    --button-color: #B658E2;
+}
+
 .hide {
     display: none;
 }
@@ -43,7 +50,7 @@
 .inputs_3 .wrapper > div > button {
     background-color: #fff;
     width: 100px;
-    color: #B658E2;
+    color: var(--bg-color);
     border: none;
     font-weight: bolder;
     font-size: .75rem;
@@ -58,7 +65,7 @@
 }
 
 .inputs_3 .wrapper > div > button:hover {
-    background-color: #B658E2;
+    background-color: var(--bg-color);
     color: #fff;
 }
 
@@ -69,7 +76,7 @@
 
 
 
-@media (max-width: 400px) and (max-height: 600px) {
+@media (max-width: 400px) and (max-height: 800px) {
     .inputs_3 {
         gap: 0.25rem;
     }
@@ -87,7 +94,7 @@
     .inputs_3 .wrapper > div > button {
         background-color: #fff;
         width: 120px;
-        color: #B658E2;
+        color: var(--bg-color);
         border: none;
         font-weight: bolder;
         font-size: .8rem;

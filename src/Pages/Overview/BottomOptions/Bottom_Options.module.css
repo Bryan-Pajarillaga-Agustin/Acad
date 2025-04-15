@@ -27,12 +27,14 @@
     color: red;
 }
 
+
 .Bottom_Options .toRight, .Bottom_Options .toLeft {
     display: flex;
-    margin: 1rem 3rem;
+    margin: 1rem clamp(1rem, 2vw, 3rem);
     gap: .5rem;
 
 }
+
 
 .Bottom_Options .toRight > button, .Bottom_Options .toLeft > button {
     display: flex;
@@ -56,14 +58,8 @@
         gap: .5rem;
     }
 
+
     .Bottom_Options .toLeft > button > span {
         display: none;
     }
-
-    .Bottom_Options > button {
-        margin: 1rem;
-        padding: .2rem clamp(.5rem, 2vw, .9rem);
-        font-size: .7rem;
-    }
-
 }
