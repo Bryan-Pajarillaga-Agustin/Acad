@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Home from "./Pages/Home/Home"
 import { Tasks } from "./Pages/Overview/Tasks"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
@@ -7,22 +7,59 @@ import Signup from "./SignUp/SignUp"
 import s from "./App.module.css"
 function App() {
 
+  // Booleans
+
+  
+  const [showTaskPrompt, setShowTaskPrompt] = useState(false)
+  const [editing, setEditing] = useState(false)
+  const [LogIN, setLogIN] = useState(false)
+  const [url, setUrl] = useState(window.location.href)
+  const [showSignInPrompt, setShowSignInPrompt] = useState(false)
+  const [showSignUpPrompt, setShowSignUpPrompt] = useState(false)
+
   // Page Indicators
   const [MainPage, setMainPage] = useState(0)
-  const [StartingPage, setStartingPage] = useState(1)
-  const [showTaskPrompt, setShowTaskPrompt] = useState(false)
-  const [LogIN, setLogIN] = useState(false)
+  const [page, setPage] = useState(1)
+
+  useEffect(()=>{
+    if(url.includes("#Home")) {
+      setPage(1)
+    } else if (url.includes("#Tasks")) {
+      setPage(2)
+    } else if (url.includes("#About")) {
+      setPage(3)
+    } else if (url.includes("#Contacts")) {
+      setPage(4)
+    } 
+  },[url])
+    console.log(editing)
+  useEffect(()=>{console.log(showSignInPrompt, showSignUpPrompt)},[showSignInPrompt, showSignUpPrompt])
 
   return (
     <>
-      <div className={LogIN ? "Starting_Page" : "hide_starting_page"} >
-        <StartingNavbar setStartingPage={(i)=>{setStartingPage(i)}} page={StartingPage} showTaskPrompt={showTaskPrompt}></StartingNavbar>
-        <div className={s.Pages}>
-          <Home page={StartingPage}></Home>
-          <Tasks page={StartingPage} setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}} showTaskPrompt={showTaskPrompt}></Tasks>
+      <div>
+        <StartingNavbar 
+                        setPage={(i)=>{setPage(i)}} 
+                        page={page} showTaskPrompt={showTaskPrompt} 
+                        editing={editing} 
+                        url={url}
+                        setUrl={(val)=>{setUrl(val)}}
+                        showSignInPrompt={showSignInPrompt} 
+                        setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
+                        showSignUpPrompt={showSignUpPrompt} 
+                        setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}/>
+                        
+        <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
+          <Home page={page}></Home>
+          <Tasks 
+                page={page}
+                setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
+                showTaskPrompt={showTaskPrompt} 
+                editing={editing}
+                setEditing={(val)=>{setEditing(val)}}/>
         </div>
-        <SignIn page={StartingPage} setPage={(i)=>setStartingPage(i)}  ></SignIn>
-        <Signup page={StartingPage} setPage={(i)=>setStartingPage(i)}></Signup>
+        <SignIn page={page} setPage={(i)=>setPage(i)} showSignInPrompt={showSignInPrompt} setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}></SignIn>
+        <Signup page={page} setPage={(i)=>setPage(i)} showSignUpPrompt={showSignUpPrompt} setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}></Signup>
       </div>
     </>
   )

@@ -23,7 +23,7 @@ const Options = ({selectedTask, selectTask, setSelectTask, selectAll, unselectAl
         return (
             <>
                 <Button content={"Select"}
-                        icon={(<i className='far fa-hand-point-up'></i>)} 
+                        icon={(<i className="far fa-hand-point-up"></i>)} 
                         className={s.SelectButton}
                         func={()=>setSelectTask(true)}/>
             </>
@@ -31,18 +31,32 @@ const Options = ({selectedTask, selectTask, setSelectTask, selectAll, unselectAl
     }
 }
  
-export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, setSelectTask, Tasks, setTasks, selectAll, unselectAll }) => {
+export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, setSelectTask, Tasks, setTasks, selectAll, unselectAll, searching, filteredTask, setFilteredTask }) => {
     
     const del = () => {
         let data = Tasks
-        for(let i in Tasks){
+        let filtTask = filteredTask
+
+        for(let i in filtTask) { //deleting selected filtered task
             for(let j in selectedTask) {
-                if(data[i].id === selectedTask[j]) data.splice(i, 1)
+                if(filtTask[i].id === selectedTask[j]) {
+                    filtTask.splice(i, 1)
+                }
             }
         }
+
+        for(let i in Tasks){ //deleting selected task from the original array
+            for(let j in selectedTask) {
+                if(data[i].id === selectedTask[j]) {
+                    data.splice(i, 1)
+                }
+            }
+        }
+        
         localStorage.setItem("dataTask", JSON.stringify(data))
         setTasks([...data])
-        handleSelectedTasks(null)
+        setFilteredTask([...filtTask])
+        handleSelectedTasks(null) //eliminates the id of tasks in the array called "selectedTasks"
     }
 
     useEffect(()=>{

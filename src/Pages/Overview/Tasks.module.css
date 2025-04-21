@@ -17,24 +17,81 @@
 .Task_Wrapper .Tasks_Editor {
     display: flex;
     flex-direction: column;
-    width: 95vw;
-    height: 95vh;
-    border-radius: 1rem;
+    width: 100vw;
+    height: 100%;
 }
 
 .Task_Wrapper .Tasks_Editor > h2{
     background-color: #975203;
     text-align: center;
+    width: 100%;
     height: 10rem;
     font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
+    position: relative;
     font-weight: 500;
-    border-radius: 1rem 1rem 0 0;
 }
 
+.Task_Wrapper .Tasks_Editor > h2 > i {
+    position: absolute;
+    font-size: 1.5rem;
+    right: 1rem;
+    padding: .5rem .75rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.Task_Wrapper .Tasks_Editor > h2 > i:hover {
+    background-color: #F0AB3C;
+}
+
+.Search_wrapper {
+    box-shadow: 0 5px 20px 1px rgba(216, 214, 214, 0.985);
+    height: fit-content;
+    background-color: #f9f5f1da;
+    width: 97%;
+    border: 1.5vw solid #F0AB3C;
+    border-bottom: none;
+}
+
+.Search_wrapper > div {
+    display: flex;
+    margin: .5rem;
+}
+
+.Search_wrapper > div > * {
+    font-size: clamp(.9rem, 2vw, 1.3rem);
+    padding: clamp(0rem, 2vw, .25rem) clamp(.05rem, 2vw, .5rem);
+}
+
+.Search_wrapper > div > label {
+    border-bottom: .3rem solid black;
+    border-left: .3rem solid black;
+    border-top: .3rem solid black;
+    border-radius: .5rem 0 0 .5rem;
+}
+
+.Search_wrapper > div > input {
+    border: 0;
+    border-bottom: .3rem solid black;
+    border-top: .3rem solid black;
+    outline: none;
+    width: 100%;
+}
+
+.Search_wrapper > div > button {
+    border: 0;
+    border-top: .3rem solid black;
+    border-bottom: .3rem solid black;
+    border-right: .3rem solid black;
+    border-radius: 0 .5rem .5rem 0;
+    background-color: #F0AB3C;
+    color: white;
+    transition: all .3s ease-in
+}
 
 @media (max-width: 500px) and (max-height: 800px) {
     .Task_Wrapper .Tasks_Editor > h2 {

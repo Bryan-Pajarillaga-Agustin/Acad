@@ -1,5 +1,5 @@
 .Task_Container {
-    width: 95%;
+    width: 97%;
     height: 100%;
     font-size: clamp(.87rem, 2vw, 3rem);
     display: flex;
@@ -7,9 +7,8 @@
     flex-direction: column;
     gap: .25rem;
     align-items: center;
-    border-left: .5rem solid #f09c2e;
-    border-right: .5rem solid #f09c2e;
-    border-bottom: .5rem solid #f09c2e;
+    border: 1.5vw solid #f09c2e;
+    border-top: 0vw;
     overflow-y: auto;
 }
 
@@ -30,13 +29,17 @@
     align-items: center;
 }
 
+.Task_Container .Finished {
+    background-color: #51af0f;
+    border: .25rem solid rgb(8, 97, 20);
+}
+
 .Task_Container .tasks > i{
     height: fit-content;
     width: fit-content;
     padding: 0;
     margin: 0;
 }
-
 
 .unchecked {
     color: transparent;

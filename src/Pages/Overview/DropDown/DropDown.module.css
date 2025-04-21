@@ -1,0 +1,44 @@
+.DropDown_Body, .Hide_DropDown_Body {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 4.5rem;
+    background-color: #e5e4e27d;
+    z-index: 1;
+}
+
+.Hide_DropDown_Body {
+    display: none;
+}
+
+.Dropdown_Wrapper {
+    width: 100%;
+    animation: display .3s linear forwards;
+    display: flex;
+    flex-direction: column;
+}
+
+.Dropdown_Wrapper > li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    padding: .75rem 0;
+    background-color: #F0AB3C;
+}
+
+.Dropdown_Wrapper > .Not_Indicated:hover {
+    background-color: #dfa25d;
+    color: #F0AB3C;
+}
+
+.Dropdown_Wrapper .Indicated {
+    font-size: 1.75rem;
+    background-color: #b27006;
+}
+
+@media (max-width: 500px) and (max-height: 800px) {
+    .DropDown_Body, .Hide_DropDown_Body{
+        top: 3.3rem;
+    }
+}

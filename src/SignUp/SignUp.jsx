@@ -4,7 +4,7 @@ import Form_2 from "./Sub_Inputs_2/SubInputs2"
 import Form_3 from "./Sub_Inputs_3/SubInputs3"
 import s from "../SignUp/SignUp.module.css"
 import Button from "../Components/Button"
-const Signup = ({page, setPage}) => {
+const Signup = ({page, setPage, showSignUpPrompt, setShowSignUpPrompt}) => {
     const [show, setShow] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
     const [indicated, setIndication] = useState(0)
@@ -17,11 +17,11 @@ const Signup = ({page, setPage}) => {
             setIndication(indicated - 1)
         }
     }
-    if (page == 0.2) return (
+    if (showSignUpPrompt == true) return (
         <>
             <div className={s.sign_up_wrapper}>
                 
-            <Button func={()=>{setPage(1)}} content={"X"} className={s.goToStartingPage}></Button>
+            <Button func={()=>{setShowSignUpPrompt(false)}} content={"X"} className={s.goToStartingPage}></Button>
                 <form onSubmit={(e)=>{e.preventDefault()}} className={s.form_1}>
                     <header>SIGN UP</header>
                     <div className={s.to_bottom}>
@@ -44,7 +44,7 @@ const Signup = ({page, setPage}) => {
                                 <div className={indicated == 1 ? s.indicated : s.not_indicated}></div>
                                 <div className={indicated == 2 ? s.indicated : s.not_indicated}></div>
                             </div>
-                            <h4 id={s.SignIn} onClick={()=>setPage(.1)}> <a>Already Have an Account?</a> </h4>
+                            <h4 id={s.SignUp} onClick={()=>setPage(.1)}> <a>Already Have an Account?</a> </h4>
                             
                         </div>
                     </div>

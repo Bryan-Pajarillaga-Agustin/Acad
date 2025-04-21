@@ -4,7 +4,7 @@ import { useRef, useState } from "react"
 import {db} from "../Firebase/Firebase.js"
 import { ref, get, set } from "firebase/database"
 
-export default function SignIn({page, setPage}){
+export default function SignIn({page, setPage, showSignInPrompt, setShowSignInPrompt}){
     const [showPass, setShowPass] = useState(false)
     const dbRef = ref(db, 'Users')
     const [data, setdata] = useState()
@@ -44,10 +44,10 @@ export default function SignIn({page, setPage}){
         }
     }
 
-    if (page == 0.1) return(
+    if (showSignInPrompt == true) return(
         <>
             <div className={s.sign_up_container}>
-                <Button func={()=>{setPage(1)}} content={"X"} className={s.goToStartingPage}></Button>
+                <Button func={()=>{setShowSignInPrompt(false)}} content={"X"} className={s.goToStartingPage}></Button>
                 <div className={s.top_arc}>SIGN IN</div>
                 <div className={s.form}>
                     <div className={s.username_con}>

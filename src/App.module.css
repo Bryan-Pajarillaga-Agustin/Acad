@@ -6,5 +6,13 @@ body {
     height: 100vh;
     background-color: #f9f5f1da;
     overflow-x: hidden;
+    overflow-y: auto;
     scroll-behavior: smooth;
+}
+
+.Pages {
+    display: block;
+}
+.Hide_Pages {
+    display: none;
 }

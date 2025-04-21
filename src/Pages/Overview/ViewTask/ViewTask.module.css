@@ -1,17 +1,25 @@
-.Task_prompt_wrapper, .Hide_task_prompt_wrapper {
+.Task_View {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(239, 234, 234);
+}
+
+.Task_View, .Hide_Task_View {
     flex-direction: column;
     position: absolute;
     background-color: white;
     overflow-y: scroll;
-    z-index: 1;
 }
 
-.Hide_task_prompt_wrapper {
+.Hide_Task_View {
     display: none;
     animation: hidePrompt .3s ease-out forwards;
 }
 
-.Task_prompt_wrapper {
+.Task_View {
     width: 100vw;
     height: 100vh;
     display: flex;

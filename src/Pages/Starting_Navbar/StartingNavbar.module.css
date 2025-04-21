@@ -283,6 +283,7 @@ nav .right .SignUpButt:active {
         font-family: "Kanit";
         letter-spacing: .1rem;
         top: 0rem;
+        z-index: 2;
         overflow-y: scroll;
     }
 
