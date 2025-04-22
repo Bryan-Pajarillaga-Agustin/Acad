@@ -5,7 +5,7 @@ import s from "./Tasks_Container.module.css"
 
 
 
-const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, searching, filteredTask, setFilteredTask, setShowTaskPrompt, setOpenedTask, editing, setEditing, type }) => {
+const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, searching, filteredTask, setFilteredTask, setOpenedTask, setEditing, type }) => {
 
     // Use a local state to manage checkbox states efficiently
     const [taskCheckboxes, setTaskCheckboxes] = useState(tasks.map(task => ({ ...task, isChecked: false })));
@@ -21,7 +21,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
         });
         for(let i = 0; i < data.length; i++) {
             if(data[i].isChecked) {
-                checkedData.push(data[i].id)
+                checkedData.push({id: data[i].id, index: i})
             }
 
             if(i == data.length - 1) {
@@ -52,14 +52,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
         setTaskCheckboxes([...tasks])
     }, [tasks])
 
-
-    useEffect(()=>{
-        console.log(selectTask)
-    },[selectTask])
-
-    useEffect(()=>{
-        console.log(editing)
-    },[editing])
+    useEffect(()=>{console.log(filteredTask)},[filteredTask])
 
     //COMPONENT 1 - task-wrapper and each task
 
@@ -68,7 +61,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
             return <div className={s.Task_Container} key={"Task_Container"}>
                 {filteredTask.map((task) => {
                     if(task.type === "pending" && type === "Pending") {
-                        return <label htmlFor={"task" + task.id} className={`${s.Pending} ${s.tasks}`}  key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}}>
+                        return <label htmlFor={"task" + task.id} style={task.style != null ? {...task.style} : null} className={`${s.Pending} ${s.tasks}`}  key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}}>
                                 <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
                                 <input
                                     style={{display: "none"}}
@@ -79,7 +72,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
                                 {task.task}
                             </label>
                     } else if(task.type === "finished" && type === "Finished") {
-                        return <label htmlFor={"task" + task.id} className={`${s.Finished} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}}>
+                        return <label htmlFor={"task" + task.id} style={task.style != null ? {...task.style} : null} className={`${s.Finished} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}}>
                                 <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
                                 <input
                                     style={{display: "none"}}
@@ -90,7 +83,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
                                 {task.task}
                             </label>
                     } else if(type === "All Tasks") {
-                        return <label htmlFor={"task" + task.id} className={task.type === "pending" ? `${s.Pending} ${s.tasks}` : `${s.Finished} ${s.tasks}`} key={task.id} >
+                        return <label htmlFor={"task" + task.id} style={task.style != null ? {...task.style} : null} className={task.type === "pending" ? `${s.Pending} ${s.tasks}` : `${s.Finished} ${s.tasks}`} key={task.id} >
                                 <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
                                 <input
                                     style={{display: "none"}}
@@ -110,7 +103,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
                     {taskCheckboxes.map((task, i) => {
                         if(task.type === "pending" && type === "Pending") {
                             return (
-                                <label htmlFor={"task" + task.id} className={`${s.Pending} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}} >
+                                <label htmlFor={"task" + task.id} style={task.style != null ? {...task.style} : null} className={`${s.Pending} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}} >
                                     <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
                                     <input
                                         style={{display: "none"}}
@@ -123,7 +116,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
                             )
                         } else if (task.type === "finished" && type === "Finished") {
                             return (
-                                <label htmlFor={"task" + task.id} className={`${s.Finished} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}} >
+                                <label htmlFor={"task" + task.id} style={task.style != null ? {...task.style} : null} className={`${s.Finished} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}} >
                                     <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
                                     <input
                                         style={{display: "none"}}
@@ -136,7 +129,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
                             )
                         } else if (type === "All Tasks") {
                             return (
-                                <label htmlFor={"task" + task.id} className={task.type === "pending" ? `${s.Pending} ${s.tasks}` : `${s.Finished} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}} >
+                                <label htmlFor={"task" + task.id} style={task.style != null ? {...task.style} : null} className={task.type === "pending" ? `${s.Pending} ${s.tasks}` : `${s.Finished} ${s.tasks}`} key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}} >
                                     <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
                                     <input
                                         style={{display: "none"}}

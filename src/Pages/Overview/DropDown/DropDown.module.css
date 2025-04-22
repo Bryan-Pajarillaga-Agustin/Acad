@@ -37,8 +37,8 @@
     background-color: #b27006;
 }
 
-@media (max-width: 500px) and (max-height: 800px) {
+@media (max-width: 600px) and (max-height: 800px) {
     .DropDown_Body, .Hide_DropDown_Body{
-        top: 3.3rem;
+        top: 5rem;
     }
 }

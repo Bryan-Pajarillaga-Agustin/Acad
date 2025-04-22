@@ -9,11 +9,11 @@ const Options = ({selectedTask, selectTask, setSelectTask, selectAll, unselectAl
                 <div className={s.toLeft}>
                     
                 <Button content={(<span> Select All</span>)}
-                        icon={(<i className="fas fa-check-square"></i>)}
+                        icon={(<i className="fa fa-check"></i>)}
                         className={s.SelectAllButton}
                         func={()=>{selectAll()}}/>
                 <Button content={(<span> Unselect All</span>)}
-                        icon={(<i className="fas fa-square"></i>)}
+                        icon={(<i className={`fas fa fa-check ${s.Unchecked}`}></i>)}
                         className={s.UnselectAllButton}
                         func={()=>{unselectAll()}}/>
                 </div>
@@ -23,7 +23,7 @@ const Options = ({selectedTask, selectTask, setSelectTask, selectAll, unselectAl
         return (
             <>
                 <Button content={"Select"}
-                        icon={(<i className="far fa-hand-point-up"></i>)} 
+                        icon={(<i className="fa fa-hand-o-up"></i>)} 
                         className={s.SelectButton}
                         func={()=>setSelectTask(true)}/>
             </>
@@ -39,7 +39,7 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
 
         for(let i in filtTask) { //deleting selected filtered task
             for(let j in selectedTask) {
-                if(filtTask[i].id === selectedTask[j]) {
+                if(filtTask[i].id === selectedTask[j].id) {
                     filtTask.splice(i, 1)
                 }
             }
@@ -47,7 +47,7 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
 
         for(let i in Tasks){ //deleting selected task from the original array
             for(let j in selectedTask) {
-                if(data[i].id === selectedTask[j]) {
+                if(data[i].id === selectedTask[j].id) {
                     data.splice(i, 1)
                 }
             }
@@ -55,13 +55,11 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
         
         localStorage.setItem("dataTask", JSON.stringify(data))
         setTasks([...data])
-        setFilteredTask([...filtTask])
+        if(searching) setFilteredTask([...filtTask])
         handleSelectedTasks(null) //eliminates the id of tasks in the array called "selectedTasks"
     }
 
-    useEffect(()=>{
-        console.log(selectedTask)
-    },[selectedTask])
+    
     
     return (
         <>
@@ -73,7 +71,7 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
                          selectAll={()=>selectAll()}
                          unselectAll={()=>unselectAll()}/>               
                 <div className={selectTask == true ? s.toRight : s.hide}>
-                    <Button icon={(<i className="fa fa-trash-alt"></i>)}
+                    <Button icon={(<i className="fa fa-trash"></i>)}
                             content={" Delete"}
                             func={(i)=>{selectTask ? del() : console.log("No update")}}/>
                     <Button icon={(

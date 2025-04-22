@@ -23,6 +23,11 @@
     overflow-y: hidden;
 }
 
+.Wrap_Options_Tab::-webkit-scrollbar{
+    display: none;
+}
+
+
 
 .Wrap_Options_Tab > button {
     height: fit-content;
@@ -38,6 +43,7 @@
     gap: .5rem;
     text-wrap: nowrap;
 }
+
 .Wrap_Options_Tab > button > span {
     text-wrap: nowrap;
 }

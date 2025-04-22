@@ -3,11 +3,11 @@ import s from "./ViewTask.module.css"
 
 const ViewTask = ({ openedTask, setOpenedTask, tasks, taskEditingP, saveChanges, handleEditing, setEditing, editing }) => {
     return (
-        <div className={editing ? s.Task_View : s.Hide_Task_View} onSubmit={(e)=>{saveChanges(e, taskEditingP.current.value, openedTask.index)}}>
+        <div className={editing ? s.Task_View : s.Hide_Task_View}>
             <div className={s.nav}>
                 <h3><i className="fa fa-edit"></i> <span>Edit Task</span></h3>
                 <Button icon={(<i className="fa fa-times"></i>)}
-                        func={()=>{setOpenedTask({index: null, isOpened: false}), setShowTaskPrompt(false)}}
+                        func={()=>{setOpenedTask({index: null, isOpened: false}), setEditing(false)}}
                         />
             </div>
             <div className={s.content}>

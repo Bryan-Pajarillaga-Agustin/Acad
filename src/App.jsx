@@ -32,9 +32,6 @@ function App() {
       setPage(4)
     } 
   },[url])
-    console.log(editing)
-  useEffect(()=>{console.log(showSignInPrompt, showSignUpPrompt)},[showSignInPrompt, showSignUpPrompt])
-
   return (
     <>
       <div>

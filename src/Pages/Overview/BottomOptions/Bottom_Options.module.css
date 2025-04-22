@@ -1,3 +1,7 @@
+.Bottom_Options  button:hover, .Bottom_Options  label:hover {
+    filter: brightness(.8);
+}
+
 .Bottom_Options {
     width: 97%;
     height: fit-content;
@@ -22,10 +26,15 @@
     overflow-x: hidden;
 }
 
+.Bottom_Options .toLeft > button .Unchecked {
+    background-color: red;
+}
 
 .Bottom_Options > button > i, .Bottom_Options .toLeft > button > i, .Bottom_Options .toRight > button > i{
     color: red;
 }
+
+
 
 
 .Bottom_Options .toRight, .Bottom_Options .toLeft {

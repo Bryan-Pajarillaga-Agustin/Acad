@@ -24,6 +24,8 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
 
     const [selectedTasks, setSelectedTasks] = useState([])
     const [optionTabNumber, setOptionTabNumber] = useState(1)
+    const [bgColor, setBgColor] = useState()
+    const [color, setColor] = useState()
 
     // Arrays & objects
 
@@ -59,26 +61,80 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         setUpdateTasks([...dataTask])
     }
 
-    function markAsFinished(){
+    function handleChangedType(data, state){
+        for(let i in selectedTasks){
+            
+
+            
+        }
+        return data
+    }
+
+    function handleMarking(changedData, upData){
+        if(selectedTasks.length >= 1) {
+            if(searching) 
+                setFilteredTasks([...changedData]);
+
+            setUpdateTasks([...upData]);
+        }
+    }
+
+    function sort(){
+
+    }
+
+    function changeFontColor(){
         if(selectedTasks.length >= 1) {
             setUpdateTasks(prevCheckboxes => {
                 return prevCheckboxes.map(task => {
-                    return { ...task, type: "finished" };;
+                    return { ...task, fontColor: color };;
                 });
             });
-        }
+
+            if(searching) 
+                setFilteredTasks(prev => {
+                    return prev.map(task => {
+                        return { ...task, fontColor: color };;
+                    });
+                });
+        } 
+    }
+
+    function changeBGColor(){
+        if(selectedTasks.length >= 1) {
+            setUpdateTasks(prevCheckboxes => {
+                return prevCheckboxes.map(task => {
+                    return { ...task, bgColor: bgColor };;
+                });
+            });
+
+            if(searching) 
+                setFilteredTasks(prev => {
+                    return prev.map(task => {
+                        return { ...task, bgColor: bgColor };;
+                    });
+                });
+        } 
+    }
+
+    function bold(){
+
+    }
+
+    function italicize(){
+
     }
 
     function handleEditing(e) {
         setEditedValue(e.target.innerText)
     }
 
-    const handleSearch = () => {
-        if(searchValue.current.value == "") {
+    const handleSearch = (e) => {
+        if(e.target.value == "") {
             setSearching(false)
         } else {
             setSearching(true)
-            setFilteredTasks(tasks.filter((task) => task.task.toLowerCase().includes(searchValue.current.value.toLowerCase())))
+            setFilteredTasks(tasks.filter((task) => task.task.toLowerCase().includes(e.target.value.toLowerCase())))
         }
     }
 
@@ -94,7 +150,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
             })
 
             for(let i = 0; i < filtTasks.length; i ++) {
-                if(filtTasks[i].isChecked) checkedFiltTasks.push(filtTasks[i].id)
+                if(filtTasks[i].isChecked) checkedFiltTasks.push({id: filtTasks[i].id, index: i})
             }
 
             handleSelectedTasks([...checkedFiltTasks])
@@ -104,7 +160,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
             });
 
             for(let i = 0; i < data.length; i ++) {
-                if(data[i].isChecked) checkedData.push(data[i].id)
+                if(data[i].isChecked) checkedData.push({id: data[i].id, index: i})
             }
             handleSelectedTasks([...checkedData])
         }
@@ -168,7 +224,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         // Update parent component with changes
         setTasks([...updateTasks]);
         localStorage.setItem("dataTask", JSON.stringify(updateTasks))
-    }, [updateTasks]);
+    }, [ filteredTasks, updateTasks ]);
 
     return  (
         <>
@@ -178,18 +234,22 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                     <h2 className={s.Title_wrapper}>
                         Tasks 
                         <i className={`fa fa-bars`} onClick={()=>{showDropDown ? setShowDropDown(false) : setShowDropDown(true)}}></i>
-                        <DropDown type={type} setType={(val)=>{setType(val)}} showDropDown={showDropDown} handleType={(val)=>{handleType(val)}}/>
+                        <DropDown type={type} setType={(val)=>{setType(val)}} showDropDown={showDropDown} handleType={(val)=>{handleType(val)}} unselectAll={(val)=>{unselectAll(val)}}/>
                     </h2>
                     <OptionsTab 
                         optionTabNumber={optionTabNumber} 
-                        setOptionTabNumber={(i)=>setOptionTabNumber(i)} 
+                        updateTasks={updateTasks}
+                        filteredTasks={filteredTasks} 
                         setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
-                        searchValue={searchValue} 
                         searching={searching} 
                         setSearching={(val)=>setSearching(val)}
                         handleSearch={()=>{handleSearch()}}
                         selectedTask={selectedTasks}
-                        markAsFinished={()=>{markAsFinished()}}/>
+                        handleMarking={(changeData, upData)=>{handleMarking(changeData, upData)}}
+                        markAsPending={(val)=>{markAsPending(val)}}
+                        unselectAll={()=>unselectAll()}
+                        setBgColor={(val)=>setBgColor(val)}
+                        setColor={(val)=>setColor(val)}/>
                     
                     <div className={s.Search_wrapper}>
                         <div>
@@ -201,7 +261,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                                 id="search-bar"
                                 type="text" 
                                 placeholder={"Search Task"} 
-                                onChange={()=>{handleSearch()}}/>
+                                onChange={(e)=>{handleSearch(e)}}/>
                             <Button content={"Search"} className={s.Search_button}/>
                         </div>
                     </div>

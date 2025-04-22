@@ -16,6 +16,10 @@
     width: 100%;
 }
 
+.Task_Container label:hover {
+    filter: brightness(.8);
+}
+
 .Task_Container .tasks {
     width: 90%;
     height: fit-content;
@@ -27,6 +31,8 @@
     color: white;
     border-radius: 1rem;
     align-items: center;
+    cursor: pointer;
+    transition: .15s ease-in;
 }
 
 .Task_Container .Finished {
