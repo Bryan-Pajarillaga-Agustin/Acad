@@ -5,9 +5,11 @@ import { DropDown } from "./DropDown/DropDown"
 import { OptionsTab } from "./OptionsTab/OptionsTab"
 import ViewTask from "./ViewTask/ViewTask"
 import TaskPrompt from "./TaskPrompt/TaskPrompt"
+import SortPrompt from "./SortPrompt/SortPrompt"
 import Button from "../../Components/Button"
 import s from "../Overview/Tasks.module.css"
-export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, editing}) => {
+import styles from "./TasksContainer/Tasks_Container.module.css"
+export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, editing, showSortPrompt, setShowSortPrompt}) => {
 
     // Refs
 
@@ -19,13 +21,12 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
     const [selectTask, setSelectTask] = useState(false)
     const [searching, setSearching] = useState(false)
     const [showDropDown, setShowDropDown] = useState(false)
+    const [sorting, setSorting] = useState(true)
 
     // Data Variables
 
     const [selectedTasks, setSelectedTasks] = useState([])
     const [optionTabNumber, setOptionTabNumber] = useState(1)
-    const [bgColor, setBgColor] = useState()
-    const [color, setColor] = useState()
 
     // Arrays & objects
 
@@ -35,6 +36,14 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
     const [openedTask, setOpenedTask] = useState({index: null, isOpened: false})
     const [type, setType] = useState("Pending")
     const [editedValue, setEditedValue] = useState(null)
+    const [sortOptions, setSortOptions] = useState([
+        {description: "Newest to Oldest", state: true},
+        {description: "Oldest to Newest", state: false},
+        {description: "From A-Z", state: false},
+        {description: "From Z-A", state: false},
+    ])
+
+    // Array Of styles for each task
 
     function handleType(){
         setShowDropDown(false)
@@ -51,8 +60,17 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         let newTask = { 
             id: randId, 
             task: data, 
-            date: null, 
-            selected: false, 
+            dateCreated: {fullDate: new Date(), time: Date.now()}, 
+            selected: false,
+            style: "default",
+            
+            cName: [
+                    JSON.stringify(styles.col),
+                    JSON.stringify(styles.br),
+                    JSON.stringify(styles.fs),
+                    JSON.stringify(styles.bgC),
+                    JSON.stringify(styles.fW)
+                ],
             isChecked: false,
             type: "pending"
         }
@@ -60,16 +78,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         localStorage.setItem("dataTask", JSON.stringify(dataTask))
         setUpdateTasks([...dataTask])
     }
-
-    function handleChangedType(data, state){
-        for(let i in selectedTasks){
-            
-
-            
-        }
-        return data
-    }
-
+    
     function handleMarking(changedData, upData){
         if(selectedTasks.length >= 1) {
             if(searching) 
@@ -79,102 +88,45 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         }
     }
 
-    function sort(){
-
-    }
-
-    function changeFontColor(){
-        if(selectedTasks.length >= 1) {
-            setUpdateTasks(prevCheckboxes => {
-                return prevCheckboxes.map(task => {
-                    return { ...task, fontColor: color };;
-                });
-            });
-
-            if(searching) 
-                setFilteredTasks(prev => {
-                    return prev.map(task => {
-                        return { ...task, fontColor: color };;
-                    });
-                });
-        } 
-    }
-
-    function changeBGColor(){
-        if(selectedTasks.length >= 1) {
-            setUpdateTasks(prevCheckboxes => {
-                return prevCheckboxes.map(task => {
-                    return { ...task, bgColor: bgColor };;
-                });
-            });
-
-            if(searching) 
-                setFilteredTasks(prev => {
-                    return prev.map(task => {
-                        return { ...task, bgColor: bgColor };;
-                    });
-                });
-        } 
-    }
-
-    function bold(){
-
-    }
-
-    function italicize(){
-
-    }
-
     function handleEditing(e) {
         setEditedValue(e.target.innerText)
     }
 
     const handleSearch = (e) => {
-        if(e.target.value == "") {
+        if(searchValue.current.value == "") {
             setSearching(false)
         } else {
             setSearching(true)
-            setFilteredTasks(tasks.filter((task) => task.task.toLowerCase().includes(e.target.value.toLowerCase())))
+            setFilteredTasks(tasks.filter((task) => task.task.toLowerCase().includes(searchValue.current.value.toLowerCase())))
+            setSorting(false)
         }
     }
 
-    const selectAll = () => {
-        let data = tasks
-        let filtTasks = filteredTasks
-        let checkedData = []
-        let checkedFiltTasks = []
+    function handleSelectedTasks(val){
+        setSelectedTasks(val == null ? [] : [...val])
+    }
 
-        if(searching) {
-            filtTasks = filtTasks.map(task => {
-                return { ...task, isChecked: true }
-            })
+    function handleOpenedTask(obj) {
+        setOpenedTask(obj)
+    }
 
-            for(let i = 0; i < filtTasks.length; i ++) {
-                if(filtTasks[i].isChecked) checkedFiltTasks.push({id: filtTasks[i].id, index: i})
+    function handleIsSorting(){
+        let data = sortOptions
+        for(let i = 0; i < sortOptions.length; i++){
+            if(data[i].state == true) {
+                setSorting(true)
+                break
+            } else if(i==sortOptions.length - 1 && sortOptions[i].state == false) {
+                setSorting(false)
             }
-
-            handleSelectedTasks([...checkedFiltTasks])
-        } else {
-            data = data.map(task => {
-                return { ...task, isChecked: true };;
-            });
-
-            for(let i = 0; i < data.length; i ++) {
-                if(data[i].isChecked) checkedData.push({id: data[i].id, index: i})
-            }
-            handleSelectedTasks([...checkedData])
         }
-
-        if(!searching) {
-            setUpdateTasks(prevCheckboxes => {
-                return prevCheckboxes.map(task => {
-                    return { ...task, isChecked: true };;
-                });
-            });
-        } else {
-            setFilteredTasks([...filtTasks])
-        }
-    };
+    }
+    
+    function saveChanges(index){
+        let task = tasks
+        task[index].task = editedValue
+        setUpdateTasks([...task])
+    }
 
     const unselectAll = () => {
         let data = tasks
@@ -206,25 +158,13 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
          }
     };
 
-    function handleSelectedTasks(val){
-        setSelectedTasks(val == null ? [] : [...val])
-    }
-
-    function handleOpenedTask(obj) {
-        setOpenedTask(obj)
-    }
-    
-    function saveChanges(index){
-        let task = tasks
-        task[index].task = editedValue
-        setUpdateTasks([...task])
-    }
-
     useEffect(() => {
         // Update parent component with changes
         setTasks([...updateTasks]);
         localStorage.setItem("dataTask", JSON.stringify(updateTasks))
     }, [ filteredTasks, updateTasks ]);
+
+    useEffect(()=>{if(sorting != null){console.log(sorting)}},[sorting])
 
     return  (
         <>
@@ -249,7 +189,8 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                         markAsPending={(val)=>{markAsPending(val)}}
                         unselectAll={()=>unselectAll()}
                         setBgColor={(val)=>setBgColor(val)}
-                        setColor={(val)=>setColor(val)}/>
+                        setColor={(val)=>setColor(val)}
+                        setShowSortPrompt={(val)=>{setShowSortPrompt(val)}}/>
                     
                     <div className={s.Search_wrapper}>
                         <div>
@@ -259,23 +200,24 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                             <input
                                 ref={searchValue}
                                 id="search-bar"
-                                type="text" 
-                                placeholder={"Search Task"} 
-                                onChange={(e)=>{handleSearch(e)}}/>
-                            <Button content={"Search"} className={s.Search_button}/>
+                                type="text"
+                                placeholder="Type Task..."
+                                onChange={()=>{if(searchValue.current.value == "") {handleIsSorting(), handleSearch()}}}/>
+                            <Button content={"Search"} className={s.Search_button} func={()=>{handleSearch(), handleIsSorting()}}/>
                         </div>
                     </div>
                     <BottomOptions 
                         selectedTask={selectedTasks} 
                         handleSelectedTasks={(val)=>handleSelectedTasks(val)} 
                         selectTask={selectTask} setSelectTask={setSelectTask} 
-                        selectAll={()=>{selectAll()}} 
                         unselectAll={()=>{unselectAll()}} 
-                        Tasks={tasks} 
+                        tasks={tasks} 
                         setTasks={(val)=>{setUpdateTasks(val)}}
-                        filteredTask={filteredTasks} 
-                        setFilteredTask={(val)=>{setFilteredTasks(val)}}
-                        searching={searching}/>
+                        filteredTasks={filteredTasks} 
+                        setFilteredTasks={(val)=>{setFilteredTasks(val)}}
+                        searching={searching}
+                        setUpdateTasks={(val)=>setUpdateTasks(val)}
+                        updateTasks={updateTasks}/>
                     <TasksContainer 
                         selectedTasks={selectedTasks} 
                         setSelectedTasks={()=>setSelectedTasks()} 
@@ -293,7 +235,10 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                         editing={editing}
                         setEditing={(val)=>{setEditing(val)}}
                         setOpenedTask={(val)=>{setOpenedTask(val)}}
-                        type={type} />
+                        type={type} 
+                        setSorting={(val)=>{setSorting(val)}}
+                        sorting={sorting}
+                        sortOptions={sortOptions}/>
                     <ViewTask 
                         openedTask={openedTask} 
                         setOpenedTask={(val)=>{setOpenedTask(val)}} 
@@ -301,9 +246,18 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                         taskEditingP={taskEditingP}
                         saveChanges={(changes, index)=>{saveChanges(changes, index)}} 
                         editing={editing}
+                        filteredTask={filteredTasks}
+                        searching={searching}
                         setEditing={(val)=>{setEditing(val)}}
                         handleEditing={(e)=>{handleEditing(e)}}
                         editedValue={editedValue}/>
+                    <SortPrompt 
+                        showSortPrompt={showSortPrompt}
+                        setShowSortPrompt={(val)=>{setShowSortPrompt(val)}}
+                        sortOptions={sortOptions}
+                        setSortOptions={(val)=>{setSortOptions(val)}}
+                        setSorting={(val)=>{setSorting(val)}}
+                        sorting={sorting}/>
                 </div>
             </div>
         </>

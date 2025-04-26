@@ -26,9 +26,6 @@
     padding: .5rem;
     display: flex;
     gap: 1rem;
-    border: .25rem solid rgb(209, 108, 6);
-    background-color: #f09c2e;
-    color: white;
     border-radius: 1rem;
     align-items: center;
     cursor: pointer;
@@ -53,4 +50,24 @@
 
 .checked {
     color: white;
+}
+
+.col {
+    color: white;
+}
+
+.br{
+    border: .25rem solid rgb(209, 108, 6);
+}
+
+.fs {
+    font-style: normal;
+}
+
+.bgC {
+    background-color: #f09c2e;
+}
+
+.fW {
+    font-weight: normal;
 }

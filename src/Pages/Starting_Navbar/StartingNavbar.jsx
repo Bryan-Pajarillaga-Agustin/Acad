@@ -1,7 +1,7 @@
 import s from './StartingNavbar.module.css'
 import Button from "../../Components/Button"
 import { useEffect, useState } from 'react'
-const StartingNavbar = ({editing, setPage, page, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt}) => {
+const StartingNavbar = ({editing, setPage, page, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, showSortPrompt}) => {
     const [indicated, setIndicated] = useState(0)
     const [showSideBar, setShowSideBar] = useState(false)
 
@@ -29,7 +29,7 @@ const StartingNavbar = ({editing, setPage, page, showTaskPrompt, url, setUrl, sh
 
     return (
         <>
-        <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing ? s.nav : s.hideNav}>
+        <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing && !showSortPrompt ? s.nav : s.hideNav}>
                 <div className={s.left}>
                     <img src="./web-icon.png" className={s.icon} />
                     <h1>ACAD</h1>

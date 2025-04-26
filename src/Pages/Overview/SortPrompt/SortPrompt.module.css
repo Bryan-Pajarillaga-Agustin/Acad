@@ -1,0 +1,89 @@
+:root{
+    --bg-color: #eaae2c;
+    --f-color: #fff;
+    --button-bg-color: #eaae2c; 
+    --border-color: #976b0a; 
+    --button-color: #B658E2;
+}
+
+.Sort_Wrapper,
+.Hide_Sort_Wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #c7c5c56c;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.Hide_Sort_Wrapper {
+    display: none;
+}
+
+.Sort_Box {
+    color: var(--f-color);
+    width: 230px;
+    height: 240px;
+    background-color: var(--bg-color);
+    padding: clamp(.5rem, 2vw, .75rem);
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 10px -2px rgb(172, 170, 170);
+    border: .5rem solid var(--border-color);
+    position: relative;
+}
+
+.Hide_Sort_Box_Button{
+    position: absolute;
+    top: .5rem;
+    right: .5rem;
+    padding: .2rem .4rem;
+    border-radius: .5rem;
+    border: none;
+    background-color: #c7c5c56c;
+}
+
+.Hide_Sort_Box_Button > i {
+    font-size: 1.3rem;
+    color: white;
+}
+
+.Sort_Box > .Sort_Options {
+    display: flex;
+    flex-direction: row;
+    gap: 0 .5rem;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 80%;
+    overflow-y: auto;
+    background: linear-gradient(to bottom, transparent, transparent, transparent, #9d9d9b49);
+}
+
+.Sort_Box > .Sort_Options > button {
+    outline: none;
+    background-color: transparent;
+    border: none;
+    height: fit-content;
+    font-size: 1.2rem;
+    width: 100%;
+    padding: .4rem 0;
+    color: #fff;
+    font-weight: bold;
+    position: relative;
+}
+
+.checked, .unchecked{
+    position: absolute;
+    top: 25%;
+    left: .1rem;
+}
+
+.checked{
+    color: white;
+}
+
+.unchecked{
+    color: transparent;
+}

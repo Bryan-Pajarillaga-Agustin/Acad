@@ -11,6 +11,7 @@ function App() {
 
   
   const [showTaskPrompt, setShowTaskPrompt] = useState(false)
+  const [showSortPrompt, setShowSortPrompt] = useState(false)
   const [editing, setEditing] = useState(false)
   const [LogIN, setLogIN] = useState(false)
   const [url, setUrl] = useState(window.location.href)
@@ -44,7 +45,8 @@ function App() {
                         showSignInPrompt={showSignInPrompt} 
                         setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
                         showSignUpPrompt={showSignUpPrompt} 
-                        setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}/>
+                        setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+                        showSortPrompt={showSortPrompt}/>
                         
         <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
           <Home page={page}></Home>
@@ -53,7 +55,9 @@ function App() {
                 setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
                 showTaskPrompt={showTaskPrompt} 
                 editing={editing}
-                setEditing={(val)=>{setEditing(val)}}/>
+                setEditing={(val)=>{setEditing(val)}}
+                showSortPrompt={showSortPrompt}
+                setShowSortPrompt={(val)=>setShowSortPrompt(val)}/>
         </div>
         <SignIn page={page} setPage={(i)=>setPage(i)} showSignInPrompt={showSignInPrompt} setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}></SignIn>
         <Signup page={page} setPage={(i)=>setPage(i)} showSignUpPrompt={showSignUpPrompt} setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}></Signup>
