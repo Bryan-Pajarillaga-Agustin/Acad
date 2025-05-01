@@ -268,6 +268,26 @@ nav .right .SignUpButt:active {
         padding: .5rem .75rem;
     }
 
+    nav .right .User_Button {
+        background-color: var(--color_2);
+        color: var(--color_1);
+        overflow: hidden;
+        padding: .44rem .75rem;
+        display: flex;
+        gap: .2rem;
+        align-items: center;
+    }
+
+    nav .right .User_Button:hover {
+        color: var(--color_2);
+        background-color: var(--color_4);
+    }
+
+    
+    nav .right .User_Button > i {
+        font-size: .9rem;
+    }
+
     nav .right .HamburgerButt {
         display: block;
     }

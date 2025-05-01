@@ -1,7 +1,7 @@
 import s from "../Home/Home.module.css"
 import Button from "../../Components/Button"
 import StartingNavbar from "../Starting_Navbar/StartingNavbar"
-const Home = ({page}) => {
+const Home = ({page, setPage, setIndicated, indicated}) => {
     return (
         <div className={page == 1 ? s.home_wrapper : s.hideHome} id="Home">
             <div className={s.left}>
@@ -10,7 +10,10 @@ const Home = ({page}) => {
                         Welcome User
                     </h1>
                     <p>Write, read and document your work <br /> and studies</p>
-                    <Button content={"Get Started"} func={()=>{}}></Button>
+                    <a href="#Tasks">
+                        <Button content={"Get Started"} func={()=>{setPage(2), setIndicated(1)}}></Button>
+                    </a>
+                    
                 </div>
                 <div className={s.wrapBottom}>
                     <Button className={s.orange}></Button>

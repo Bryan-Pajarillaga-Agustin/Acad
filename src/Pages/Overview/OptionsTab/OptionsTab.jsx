@@ -14,12 +14,13 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
         let upData = updateTasks
         let data = filteredTasks
         let changedData = []
-        console.log("pointerLeaved")
+    
         for(let i in selectedTask) {
             if (searching) {
                 for(let j in data) {
 
                     if(j == selectedTask[i].index){
+                        data[j].isChecked = true
                         if(state != false){
                             data[selectedTask[i].index].type = state
                             changedData.push(data[selectedTask[i].index])
@@ -85,14 +86,14 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                         fontWeight: "default"
                     } : 
                     { ...updatedTask.style }
-
+                    
                     if (state !== false) updatedTask.type = state;
                     if (changeColor) updatedTask.style = { ...updatedTask.style, color: changeColor };
                     if (changeBGColor) updatedTask.style = { ...updatedTask.style, backgroundColor: changeBGColor };
                     if (bold) updatedTask.style = { ...updatedTask.style, fontWeight: bold }
                     if (italicize) updatedTask.style = { ...updatedTask.style, fontStyle: italicize };
                     if (borderColor) updatedTask.style = { ...updatedTask.style, borderColor: borderColor }
-
+                    updatedTask.isChecked = true
                     return updatedTask;
                 } else {
                     return {...task}

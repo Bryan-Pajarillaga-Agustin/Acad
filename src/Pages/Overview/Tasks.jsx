@@ -9,7 +9,7 @@ import SortPrompt from "./SortPrompt/SortPrompt"
 import Button from "../../Components/Button"
 import s from "../Overview/Tasks.module.css"
 import styles from "./TasksContainer/Tasks_Container.module.css"
-export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, editing, showSortPrompt, setShowSortPrompt}) => {
+export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, editing, showSortPrompt, setShowSortPrompt, user}) => {
 
     // Refs
 
@@ -28,13 +28,17 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
     const [selectedTasks, setSelectedTasks] = useState([])
     const [optionTabNumber, setOptionTabNumber] = useState(1)
 
+    // Strings
+
+    const [type, setType] = useState("Pending")
+
     // Arrays & objects
 
     const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("dataTask")) != null ? JSON.parse(localStorage.getItem("dataTask")) : [])
+    // JSON.parse(localStorage.getItem("dataTask")) != null ? JSON.parse(localStorage.getItem("dataTask")) : []
     const [updateTasks, setUpdateTasks] = useState(tasks.map(task => ({ ...task, isChecked: false })));
     const [filteredTasks, setFilteredTasks] = useState(null)
     const [openedTask, setOpenedTask] = useState({index: null, isOpened: false})
-    const [type, setType] = useState("Pending")
     const [editedValue, setEditedValue] = useState(null)
     const [sortOptions, setSortOptions] = useState([
         {description: "Newest to Oldest", state: true},
@@ -164,7 +168,9 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         localStorage.setItem("dataTask", JSON.stringify(updateTasks))
     }, [ filteredTasks, updateTasks ]);
 
-    useEffect(()=>{if(sorting != null){console.log(sorting)}},[sorting])
+    useEffect(()=>{
+
+    },[user])
 
     return  (
         <>
@@ -174,7 +180,14 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                     <h2 className={s.Title_wrapper}>
                         Tasks 
                         <i className={`fa fa-bars`} onClick={()=>{showDropDown ? setShowDropDown(false) : setShowDropDown(true)}}></i>
-                        <DropDown type={type} setType={(val)=>{setType(val)}} showDropDown={showDropDown} handleType={(val)=>{handleType(val)}} unselectAll={(val)=>{unselectAll(val)}}/>
+                        <DropDown 
+                                   type={type} 
+                                   setType={(val)=>{setType(val)}} 
+                                   showDropDown={showDropDown} 
+                                   handleType={(val)=>{handleType(val)}} 
+                                   unselectAll={(val)=>{unselectAll(val)}}
+                                   setSortOptions={(val)=>{setSortOptions(val)}}
+                                   setSorting={(val)=>{setSorting(val)}} />
                     </h2>
                     <OptionsTab 
                         optionTabNumber={optionTabNumber} 

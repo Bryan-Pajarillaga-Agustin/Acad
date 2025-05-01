@@ -3,8 +3,9 @@ import Button from "../../../Components/Button";
 import s from "./ViewTask.module.css"
 
 const ViewTask = ({ openedTask, setOpenedTask, filteredTask ,searching, tasks, taskEditingP, saveChanges, handleEditing, setEditing, editing }) => {
-    useEffect(()=>{if(openedTask)console.log(openedTask)},[openedTask])
-    if(filteredTask != null) return (
+    
+    
+    return (
         <div className={editing ? s.Task_View : s.Hide_Task_View}>
             <div className={s.nav}>
                 <h3><i className="fa fa-edit"></i> <span>Edit Task</span></h3>
@@ -13,11 +14,12 @@ const ViewTask = ({ openedTask, setOpenedTask, filteredTask ,searching, tasks, t
                         />
             </div>
             <div className={s.content}>
-                {
-                    searching ?
-                    <p ref={taskEditingP} onInput={(e)=>{handleEditing(e)}} contentEditable={true}>{openedTask.isOpened ? filteredTask[openedTask.index].task : null}</p> :
+                
+                <p ref={taskEditingP} onInput={(e)=>{handleEditing(e)}} contentEditable={editing}>{tasks.map((task,i)=>{ if(task.id === openedTask.id) { return task.task}})}</p>
+                {/* {
+                    searching ? :
                     <p ref={taskEditingP} onInput={(e)=>{handleEditing(e)}} contentEditable={true}>{openedTask.isOpened ? tasks[openedTask.index].task : null}</p>
-                }
+                } */}
                 
             </div>
             <Button content={"Save Changes"}

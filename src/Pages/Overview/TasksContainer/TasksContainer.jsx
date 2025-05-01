@@ -95,7 +95,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
                     } 
                 })}
             </div>
-        } else if(!searching) {
+        } else if(!sorting && !searching) {
             return (
                 <div className={s.Task_Container}>
                     {taskCheckboxes.map((task, i) => {
@@ -115,8 +115,8 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
     // COMPONENT 2 - Task Element
 
     const TaskElement = ({task, i}) => {
-        return <label htmlFor={"task" + task.id} style={task.style != "default" ? {...task.style} : null} className={task.type == "pending" ? `${s.Pending} ${task.cName.map((ea)=>{return JSON.parse(ea)}).join(' ')} ${s.tasks}` : `${s.Finished} ${task.cName.map((ea)=>{return JSON.parse(ea)}).join(' ')} ${s.tasks}`}  key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({index: i, isOpened: true})}}>
-                    <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked ? s.checked : s.unchecked}`}></i>
+        return <label htmlFor={"task" + task.id} style={task.style != "default" ? {...task.style} : null} className={task.type == "pending" ? `${s.Pending} ${task.cName.map((ea)=>{return JSON.parse(ea)}).join(' ')} ${s.tasks}` : `${s.Finished} ${task.cName.map((ea)=>{return JSON.parse(ea)}).join(' ')} ${s.tasks}`}  key={task.id} onDoubleClick={()=>{setEditing(true), setOpenedTask({id: task.id, isOpened: true})}}>
+                    <i style={selectTask == false ? {display: "none"} : {display: "block"}} className={`fa fa-check-square ${task.isChecked === true ? s.checked : s.unchecked}`}></i>
                     <input
                         style={{display: "none"}}
                         type="checkbox"

@@ -2,33 +2,62 @@
     display: none;
 }
 
+
 .inputs_2 {
     font-family: "Kulim Park", sans-serif;
     font-weight: bold;
 }
 
-.inputs_2 > div {
+.inputs_2 > h3 {
+    color: white;
+    text-align: center;
+} 
+
+.inputs_2 .top {
     display: flex;
     flex-direction: column;
     position: relative;
-    margin: 0 1.2rem;
+    margin: 1.2rem 1.2rem;
     gap: .5rem;
 }
 
-.inputs_2 > div > h4 {
-    color: white;
-    margin-top: .5rem;
-} 
+.inputs_2 .top > button {
+    background-color: #fff;
+    color: var(--bg-color);
+    border: none;
+    font-weight: bolder;
+    font-size: .75rem;
+    padding: .5rem 0;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px -1px black;
+    transition: all .13s ease-in-out;
+}
 
-.inputs_2 > div > input {
+.inputs_2 .top .notIndicated:hover {
+    background-color: var(--bg-color);
+    color: #fff;
+}
+
+.inputs_2 .top .indicated {
+    background-color: #9658E2;
+    color: white;
+}
+
+.inputs_2 .top > button:active {
+    background-color: var(--bg-color);
+    color: #fff;
+}
+
+.inputs_2 .top > input {
     border: none;
     outline: none;
     color: white;
     font-size: .95rem;
-    text-indent: 1rem;
+    text-indent: .5rem;
     font-weight: bold;
     border-bottom: .2rem solid white;
     background-color: transparent;
+    margin-top: 1rem;
 }
 
 

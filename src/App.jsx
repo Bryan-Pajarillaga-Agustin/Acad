@@ -4,24 +4,32 @@ import { Tasks } from "./Pages/Overview/Tasks"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
 import SignIn from "./SignIn/SignIn"
 import Signup from "./SignUp/SignUp"
+import Loading from "./Components/Loading"
 import s from "./App.module.css"
 function App() {
 
   // Booleans
-
-  
   const [showTaskPrompt, setShowTaskPrompt] = useState(false)
   const [showSortPrompt, setShowSortPrompt] = useState(false)
   const [editing, setEditing] = useState(false)
-  const [LogIN, setLogIN] = useState(false)
   const [url, setUrl] = useState(window.location.href)
   const [showSignInPrompt, setShowSignInPrompt] = useState(false)
   const [showSignUpPrompt, setShowSignUpPrompt] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [showPersonalInformation, setShowPersonalInformation] = useState(false)
 
   // Page Indicators
   const [MainPage, setMainPage] = useState(0)
   const [page, setPage] = useState(1)
+  const [indicated, setIndicated] = useState(0)
 
+  // Array of users
+
+  // test the users in localStorage
+  const [users, setUsers] = useState( JSON.parse(localStorage.getItem("Users")) != null ? JSON.parse(localStorage.getItem("Users")) : [])
+  // User variable for the authentication of firebase
+  const [user, setUser] = useState({})
+   
   useEffect(()=>{
     if(url.includes("#Home")) {
       setPage(1)
@@ -33,12 +41,17 @@ function App() {
       setPage(4)
     } 
   },[url])
+
+
   return (
     <>
       <div>
         <StartingNavbar 
                         setPage={(i)=>{setPage(i)}} 
-                        page={page} showTaskPrompt={showTaskPrompt} 
+                        page={page} 
+                        setIndicated={(i)=>{setIndicated(i)}} 
+                        indicated={indicated} 
+                        showTaskPrompt={showTaskPrompt} 
                         editing={editing} 
                         url={url}
                         setUrl={(val)=>{setUrl(val)}}
@@ -46,10 +59,17 @@ function App() {
                         setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
                         showSignUpPrompt={showSignUpPrompt} 
                         setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
-                        showSortPrompt={showSortPrompt}/>
+                        showSortPrompt={showSortPrompt}
+                        user={user}
+                        setUser={(val)=>{setUser(val)}}
+                        setLoading={(val)=>{setLoading(val)}} />
                         
         <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
-          <Home page={page}></Home>
+          <Home page={page}
+                setPage={(i)=>{setPage(i)}}
+                setIndicated={(i)=>{setIndicated(i)}} 
+                indicated={indicated}
+                user={user} />
           <Tasks 
                 page={page}
                 setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
@@ -57,10 +77,30 @@ function App() {
                 editing={editing}
                 setEditing={(val)=>{setEditing(val)}}
                 showSortPrompt={showSortPrompt}
-                setShowSortPrompt={(val)=>setShowSortPrompt(val)}/>
+                setShowSortPrompt={(val)=>setShowSortPrompt(val)}
+                user={user}
+                setUser={(val)=>{setUser(val)}} />
         </div>
-        <SignIn page={page} setPage={(i)=>setPage(i)} showSignInPrompt={showSignInPrompt} setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}></SignIn>
-        <Signup page={page} setPage={(i)=>setPage(i)} showSignUpPrompt={showSignUpPrompt} setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}></Signup>
+        <SignIn page={page} 
+                setPage={(i)=>setPage(i)} 
+                showSignInPrompt={showSignInPrompt} 
+                setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+                setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}} 
+                user={user}
+                setUser={(val)=>{setUser(val)}} 
+                setLoading={(val)=>setLoading(val)}/>
+        <Signup page={page} 
+                setPage={(i)=>setPage(i)} 
+                showSignUpPrompt={showSignUpPrompt} 
+                setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
+                setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+                users={users}
+                setUsers={(val)=>{setUsers(val)}}
+                user={user}
+                setUser={(val)=>{setUser(val)}} 
+                setLoading={(val)=>setLoading(val)} >
+        </Signup>
+        <Loading loading={loading}/>
       </div>
     </>
   )
