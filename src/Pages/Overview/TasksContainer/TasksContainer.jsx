@@ -58,6 +58,7 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
     const EachList = () => {
         if(searching && filteredTask != null) {
             return <div className={s.Task_Container} key={"Task_Container"}>
+                
                 {filteredTask.map((task, i) => {
                     if(task.type === "pending" && type === "Pending") {
                         return <TaskElement task={task} i={i} key={task.id}/>
@@ -70,31 +71,31 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
             </div>
         } else if (sorting && !searching) {
             let sortedTasks = taskCheckboxes
-            return <div className={s.Task_Container}>
-                {sortOptions.map((ea, i)=>{
-                     if(i == 0 && sortOptions[i].state == true) {
-                        sortedTasks = sortedTasks.sort((a, b)=>{ return b.dateCreated.time - a.dateCreated.time })
-                        return sortedTasks.map((task, i)=>{
+            for(let i in sortOptions) {
+                if(i == 0 && sortOptions[i].state == true) {
+                    sortedTasks = sortedTasks.sort((a, b)=>{ return b.dateCreated.time - a.dateCreated.time })
+                } else if(i == 1 && sortOptions[i].state == true) {
+                    sortedTasks = sortedTasks.sort((a, b)=>{ return a.dateCreated.time - b.dateCreated.time })
+                } else if(i == 2 && sortOptions[i].state == true){
+                    sortedTasks = sortedTasks.sort((a, b)=>{ return a.task.localeCompare(b.task)})
+                } else if(i == 3 && sortOptions[i].state == true) {
+                    sortedTasks = sortedTasks.sort((a, b)=>{ return b.task.localeCompare(a.task)})
+                } 
+            }
+
+            return (
+                <div className={s.Task_Container}>
+                    {sortedTasks.map((task, i)=>{
+                        if(task.type === "pending" && type === "Pending") {
                             return <TaskElement task={task} i={i} key={task.id}/>
-                        })
-                    } else if(i == 1 && sortOptions[i].state == true) {
-                        sortedTasks = sortedTasks.sort((a, b)=>{ return a.dateCreated.time - b.dateCreated.time })
-                        return sortedTasks.map((task, i)=>{
+                        } else if (task.type === "finished" && type === "Finished") {
                             return <TaskElement task={task} i={i} key={task.id}/>
-                        })
-                    } else if(i == 2 && sortOptions[i].state == true){
-                        sortedTasks = sortedTasks.sort((a, b)=>{ return a.task.localeCompare(b.task)})
-                        return sortedTasks.map((task, i)=>{
+                        } else if (type === "All Tasks") {
                             return <TaskElement task={task} i={i} key={task.id}/>
-                        })
-                    } else if(i == 3 && sortOptions[i].state == true) {
-                        sortedTasks = sortedTasks.sort((a, b)=>{ return b.task.localeCompare(a.task)})
-                        return sortedTasks.map((task, i)=>{
-                            return <TaskElement task={task} i={i} key={task.id}/>
-                        })
-                    } 
-                })}
-            </div>
+                        }
+                    })}
+                </div>
+            )
         } else if(!sorting && !searching) {
             return (
                 <div className={s.Task_Container}>
@@ -132,7 +133,9 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
 
     if(taskCheckboxes != null) {
         return (
-            <EachList />
+            <>
+                <EachList />
+            </>
         )
     }
 }

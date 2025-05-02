@@ -2,10 +2,14 @@ import { useEffect, useState } from "react"
 import Home from "./Pages/Home/Home"
 import { Tasks } from "./Pages/Overview/Tasks"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
-import SignIn from "./SignIn/SignIn"
-import Signup from "./SignUp/SignUp"
+import SignIn from "./Authentication/SignIn/SignIn"
+import Signup from "./Authentication/SignUp/SignUp"
 import Loading from "./Components/Loading"
+import ContinueAs from "./Authentication/ContinueAs/ContinueAs"
+import SigningOut from "./Authentication/VerifySigningOut/VerifySigningOut"
 import s from "./App.module.css"
+import { auth } from "./Firebase/Firebase"
+import { onAuthStateChanged } from "firebase/auth"
 function App() {
 
   // Booleans
@@ -16,7 +20,9 @@ function App() {
   const [showSignInPrompt, setShowSignInPrompt] = useState(false)
   const [showSignUpPrompt, setShowSignUpPrompt] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [continueAs, setContinueAs] = useState(false)
   const [showPersonalInformation, setShowPersonalInformation] = useState(false)
+  const [isSigningOut, setIsSigningOut] = useState(false)
 
   // Page Indicators
   const [MainPage, setMainPage] = useState(0)
@@ -42,6 +48,9 @@ function App() {
     } 
   },[url])
 
+  onAuthStateChanged(auth, (current)=>{
+    setUser(current)
+  })
 
   return (
     <>
@@ -61,8 +70,8 @@ function App() {
                         setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
                         showSortPrompt={showSortPrompt}
                         user={user}
-                        setUser={(val)=>{setUser(val)}}
-                        setLoading={(val)=>{setLoading(val)}} />
+                        continueAs={continueAs}
+                        setIsSigningOut={(val)=>{setIsSigningOut(val)}} />
                         
         <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
           <Home page={page}
@@ -98,9 +107,19 @@ function App() {
                 setUsers={(val)=>{setUsers(val)}}
                 user={user}
                 setUser={(val)=>{setUser(val)}} 
-                setLoading={(val)=>setLoading(val)} >
+                setLoading={(val)=>setLoading(val)}
+                setContinueAs={(val)=>setContinueAs(val)} >
         </Signup>
         <Loading loading={loading}/>
+        <ContinueAs
+                  continueAs={continueAs}
+                  setContinueAs={(val)=>{setContinueAs(val)}}
+                  user={user} />
+        <SigningOut 
+                  isSigningOut={isSigningOut}
+                  setIsSigningOut={(val)=>{setIsSigningOut(val)}}
+                  setLoading={(val)=>{setLoading(val)}}
+                  setUser={(val)=>{setUser(val)}} />
       </div>
     </>
   )

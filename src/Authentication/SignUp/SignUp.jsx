@@ -3,12 +3,12 @@ import Form_1 from "./Sub_Inputs_1/SubInputs1"
 import Form_2 from "./Sub_Inputs_2/SubInputs2"
 import Form_3 from "./Sub_Inputs_3/SubInputs3"
 import Form_4 from "./Sub_Inputs_4/SubInputs4"
-import s from "../SignUp/SignUp.module.css"
-import Button from "../Components/Button"
+import s from "./SignUp.module.css"
+import Button from "../../Components/Button"
 import { createUserWithEmailAndPassword } from "firebase/auth"
-import { auth,db } from "../Firebase/Firebase"
 import { doc, setDoc } from "firebase/firestore"
-const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, setLoading}) => {
+import { auth, db } from "../../Firebase/Firebase"
+const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, setLoading, setContinueAs}) => {
 
 
     // Refs
@@ -84,35 +84,13 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
 
     const handleIndication = (par) => {
         if(par == "next" && indicated != 3){
-            // if(indicated == 0) {
-            //     switch(userNameInput.current.value){
-            //         case "":
-            //             break;
-            //     } 
-
-            //     switch(passwordInput.current.value){
-            //         case "":
-            //             passwordInput.current.value = "Please fill this"
-            //             break;
-            //     }
-
-            //     switch(confirmPasswordInput.current.value){
-            //         case "":
-            //             break;
-            //     }
-
-            //     switch(emailInput.current.value){
-            //         case "":
-            //             break;
-            //     }
-            // }
             setIndication(indicated + 1)
         } else if (par == "back" && indicated != 0) {
             setIndication(indicated - 1)
         }
     }
 
-    function handleUsageOptions(i) {
+    const handleUsageOptions = (i) => {
         let data = usageOptions
         for(let ind in data) {
             if(ind == i) {
@@ -133,7 +111,7 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
         })
     }
 
-    function handleSubjects(i) {
+    const handleSubjects = (i) => {
         let data = subjects
         let selectedData = []
         data = data.map((each, index)=>{
@@ -175,11 +153,13 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
         try {
             await createUserWithEmailAndPassword(auth, emailInput.current.value, passwordInput.current.value)
             const user = auth.currentUser
+            setLoading(true)
+            setShowSignUpPrompt(false)
             if(user) {
                 await setDoc(doc(db, "Users", user.uid), {
-                    password: passwordInput.current.value,
                     email: emailInput.current.value,
                     school: schoolInput.current.value,
+                    name: nickNameInput.current.value,
                     grSec: grSecInput.current.value,
                     favSubjects: selectedSubjects,
                     usingAs: usingAsInput?.current.value,
@@ -190,9 +170,8 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
             setUsers((prev)=>{
                 return [...prev, newUser]
             })
-    
-            setShowSignUpPrompt(false)
             setLoading(false)
+            setContinueAs(true)
         }
         catch (error) {
             console.log(error)
@@ -215,12 +194,12 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
         usingAsInput.current.value = ""
 
         setSubjects((prev)=>{
-            return prev.map((each, index)=>{
+            return prev.map((each)=>{
                 return {...each, testClass: false}
             })
         })
         setUsageOptions((prev)=>{
-            return prev.map((each, index)=>{
+            return prev.map((each)=>{
                 return {...each, isIndicated: false}
             })
         })

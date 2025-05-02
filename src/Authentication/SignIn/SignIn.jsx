@@ -1,7 +1,7 @@
-import s from "../SignIn/SignIn.module.css"
-import Button from "../Components/Button.jsx"
+import s from "./SignIn.module.css"
+import Button from "../../Components/Button.jsx"
 import { useEffect, useRef, useState } from "react"
-import { auth, firebase } from "../Firebase/Firebase.js"
+import { auth } from "../../Firebase/Firebase.js"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { onAuthStateChanged } from "firebase/auth"
 
@@ -19,9 +19,7 @@ export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPr
     const emailInput = useRef(null)
     const passWordInput = useRef(null) // Replace 'your/data/path' with the actual path to your data
 
-    onAuthStateChanged( auth, (currentUser)=>{
-        setUser(currentUser)
-    })
+    
     
     const userTestValue = (e) => {
         if(e.target.value == null || e.target.value != null) {
@@ -50,10 +48,6 @@ export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPr
             console.log(error)
         }   
     }
-
-    useEffect(()=>{
-        if(user) console.log(user)
-    },[user])
 
     if (showSignInPrompt == true) return(
         <>

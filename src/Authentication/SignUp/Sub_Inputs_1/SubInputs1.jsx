@@ -1,4 +1,4 @@
-import s from "../Sub_Inputs_1/SubInputs1.module.css"
+import s from "./SubInputs1.module.css"
 const Form_1 = ({show, indicated, showConfirm, setShow, setShowConfirm, passwordInput, confirmPasswordInput, emailInput, passWarning, confirmWarning, emailWarning}) => {
 
     return (

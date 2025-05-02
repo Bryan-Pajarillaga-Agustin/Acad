@@ -3,7 +3,7 @@ import Button from "../../Components/Button"
 import { useEffect, useState } from 'react'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../Firebase/Firebase'
-const StartingNavbar = ({editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, showSortPrompt, user, setUser, setShowPersonalInformation, setLoading}) => {
+const StartingNavbar = ({editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, showSortPrompt, user, setShowPersonalInformation, continueAs, setIsSigningOut}) => {
 
     const [showSideBar, setShowSideBar] = useState(false)
 
@@ -16,16 +16,6 @@ const StartingNavbar = ({editing, setPage, indicated, setIndicated, showTaskProm
         setUrl(link.concat(par))
     }
 
-    const handleSignOut = async () => { 
-        setLoading(true)
-        try {
-            await signOut(auth)
-            setUser({})
-            setLoading(false)
-        } catch (e) {
-            console.log(e)
-        }
-    }
 
     useEffect(()=>{
         if(url.includes("#Home")) {
@@ -43,7 +33,7 @@ const StartingNavbar = ({editing, setPage, indicated, setIndicated, showTaskProm
 
     return (
         <>
-        <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing && !showSortPrompt ? s.nav : s.hideNav}>
+        <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing && !showSortPrompt && !continueAs ? s.nav : s.hideNav}>
                 <div className={s.left}>
                     <img src="./web-icon.png" className={s.icon} />
                     <h1>ACAD</h1>
@@ -64,7 +54,7 @@ const StartingNavbar = ({editing, setPage, indicated, setIndicated, showTaskProm
                 {user ?
                         <div className={`${s.right} ${s.LoggedIn}`}>
                             <Button icon={(<i className='fa fa-user'></i>)} className={`${s.User_Button}`} content={"Account"} func={()=>setShowPersonalInformation(true)}/>
-                            <Button content={"Sign Out"} func={()=>{handleSignOut()}} className={s.SignUpButt}></Button>
+                            <Button content={"Sign Out"} func={()=>{setIsSigningOut(true)}} className={s.SignUpButt}></Button>
                             <Button className={s.HamburgerButt} func={()=>{setShowSideBar(true)}} content={(<i className="fa fa-list-ul" ></i>)}></Button>
                         </div>
                      :

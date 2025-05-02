@@ -1,6 +1,6 @@
 import { useState } from "react"
-import Button from "../../Components/Button"
 import s from "./SubInputs2.module.css"
+import Button from "../../../Components/Button"
 const Form_2 = ({ indicated, usingAsInput, usageOptions, handleUsageOptions }) => {
 
     

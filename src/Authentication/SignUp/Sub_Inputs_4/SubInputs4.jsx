@@ -1,5 +1,5 @@
 import s from "./SubInputs4.module.css"
-import Button from "../../Components/Button"
+import Button from "../../../Components/Button"
 import { useEffect, useState } from "react"
 const Form_4 = ({indicated, subjects, handleSubjects}) => {
     

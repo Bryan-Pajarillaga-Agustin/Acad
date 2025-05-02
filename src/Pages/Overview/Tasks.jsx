@@ -21,7 +21,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
     const [selectTask, setSelectTask] = useState(false)
     const [searching, setSearching] = useState(false)
     const [showDropDown, setShowDropDown] = useState(false)
-    const [sorting, setSorting] = useState(true)
+    const [sorting, setSorting] = useState(false)
 
     // Data Variables
 
@@ -41,7 +41,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
     const [openedTask, setOpenedTask] = useState({index: null, isOpened: false})
     const [editedValue, setEditedValue] = useState(null)
     const [sortOptions, setSortOptions] = useState([
-        {description: "Newest to Oldest", state: true},
+        {description: "Newest to Oldest", state: false},
         {description: "Oldest to Newest", state: false},
         {description: "From A-Z", state: false},
         {description: "From Z-A", state: false},
