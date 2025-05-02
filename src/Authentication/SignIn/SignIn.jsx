@@ -5,7 +5,7 @@ import { auth } from "../../Firebase/Firebase.js"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { onAuthStateChanged } from "firebase/auth"
 
-export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPrompt, setShowSignUpPrompt, setLoading}){
+export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPrompt, setShowSignUpPrompt, setLoading, setContinueAs}){
     const [showPass, setShowPass] = useState(false)
     // const dbRef = ref(db, 'Users')
     // const [data, setdata] = useState()
@@ -44,6 +44,7 @@ export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPr
             setUser(auth.currentUser)
             setLoading(false)
             setShowSignInPrompt(false)
+            setContinueAs(true)
         } catch (error) {
             console.log(error)
         }   

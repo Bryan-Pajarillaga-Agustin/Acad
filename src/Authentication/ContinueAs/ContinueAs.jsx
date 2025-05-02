@@ -3,8 +3,24 @@ import Button from "../../Components/Button"
 import { useEffect, useState } from "react"
 import { db } from "../../Firebase/Firebase"
 import { getDoc, doc } from "firebase/firestore"
-const ContinueAs = ({continueAs, setContinueAs, user}) => {
+import { signOut } from "firebase/auth"
+import { auth } from "../../Firebase/Firebase"
+const ContinueAs = ({continueAs, setContinueAs, user, setLoading}) => {
     const [name, setName] = useState(null)
+
+    const handleSignOut = async () => { 
+            setLoading(true)
+            try {
+                await signOut(auth)
+                setUser(null)
+                setLoading(false)
+                setContinueAs(false)
+            } catch (e) {
+                setLoading(false)
+                setContinueAs(false)
+                console.log(e)
+            }
+        }
 
     const getName = async () => {
         const uid = user.uid
@@ -17,25 +33,17 @@ const ContinueAs = ({continueAs, setContinueAs, user}) => {
             if(docSnap.exists) {
                 setName(docSnap.data())
             } 
-        } catch (error) {
-            console.log(error)
-        }
+        } catch (error) {}
     }
  
     useEffect(()=>{
-        function isEmpty(user){
-            for(let key in user){
-                return false
-            }
-            return true
+        if(user != null) {
+            getName()
         }
-        let test = isEmpty(user)
-        if(!test) getName()
-
-    },[continueAs])
+    },[continueAs, user])
 
     if(continueAs) return  (
-        <div className={continueAs ? s.Continue_As_Wrapper : s.Hide_Continue_As_Wrapper}>
+        <div className={s.Continue_As_Wrapper}>
             <div className={s.Continue_As_Box}>
                 <div className={s.Top}>
                     <i className='fa fa-user'></i>
@@ -44,9 +52,11 @@ const ContinueAs = ({continueAs, setContinueAs, user}) => {
                 </div>
                 <div className={s.Options}>
                     <Button 
-                            content={"No"}/>
+                            content={"No"}
+                            func={()=>{handleSignOut()}} />
                     <Button 
-                            content={"Yes"}/>
+                            content={"Yes"}
+                            func={()=>{setContinueAs(false)}}/>
                 </div>
             </div>
         </div>

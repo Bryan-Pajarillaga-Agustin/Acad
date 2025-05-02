@@ -97,7 +97,8 @@ function App() {
                 setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}} 
                 user={user}
                 setUser={(val)=>{setUser(val)}} 
-                setLoading={(val)=>setLoading(val)}/>
+                setLoading={(val)=>setLoading(val)}
+                setContinueAs={(val)=>setContinueAs(val)}/>
         <Signup page={page} 
                 setPage={(i)=>setPage(i)} 
                 showSignUpPrompt={showSignUpPrompt} 
@@ -114,7 +115,8 @@ function App() {
         <ContinueAs
                   continueAs={continueAs}
                   setContinueAs={(val)=>{setContinueAs(val)}}
-                  user={user} />
+                  user={user}
+                  setLoading={(val)=>setLoading(val)} />
         <SigningOut 
                   isSigningOut={isSigningOut}
                   setIsSigningOut={(val)=>{setIsSigningOut(val)}}
