@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { use, useEffect, useState } from "react"
 import Home from "./Pages/Home/Home"
 import { Tasks } from "./Pages/Overview/Tasks"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
@@ -9,7 +9,9 @@ import ContinueAs from "./Authentication/ContinueAs/ContinueAs"
 import SigningOut from "./Authentication/VerifySigningOut/VerifySigningOut"
 import s from "./App.module.css"
 import { auth } from "./Firebase/Firebase"
+import { getDoc, doc } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
+import { db } from "./Firebase/Firebase"
 function App() {
 
   // Booleans
@@ -23,6 +25,7 @@ function App() {
   const [continueAs, setContinueAs] = useState(false)
   const [showPersonalInformation, setShowPersonalInformation] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
+  const [showSaveChanges, setShowSaveChanges] = useState(false)
 
   // Page Indicators
   const [MainPage, setMainPage] = useState(0)
@@ -34,23 +37,73 @@ function App() {
   // test the users in localStorage
   const [users, setUsers] = useState( JSON.parse(localStorage.getItem("Users")) != null ? JSON.parse(localStorage.getItem("Users")) : [])
   // User variable for the authentication of firebase
-  const [user, setUser] = useState({})
-   
-  useEffect(()=>{
-    if(url.includes("#Home")) {
-      setPage(1)
-    } else if (url.includes("#Tasks")) {
-      setPage(2)
-    } else if (url.includes("#About")) {
-      setPage(3)
-    } else if (url.includes("#Contacts")) {
-      setPage(4)
-    } 
-  },[url])
+  const [user, setUser] = useState(null)
+  const [paging, setPaging] = useState(null)
+  const [getTask, setGetTask] = useState([])
+
+  const handleGetTask = async () => {
+    
+    try{
+      const docRef = doc(db, "Users", user?.uid)
+      const docSnap = await getDoc(docRef)
+      if(docSnap.exists) {
+          setGetTask(docSnap.data())
+      }  
+    } catch(e){
+      console.log(error)
+    }
+  }
 
   onAuthStateChanged(auth, (current)=>{
     setUser(current)
   })
+
+  useEffect(()=>{
+    console.log(user)
+    if(user != null) {
+      handleGetTask()
+    }
+  },[user])
+
+
+  useEffect(()=>{
+      if(url.includes("#Home")) {
+        setPage(1)
+      } else if (url.includes("#Tasks")) {
+        setPage(2)
+      } else if (url.includes("#About")) {
+        setPage(3)
+      } else if (url.includes("#Contacts")) {
+        setPage(4)
+      } 
+  },[])
+
+  useEffect(()=>{
+    let link = window.location.href
+    link.toLowerCase()
+    let index = link.search("/Acad/")
+    link = link.slice(0, index + 6)
+    console.log(link)
+    switch(page) {
+      case 1:
+        link = link.concat("#Home")
+        setUrl(link)
+        break;
+      case 2:
+        link = link.concat("#Tasks")
+        setUrl(link)
+        break;
+      case 3:
+        link = link.concat("#About")
+        setUrl(link)
+        break;
+      case 4:
+        link = link.concat("#Contacts")
+        setUrl(link)
+        break;
+        
+    }
+  },[page])
 
   return (
     <>
@@ -71,7 +124,10 @@ function App() {
                         showSortPrompt={showSortPrompt}
                         user={user}
                         continueAs={continueAs}
-                        setIsSigningOut={(val)=>{setIsSigningOut(val)}} />
+                        setIsSigningOut={(val)=>{setIsSigningOut(val)}}
+                        showSaveChanges={showSaveChanges}
+                        setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
+                        setPaging={(val)=>{setPaging(val)}} />
                         
         <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
           <Home page={page}
@@ -80,6 +136,7 @@ function App() {
                 indicated={indicated}
                 user={user} />
           <Tasks 
+                setPage={(val)=>setPage(val)}
                 page={page}
                 setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
                 showTaskPrompt={showTaskPrompt} 
@@ -88,7 +145,14 @@ function App() {
                 showSortPrompt={showSortPrompt}
                 setShowSortPrompt={(val)=>setShowSortPrompt(val)}
                 user={user}
-                setUser={(val)=>{setUser(val)}} />
+                setUser={(val)=>{setUser(val)}}
+                getTask={getTask}
+                showSaveChanges={showSaveChanges}
+                setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
+                setLoading={(val)=>setLoading(val)}
+                loading={loading}
+                setPaging={(val)=>{setPaging(val)}}
+                paging={paging} />
         </div>
         <SignIn page={page} 
                 setPage={(i)=>setPage(i)} 
@@ -98,7 +162,8 @@ function App() {
                 user={user}
                 setUser={(val)=>{setUser(val)}} 
                 setLoading={(val)=>setLoading(val)}
-                setContinueAs={(val)=>setContinueAs(val)}/>
+                setContinueAs={(val)=>setContinueAs(val)}
+                loading={loading}/>
         <Signup page={page} 
                 setPage={(i)=>setPage(i)} 
                 showSignUpPrompt={showSignUpPrompt} 
@@ -109,7 +174,8 @@ function App() {
                 user={user}
                 setUser={(val)=>{setUser(val)}} 
                 setLoading={(val)=>setLoading(val)}
-                setContinueAs={(val)=>setContinueAs(val)} >
+                setContinueAs={(val)=>setContinueAs(val)}
+                loading={loading} >
         </Signup>
         <Loading loading={loading}/>
         <ContinueAs

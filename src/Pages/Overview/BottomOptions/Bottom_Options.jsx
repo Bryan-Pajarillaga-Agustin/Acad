@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
  
 export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, setSelectTask, unselectAll, tasks, setTasks, searching, updateTasks, setUpdateTasks, filteredTasks, setFilteredTasks }) => {
 
-    
-    useEffect(()=>{if(updateTasks) console.log(updateTasks)},[updateTasks])
     const selectAll = () => {
             let data = tasks
             let filtTasks = filteredTasks

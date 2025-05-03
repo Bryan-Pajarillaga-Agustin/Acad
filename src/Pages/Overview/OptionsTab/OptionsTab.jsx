@@ -1,7 +1,9 @@
 import s from "./OptionsTab.module.css"
 import Button from "../../../Components/Button"
 import { useEffect, useState } from "react"
-export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching, optionTabNumber, handleMarking, unselectAll, setShowTaskPrompt, setShowSortPrompt}) => {
+import { db } from "../../../Firebase/Firebase"
+import { arrayUnion, doc, updateDoc } from "firebase/firestore"
+export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching, optionTabNumber, handleMarking, unselectAll, setShowTaskPrompt, setShowSortPrompt, numberOfChanges, setNumberOfChanges, user, setUpdateTask, setLoading}) => {
     const [optionDataVal, setOptionDataVal] = useState(optionTabNumber)
     const [showChangePrompt, setShowChangePrompt] = useState(false)
     const [bgColorPrompt, setbgColorPrompt] = useState(false)
@@ -9,7 +11,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
     const [borderPrompt, setBorderPrompt] = useState(false)
     const [fontWeight, setFontWeight] = useState(false)
     const [italic, setItalic] = useState(false)
-    // document.getElementById().style.colo
+
     function handleMark(state, changeColor, changeBGColor, bold, italicize, borderColor){
         let upData = updateTasks
         let data = filteredTasks
@@ -70,8 +72,6 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
             }
         }
 
-
-
         for(let i in selectedTask){
             upData = upData.map((task)=>{
                 if(selectedTask[i].id == task.id){
@@ -105,6 +105,40 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
         else {handleMarking([...data], [...upData])}
     }
 
+    function handleRedo(){
+        let numChanges = numberOfChanges + 1
+        let changes = JSON.parse(localStorage.getItem("Changes"))
+        changes = changes[numChanges]
+        setUpdateTask(changes)
+        setNumberOfChanges(numChanges)
+    }
+    
+    function handleUndo(){
+        let numChanges = numberOfChanges - 1
+        let changes = JSON.parse(localStorage.getItem("Changes"))
+        changes = changes[numChanges]
+        setUpdateTask(changes)
+        setNumberOfChanges(numChanges)
+    }
+
+    const saveToDataBase = async () => {
+        let changes = JSON.parse(localStorage.getItem("Changes"))
+        changes = [...changes[numberOfChanges]]
+        changes = changes.map((task)=>{
+            return {...task, isChecked: false}
+        })
+        const userUID = user?.uid?.toString();
+        const docRef = doc(db, `Users/${userUID}`);
+        try {
+            await updateDoc(docRef, {tasks: changes});  //Update from local state after successful write
+            setNumberOfChanges(null)
+            setUpdateTask([...changes])
+            localStorage.removeItem("Changes")
+        } catch (error) {
+            console.log("Error writing task:", error);
+        }
+    }
+
     useEffect(()=>{
         setOptionDataVal(optionTabNumber)
     },[optionTabNumber])
@@ -114,7 +148,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
     return (
         <div className={s.Options_tab}>
             
-            <div className={bgColorPrompt ? `${s.BG_Color_Prompt} ${s.Color_Wrapper}` : `${s.Hide_BG_Color_Prompt} ${s.Color_Wrapper}`}>
+            <div className={bgColorPrompt ? `${s.BG_Color_Prompt} ${s.Prompt_Box}` : `${s.Hide_BG_Color_Prompt} ${s.Prompt_Box}`}>
                 <Button 
                         icon={(<i className="fa fa-close"></i>)}
                         className={`${s.Close_Button}`}
@@ -128,7 +162,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                         content={"Default"}
                         func={()=>{handleMark(false, false, "#f09c2e", false, false)}}/>
             </div>
-            <div className={colorPrompt ? `${s.Color_Prompt} ${s.Color_Wrapper}` : `${s.Hide_Color_Prompt} ${s.Color_Wrapper}`}>
+            <div className={colorPrompt ? `${s.Color_Prompt} ${s.Prompt_Box}` : `${s.Hide_Color_Prompt} ${s.Prompt_Box}`}>
             <h1>Change Font Color</h1>
                 <Button 
                         icon={(<i className="fa fa-close"></i>)}
@@ -142,7 +176,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                         content={"Default"}
                         func={()=>{handleMark(false, "white", false, false, false)}}/>
             </div>
-            <div className={borderPrompt ? `${s.Border_Color_Prompt} ${s.Color_Wrapper}` : `${s.Hide_Border_Color_Prompt} ${s.Color_Wrapper}`}>
+            <div className={borderPrompt ? `${s.Border_Color_Prompt} ${s.Prompt_Box}` : `${s.Hide_Border_Color_Prompt} ${s.Prompt_Box}`}>
             <h1>Change Border Color</h1>
                 <Button 
                         icon={(<i className="fa fa-close"></i>)}
@@ -156,7 +190,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                         content={"Default"}
                         func={()=>{handleMark(false, false, false, false, false, "#d16c06")}}/>
             </div>
-            <div className={fontWeight ? `${s.Font_Weight_Prompt} ${s.Color_Wrapper}` : `${s.Hide_Font_Weight_Prompt} ${s.Color_Wrapper}`}>
+            <div className={fontWeight ? `${s.Font_Weight_Prompt} ${s.Prompt_Box}` : `${s.Hide_Font_Weight_Prompt} ${s.Prompt_Box}`}>
             <h1>Change Font Weight</h1>
                 <Button 
                         icon={(<i className="fa fa-close"></i>)}
@@ -172,7 +206,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                         content={"Bolder"}
                         func={()=>{handleMark(false, false, false, "Bolder", false, false)}}/>
             </div>
-            <div className={italic ? `${s.Italic_Prompt} ${s.Color_Wrapper}` : `${s.Hide_Italic_Prompt} ${s.Color_Wrapper}`}>
+            <div className={italic ? `${s.Italic_Prompt} ${s.Prompt_Box}` : `${s.Hide_Italic_Prompt} ${s.Prompt_Box}`}>
             <h1>Change Italization</h1>
                 <Button 
                         icon={(<i className="fa fa-close"></i>)}
@@ -188,17 +222,31 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
 
 
             <div className={s.Wrap_Options_Tab}>
+                <Button 
+                        icon={(<i className="fa fa-save"></i>)}
+                        content={"Save Changes"}
+                        className={numberOfChanges == 0 || numberOfChanges == null ?  `${s.notWorking}` : null}
+                        func={()=>{numberOfChanges != 0 && numberOfChanges != null ? saveToDataBase() : null}} />
+                <Button 
+                        icon={(<i className="material-icons">undo</i>)}
+                        content={"Undo"}
+                        className={numberOfChanges == null || numberOfChanges == 0 ? `${s.notWorking}` : null}
+                        func={()=>{numberOfChanges > 0 ? handleUndo() : null}} />
+                <Button 
+                        icon={(<i className="material-icons">redo</i>)}
+                        content={"Redo"}
+                        className={numberOfChanges < JSON.parse(localStorage.getItem("Changes"))?.length - 1 && numberOfChanges != null ? null : `${s.notWorking}`}
+                        func={()=>{numberOfChanges < JSON.parse(localStorage.getItem("Changes"))?.length - 1 && numberOfChanges != null ? handleRedo() : null}} />
                 <Button icon={(<i className="fa fa-plus"></i>)}
                         content={(<span> Create New Task</span>)}
                         className={s.createTask}
                         func={()=>setShowTaskPrompt(true)}/>
                 <Button icon={(<i className="fa fa-edit"></i>)}
                         content={(<span> Mark As Finished</span>)}
-                        func={()=>{handleMark("finished", false, false, false, false), unselectAll()}}
-                        />
+                        func={()=>{handleMark("finished", "white",  "#51af0f", false, false, "rgb(8, 97, 20)"), unselectAll()}} />
                 <Button icon={(<i className="fa fa-edit"></i>)}
                         content={(<span> Mark As Pending</span>)}
-                        func={()=>{handleMark("pending", false, false, false, false), unselectAll()}}/>
+                        func={()=>{handleMark("pending", "white", "#f09c2e", false, false, "rgb(209, 108, 6)"), unselectAll()}}/>
                 <Button icon={(<i className="fa fa-sort"></i>)}
                         content={(<span> Sort</span>)}
                         func={()=>{setShowSortPrompt(true)}}/>

@@ -23,17 +23,13 @@ const ContinueAs = ({continueAs, setContinueAs, user, setLoading}) => {
         }
 
     const getName = async () => {
-        const uid = user.uid
-        console.log(uid)
-        const docRef = doc(db, "Users", uid?.toLocaleString())
-        
-
         try{
+            const docRef = doc(db, "Users", user?.uid)
             const docSnap = await getDoc(docRef)
             if(docSnap.exists) {
                 setName(docSnap.data())
             } 
-        } catch (error) {}
+        } catch (error) {console.log(error)}
     }
  
     useEffect(()=>{

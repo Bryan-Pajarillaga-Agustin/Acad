@@ -8,8 +8,9 @@ const Home = ({page, setPage, setIndicated, indicated}) => {
                 <div className={s.wrapTop}>
                     <h1>
                         Welcome User
+                        <img src="./web-icon.png" className={s.icon} />
                     </h1>
-                    <p>Write, read and document your work <br /> and studies</p>
+                    <p>Write, read and document your work and studies using the Acad Web App for free!</p>
                     <a href="#Tasks">
                         <Button content={"Get Started"} func={()=>{setPage(2), setIndicated(1)}}></Button>
                     </a>

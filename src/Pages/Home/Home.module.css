@@ -38,7 +38,14 @@
 .home_wrapper .left .wrapTop > h1 {
     color: var(--color-1); 
     font-size: 4rem;
+    display: flex;
+    align-items: center;
 }    
+
+.home_wrapper .left .wrapTop > h1 > img {
+    width: 3rem;
+    margin-left: 1rem;
+}
 
 .home_wrapper .left .wrapTop > p {
     font-size: 1.5rem;

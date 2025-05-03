@@ -1,10 +1,30 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Button from "../../../Components/Button";
 import s from "./ViewTask.module.css"
+import { db } from "../../../Firebase/Firebase";
+import { doc, updateDoc } from "firebase/firestore";
+const ViewTask = ({ openedTask, setOpenedTask, tasks, setEditing, editing, user, setUpdateTask }) => {
+    
+    const editingParagraph = useRef(null)
 
-const ViewTask = ({ openedTask, setOpenedTask, filteredTask ,searching, tasks, taskEditingP, saveChanges, handleEditing, setEditing, editing }) => {
-    
-    
+    const handleEdit = async () => {
+        const docRef = doc(db, "Users", user?.uid)
+
+        try {
+            await updateDoc(docRef, {tasks: data})
+            setUpdateTask(prev => {
+                return prev.map((task)=>{
+                    if (task.id === openedTask.id) {
+                        return {...task, task: editingParagraph.current.innerText}
+                    } else {
+                        return {...task}
+                    }
+                })
+            })
+        } catch (error) {}
+
+    }
+
     return (
         <div className={editing ? s.Task_View : s.Hide_Task_View}>
             <div className={s.nav}>
@@ -15,7 +35,7 @@ const ViewTask = ({ openedTask, setOpenedTask, filteredTask ,searching, tasks, t
             </div>
             <div className={s.content}>
                 
-                <p ref={taskEditingP} onInput={(e)=>{handleEditing(e)}} contentEditable={editing}>{tasks.map((task,i)=>{ if(task.id === openedTask.id) { return task.task}})}</p>
+                <p ref={editingParagraph} contentEditable={editing}>{tasks.map((task,i)=>{ if(task.id === openedTask.id) { return task.task}})}</p>
                 {/* {
                     searching ? :
                     <p ref={taskEditingP} onInput={(e)=>{handleEditing(e)}} contentEditable={true}>{openedTask.isOpened ? tasks[openedTask.index].task : null}</p>
@@ -24,7 +44,7 @@ const ViewTask = ({ openedTask, setOpenedTask, filteredTask ,searching, tasks, t
             </div>
             <Button content={"Save Changes"}
                     className={s.submitButton}
-                    func={()=>{saveChanges(openedTask.index), setEditing(false)}}/>
+                    func={()=>{setEditing(false), handleEdit()}}/>
         </div>
     )
 }

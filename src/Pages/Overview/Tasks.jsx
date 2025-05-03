@@ -6,15 +6,23 @@ import { OptionsTab } from "./OptionsTab/OptionsTab"
 import ViewTask from "./ViewTask/ViewTask"
 import TaskPrompt from "./TaskPrompt/TaskPrompt"
 import SortPrompt from "./SortPrompt/SortPrompt"
+import Changes from "./ChangesPrompt/Changes"
 import Button from "../../Components/Button"
 import s from "../Overview/Tasks.module.css"
 import styles from "./TasksContainer/Tasks_Container.module.css"
-export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, editing, showSortPrompt, setShowSortPrompt, user}) => {
+import { auth } from "../../Firebase/Firebase"
+import { arrayUnion, doc, updateDoc } from "firebase/firestore"
+import { db } from "../../Firebase/Firebase"
+import Loading from "../../Components/Loading"
+export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShowTaskPrompt, setEditing, editing, showSortPrompt, setShowSortPrompt, user, showSaveChanges, setShowSaveChanges, getTask, setLoading}) => {
+
+    // LocalStorage
+
+    const loc = JSON.parse(localStorage.getItem("Changes"))
 
     // Refs
 
     const searchValue = useRef(null)
-    const taskEditingP = useRef(null)
 
     // Booleans
 
@@ -34,8 +42,8 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
 
     // Arrays & objects
 
-    const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("dataTask")) != null ? JSON.parse(localStorage.getItem("dataTask")) : [])
-    // JSON.parse(localStorage.getItem("dataTask")) != null ? JSON.parse(localStorage.getItem("dataTask")) : []
+    const [tasks, setTasks] = useState(getTask)
+    const [numberOfChanges, setNumberOfChanges] = useState(loc ? loc.length - 1 : null)
     const [updateTasks, setUpdateTasks] = useState(tasks.map(task => ({ ...task, isChecked: false })));
     const [filteredTasks, setFilteredTasks] = useState(null)
     const [openedTask, setOpenedTask] = useState({index: null, isOpened: false})
@@ -53,38 +61,62 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         setShowDropDown(false)
     }
 
-    function writeTask(data){
-        let dataTask = tasks
-        let letters = "qwertyuiopasdfghjklzxcvbnm"
-        let randId = ""
-        for(let i = 0; i < 10; i++){
-            let random = Math.floor(Math.random()*(letters.length - 1))
-            randId = randId.concat(letters[random])
+    const writeTask = async (data) => {
+        let dataTask = [...tasks]; // Assuming 'tasks' is an array in your component state
+        const userUID = user.uid?.toString(); // Get the user UID
+        const docRef = doc(db, "Users", userUID); // Correctly create a document reference
+    
+    
+        let letters = "qwertyuiopasdfghjklzxcvbnm";
+        let randId = "";
+        for (let i = 0; i < 10; i++) {
+            let random = Math.floor(Math.random() * (letters.length)); //Corrected random number generation
+            randId = randId.concat(letters[random]);
         }
-        let newTask = { 
-            id: randId, 
-            task: data, 
-            dateCreated: {fullDate: new Date(), time: Date.now()}, 
+        let newTask = {
+            id: randId,
+            task: data,
+            dateCreated: { fullDate: new Date(), time: Date.now() },
             selected: false,
             style: "default",
-            
             cName: [
-                    JSON.stringify(styles.col),
-                    JSON.stringify(styles.br),
-                    JSON.stringify(styles.fs),
-                    JSON.stringify(styles.bgC),
-                    JSON.stringify(styles.fW)
-                ],
+                JSON.stringify(styles.col),
+                JSON.stringify(styles.br),
+                JSON.stringify(styles.fs),
+                JSON.stringify(styles.bgC),
+                JSON.stringify(styles.fW),
+            ],
             isChecked: false,
-            type: "pending"
+            type: "pending",
+        };
+    
+        dataTask.unshift(newTask);
+        try {
+            await updateDoc(docRef, {
+                tasks: arrayUnion(newTask), // Directly add the newTask
+            });
+            setShowTaskPrompt(false);
+            //  Update state with the new task.  Don't rely on docSnap.Tasks, which might be outdated.
+            setUpdateTasks([...dataTask]);  //Update from local state after successful write
+    
+        } catch (error) {
+            console.log("Error writing task:", error);
         }
-        dataTask.unshift(newTask)
-        localStorage.setItem("dataTask", JSON.stringify(dataTask))
-        setUpdateTasks([...dataTask])
-    }
+    };
     
     function handleMarking(changedData, upData){
-        if(selectedTasks.length >= 1) {
+        const locStor = JSON.parse(localStorage.getItem("Changes")) != null ?
+        JSON.parse(localStorage.getItem("Changes")) : []
+
+        if(locStor.length == 0) { 
+            locStor.push(tasks)
+        }
+        if(locStor.length >= 1) {
+            locStor.push(upData)
+        }
+        localStorage.setItem("Changes", JSON.stringify(locStor))
+        setNumberOfChanges(locStor.length - 1)
+        if(selectedTasks.length >= 1) { //Updates the UI in the client-server
             if(searching) 
                 setFilteredTasks([...changedData]);
 
@@ -92,11 +124,7 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
         }
     }
 
-    function handleEditing(e) {
-        setEditedValue(e.target.innerText)
-    }
-
-    const handleSearch = (e) => {
+    function handleSearch() {
         if(searchValue.current.value == "") {
             setSearching(false)
         } else {
@@ -124,12 +152,6 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                 setSorting(false)
             }
         }
-    }
-    
-    function saveChanges(index){
-        let task = tasks
-        task[index].task = editedValue
-        setUpdateTasks([...task])
     }
 
     const unselectAll = () => {
@@ -165,14 +187,11 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
     useEffect(() => {
         // Update parent component with changes
         setTasks([...updateTasks]);
-        localStorage.setItem("dataTask", JSON.stringify(updateTasks))
     }, [ filteredTasks, updateTasks ]);
 
-    useEffect(()=>{
-
-    },[user])
-
-    return  (
+    useEffect(()=>{if(getTask?.tasks){setUpdateTasks(getTask.tasks)}},[getTask])
+    
+    if(page == 2) return  (
         <>
             <div className={page == 2 ? s.Task_Wrapper : s.Hide_Task_Wrapper} id="Tasks">
                 <TaskPrompt showTaskPrompt={showTaskPrompt} setShowTaskPrompt={setShowTaskPrompt} writeTask={(data)=>{writeTask(data)}}/>
@@ -203,7 +222,11 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                         unselectAll={()=>unselectAll()}
                         setBgColor={(val)=>setBgColor(val)}
                         setColor={(val)=>setColor(val)}
-                        setShowSortPrompt={(val)=>{setShowSortPrompt(val)}}/>
+                        setShowSortPrompt={(val)=>{setShowSortPrompt(val)}}
+                        numberOfChanges={numberOfChanges}
+                        setNumberOfChanges={(val)=>setNumberOfChanges(val)}
+                        user={user}
+                        setUpdateTask={(val)=>{setUpdateTasks(val)}} />
                     
                     <div className={s.Search_wrapper}>
                         <div>
@@ -256,14 +279,13 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                         openedTask={openedTask} 
                         setOpenedTask={(val)=>{setOpenedTask(val)}} 
                         tasks={tasks} 
-                        taskEditingP={taskEditingP}
                         saveChanges={(changes, index)=>{saveChanges(changes, index)}} 
                         editing={editing}
-                        filteredTask={filteredTasks}
                         searching={searching}
                         setEditing={(val)=>{setEditing(val)}}
-                        handleEditing={(e)=>{handleEditing(e)}}
-                        editedValue={editedValue}/>
+                        editedValue={editedValue}
+                        user={user}
+                        setUpdateTask={(val)=>{setUpdateTasks(val)}} />
                     <SortPrompt 
                         showSortPrompt={showSortPrompt}
                         setShowSortPrompt={(val)=>{setShowSortPrompt(val)}}
@@ -271,6 +293,16 @@ export const Tasks = ({page, showTaskPrompt, setShowTaskPrompt, setEditing, edit
                         setSortOptions={(val)=>{setSortOptions(val)}}
                         setSorting={(val)=>{setSorting(val)}}
                         sorting={sorting}/>
+                    <Changes 
+                        showSaveChanges={showSaveChanges}
+                        setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
+                        numberOfChanges={numberOfChanges}
+                        setNumberOfChanges={(val)=>setNumberOfChanges(val)}
+                        user={user}
+                        setUpdateTask={(val)=>{setUpdateTasks(val)}}
+                        setPaging={(val)=>{setPaging(val)}}
+                        paging={paging}
+                        setPage={(val)=>{setPage(val)}} />
                 </div>
             </div>
         </>
