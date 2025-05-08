@@ -14,7 +14,7 @@ import { auth } from "../../Firebase/Firebase"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "../../Firebase/Firebase"
 import Loading from "../../Components/Loading"
-export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShowTaskPrompt, setEditing, editing, showSortPrompt, setShowSortPrompt, user, showSaveChanges, setShowSaveChanges, getTask, setLoading}) => {
+export const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, getTask, setShowNavbar, setShowSaveChanges, showSaveChanges, setLoading }) => {
 
     // LocalStorage
 
@@ -30,7 +30,9 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
     const [searching, setSearching] = useState(false)
     const [showDropDown, setShowDropDown] = useState(false)
     const [sorting, setSorting] = useState(false)
-
+    
+    const [showSortPrompt, setShowSortPrompt] = useState(false)
+    const [showTaskPrompt, setShowTaskPrompt] = useState(false)
     // Data Variables
 
     const [selectedTasks, setSelectedTasks] = useState([])
@@ -104,21 +106,21 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
         }
     };
     
-    function handleMarking(changedData, upData){
+    function handleMarking(filtData, upData, prevData){
         const locStor = JSON.parse(localStorage.getItem("Changes")) != null ?
         JSON.parse(localStorage.getItem("Changes")) : []
-
         if(locStor.length == 0) { 
-            locStor.push(tasks)
+            locStor.push(updateTasks)
         }
         if(locStor.length >= 1) {
             locStor.push(upData)
         }
         localStorage.setItem("Changes", JSON.stringify(locStor))
+        console.log(JSON.parse(localStorage.getItem("Changes")))
         setNumberOfChanges(locStor.length - 1)
         if(selectedTasks.length >= 1) { //Updates the UI in the client-server
             if(searching) 
-                setFilteredTasks([...changedData]);
+                setFilteredTasks([...filtData]);
 
             setUpdateTasks([...upData]);
         }
@@ -187,14 +189,28 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
     useEffect(() => {
         // Update parent component with changes
         setTasks([...updateTasks]);
-    }, [ filteredTasks, updateTasks ]);
+        setFilteredTasks([...updateTasks.filter((task) => task.task.toLowerCase().includes(searchValue.current.value.toLowerCase()))])
+    }, [ updateTasks ]);
 
     useEffect(()=>{if(getTask?.tasks){setUpdateTasks(getTask.tasks)}},[getTask])
-    
+
+    useEffect(()=>{
+        const locStor = JSON.parse(localStorage.getItem("Changes"))
+
+        if(locStor?.length >= 2) {
+            setShowSaveChanges(true)
+            setShowNavbar(false)
+        }
+    },[])
+
+    useEffect(()=>{
+        console.log(selectedTasks)
+    },[selectedTasks])
+
     if(page == 2) return  (
         <>
             <div className={page == 2 ? s.Task_Wrapper : s.Hide_Task_Wrapper} id="Tasks">
-                <TaskPrompt showTaskPrompt={showTaskPrompt} setShowTaskPrompt={setShowTaskPrompt} writeTask={(data)=>{writeTask(data)}}/>
+                <TaskPrompt showTaskPrompt={showTaskPrompt} setShowTaskPrompt={setShowTaskPrompt} writeTask={(data)=>{writeTask(data)}} setShowNavbar={val=>setShowNavbar(val)}/>
                 <div className={s.Tasks_Editor}>
                     <h2 className={s.Title_wrapper}>
                         Tasks 
@@ -217,7 +233,7 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
                         setSearching={(val)=>setSearching(val)}
                         handleSearch={()=>{handleSearch()}}
                         selectedTask={selectedTasks}
-                        handleMarking={(changeData, upData)=>{handleMarking(changeData, upData)}}
+                        handleMarking={(changeData, upData, prevData)=>{handleMarking(changeData, upData, prevData)}}
                         markAsPending={(val)=>{markAsPending(val)}}
                         unselectAll={()=>unselectAll()}
                         setBgColor={(val)=>setBgColor(val)}
@@ -226,7 +242,9 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
                         numberOfChanges={numberOfChanges}
                         setNumberOfChanges={(val)=>setNumberOfChanges(val)}
                         user={user}
-                        setUpdateTask={(val)=>{setUpdateTasks(val)}} />
+                        setUpdateTask={(val)=>{setUpdateTasks(val)}}
+                        setShowNavbar={val=>setShowNavbar(val)}
+                        setLoading={val=>setLoading(val)} />
                     
                     <div className={s.Search_wrapper}>
                         <div>
@@ -253,7 +271,8 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
                         setFilteredTasks={(val)=>{setFilteredTasks(val)}}
                         searching={searching}
                         setUpdateTasks={(val)=>setUpdateTasks(val)}
-                        updateTasks={updateTasks}/>
+                        updateTasks={updateTasks}
+                        handleMarking={(changeData, upData, prevData)=>{handleMarking(changeData, upData, prevData)}} />
                     <TasksContainer 
                         selectedTasks={selectedTasks} 
                         setSelectedTasks={()=>setSelectedTasks()} 
@@ -279,30 +298,37 @@ export const Tasks = ({page, paging, setPage, setPaging, showTaskPrompt, setShow
                         openedTask={openedTask} 
                         setOpenedTask={(val)=>{setOpenedTask(val)}} 
                         tasks={tasks} 
+                        filteredTasks={filteredTasks}
                         saveChanges={(changes, index)=>{saveChanges(changes, index)}} 
                         editing={editing}
                         searching={searching}
                         setEditing={(val)=>{setEditing(val)}}
                         editedValue={editedValue}
                         user={user}
-                        setUpdateTask={(val)=>{setUpdateTasks(val)}} />
+                        setUpdateTask={(val)=>{setUpdateTasks(val)}}
+                        setShowNavbar={(val)=>{setShowNavbar(val)}}
+                        setLoading={val=>setLoading(val)}
+                        handleMarking={(val, tasks)=>handleMarking(val, tasks)} />
                     <SortPrompt 
                         showSortPrompt={showSortPrompt}
                         setShowSortPrompt={(val)=>{setShowSortPrompt(val)}}
                         sortOptions={sortOptions}
                         setSortOptions={(val)=>{setSortOptions(val)}}
                         setSorting={(val)=>{setSorting(val)}}
-                        sorting={sorting}/>
+                        sorting={sorting}
+                        setShowNavbar={(val)=>{setShowNavbar(val)}} />
                     <Changes 
                         showSaveChanges={showSaveChanges}
-                        setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
                         numberOfChanges={numberOfChanges}
                         setNumberOfChanges={(val)=>setNumberOfChanges(val)}
                         user={user}
                         setUpdateTask={(val)=>{setUpdateTasks(val)}}
                         setPaging={(val)=>{setPaging(val)}}
                         paging={paging}
-                        setPage={(val)=>{setPage(val)}} />
+                        setPage={(val)=>{setPage(val)}}
+                        setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
+                        setShowNavbar={(val)=>{setShowNavbar(val)}}
+                        setLoading={val=>setLoading(val)} />
                 </div>
             </div>
         </>

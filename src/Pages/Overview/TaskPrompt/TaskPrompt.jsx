@@ -2,7 +2,7 @@ import s from "./TaskPrompt.module.css"
 import Button from "../../../Components/Button"
 import { useEffect, useRef, useState } from "react"
 
-const TaskPrompt = ({showTaskPrompt, setShowTaskPrompt, writeTask}) => {
+const TaskPrompt = ({showTaskPrompt, setShowTaskPrompt, writeTask, setShowNavbar}) => {
     const displayPlaceHolder = useRef(null)
     const editingP = useRef(null)
     const [isEditing, setIsEditing] = useState(false)
@@ -39,7 +39,7 @@ const TaskPrompt = ({showTaskPrompt, setShowTaskPrompt, writeTask}) => {
                 <div className={s.nav}>
                     <h3><i className="fa fa-edit"></i> <span>Task Prompt</span></h3>
                     <Button icon={(<i className="fa fa-times"></i>)}
-                            func={()=>{setShowTaskPrompt(false), clearInputField()}}
+                            func={()=>{setShowTaskPrompt(false), clearInputField(), setShowNavbar(true)}}
                             />
                 </div>
                 <div className={s.content}>
@@ -49,7 +49,7 @@ const TaskPrompt = ({showTaskPrompt, setShowTaskPrompt, writeTask}) => {
                 </div>
                 <Button content={"Submit"}
                             className={s.submitButton}
-                            func={()=>{submitTask(), setShowTaskPrompt(false), clearInputField()}}/>
+                            func={()=>{submitTask(), setShowTaskPrompt(false), clearInputField(), setShowNavbar(true)}}/>
             </div>
         </>
     )

@@ -1,0 +1,35 @@
+.animateLeft {
+    opacity: 0;
+    animation: animateLeft .75s forwards ease-out ;
+}
+
+.animateImg {
+    opacity: 0;
+    animation: animateImg .75s .15s forwards ease-in ;
+}
+
+@keyframes animateLeft {
+    0% {
+        opacity: 0;
+        transform: translateY(500px);
+    } 70% {
+        opacity: 1;
+        transform: translateY(-50px);
+    } 100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}
+
+@keyframes animateImg {
+    0% {
+        opacity: 0;
+        transform: translateY(500px);
+    } 70% {
+        opacity: 1;
+        transform: translateY(-50px);
+    } 100% {
+        opacity: 1;
+        transform: translateY(0px);
+    }
+}

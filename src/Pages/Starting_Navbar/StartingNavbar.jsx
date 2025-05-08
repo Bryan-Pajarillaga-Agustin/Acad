@@ -3,27 +3,33 @@ import Button from "../../Components/Button"
 import { useEffect, useState } from 'react'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../Firebase/Firebase'
-const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, showSortPrompt, user, setShowPersonalInformation, continueAs, setIsSigningOut, setShowSaveChanges, showSaveChanges}) => {
+const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, user, setShowPersonalInformation, continueAs, setIsSigningOut, showNavBar, showSaveChanges, setShowSaveChanges, setShowNavbar}) => {
 
     const [showSideBar, setShowSideBar] = useState(false)
     const links = [
         {
             content: "Home",
             link: "#Home",
-            src: "./icons/house.svg",
+            icon: ()=>{return (<i class="fa fa-home"></i>)},
             paging: 1
         },
         {
             content: "Tasks",
             link: "#Tasks",
-            src: "./icons/book-solid.svg" ,
+            icon: ()=>{return (<i class="fa fa-book"></i>)},
             paging: 2
         },
         {
-            content: "Social",
-            link: "#Social",
-            src: "./icons/circle-info-solid.svg",
+            content: "About",
+            link: "#About",
+            icon: ()=>{return (<i class="fa fa-user"></i>)},
             paging: 3
+        },
+        {
+            content: "Contacts",
+            link: "#Contacts",
+            icon: ()=>{return (<i class="fa fa-phone"></i>)},
+            paging: 4
         }
     ]
 
@@ -32,7 +38,6 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
         link.toLowerCase()
         let index = link.search("/Acad/")
         link = link.slice(0, index + 6)
-        console.log(link.concat(par))
         setUrl(link.concat(par))
     }
 
@@ -44,6 +49,8 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
             handleLink(link.link)
         } else {
             setShowSaveChanges(true)
+            setShowNavbar(false)
+            setShowSideBar(false)
             setPaging({link: link.link, page: link.paging})
         }
     }
@@ -59,12 +66,13 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
         } else if (url.includes("#Contacts")) {
             setIndicated(3)
         } 
+        window.location.href = url
     },[url])
 
 
     return (
         <>
-        <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing && !showSortPrompt && !continueAs && !showSaveChanges ? s.nav : s.hideNav}>
+        <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing && !continueAs && showNavBar ? s.nav : s.hideNav}>
                 <div className={s.left}>
                     <img src="./web-icon.png" className={s.icon} />
                     <h1>ACAD</h1>
@@ -76,7 +84,7 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
                             links.map((link, i)=>{
                                 return (
                                     <li onClick={()=>{handlePagination(link, i)}} key={link.link} className={indicated === i ? s.indicated : s.notIndicated}>
-                                        <a href={!showSaveChanges ? link.link : null}><img src={link.src} /> <span>{link.content}<span className={s.indication}></span></span></a> 
+                                        <a href={!showSaveChanges ? link.link : null}>{link.icon()} <span>{link.content}<span className={s.indication}></span></span></a> 
                                     </li>
                                 )
                             })
@@ -105,7 +113,7 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
                         links.map((link, i)=>{
                             return (
                                 <li onClick={()=>{handlePagination(link, i)}} key={link.link} className={indicated === i ? s.indicated : s.notIndicated}>
-                                    <a href={!showSaveChanges ? link.link : null}><img src={link.src} /> <span>{link.content}<span className={s.indication}></span></span></a> 
+                                    <a href={!showSaveChanges ? link.link : null}>{link.icon()} <span>{link.content}<span className={s.indication}></span></span></a> 
                                 </li>
                             )
                         })

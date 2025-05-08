@@ -1,10 +1,12 @@
 import s from "./Bottom_Options.module.css"
 import Button from "../../../Components/Button";
-import { useEffect, useState } from "react";
+import { useDeferredValue, useEffect, useInsertionEffect, useState } from "react";
 
 
  
-export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, setSelectTask, unselectAll, tasks, setTasks, searching, updateTasks, setUpdateTasks, filteredTasks, setFilteredTasks }) => {
+export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, setSelectTask, unselectAll, tasks, setTasks, searching, updateTasks, setUpdateTasks, filteredTasks, setFilteredTasks, handleMarking }) => {
+
+
 
     const selectAll = () => {
             let data = tasks
@@ -45,6 +47,7 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
         };
 
     function del(){
+        let prevData = tasks
         let data = tasks
         let filtTask = filteredTasks
 
@@ -63,10 +66,8 @@ export const BottomOptions = ({ handleSelectedTasks, selectedTask, selectTask, s
                 }
             }
         }
-        
-        localStorage.setItem("dataTask", JSON.stringify(data))
-        setTasks([...data])
-        if(searching) setFilteredTasks([...filtTask])
+
+        handleMarking(filtTask, [...data])
         handleSelectedTasks(null) //eliminates the id of tasks in the array called "selectedTasks"
     }
 

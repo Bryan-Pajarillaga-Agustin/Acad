@@ -2,7 +2,7 @@ import { useEffect, useInsertionEffect } from "react"
 import Button from "../../../Components/Button"
 import s from "./SortPrompt.module.css"
 
-const SortPrompt = ({setShowSortPrompt, showSortPrompt, sortOptions, setSortOptions, setSorting, sorting}) => {
+const SortPrompt = ({setShowSortPrompt, showSortPrompt, sortOptions, setSortOptions, setSorting, setShowNavbar, showSaveChanges}) => {
 
     function handleOptions (i) {
         let data = sortOptions
@@ -33,14 +33,14 @@ const SortPrompt = ({setShowSortPrompt, showSortPrompt, sortOptions, setSortOpti
                 <h2>Sort Settings</h2>
                 <Button icon={(<i className="fa fa-close"></i>)}
                         className={s.Hide_Sort_Box_Button}
-                        func={()=>{setShowSortPrompt(false)}}/>
+                        func={()=>{setShowSortPrompt(false), setShowNavbar(true)}}/>
                 <div className={s.Sort_Options}>
                     {sortOptions.map((option, i)=>{
                         return <Button 
                                       key={option.description}
                                       icon={(<i className={`fa fa-check-square ${option.state == true ? s.checked : s.unchecked}`}></i>)}
                                       content={option.description}
-                                      func={()=>{handleOptions(i)}}/>
+                                      func={()=>{handleOptions(i), setShowNavbar(false)}}/>
                     })}
                 </div>
             </div>

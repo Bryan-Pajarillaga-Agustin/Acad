@@ -1,14 +1,14 @@
 import s from "../Home/Home.module.css"
+import a from "./HomeAnimations.module.css"
 import Button from "../../Components/Button"
 import StartingNavbar from "../Starting_Navbar/StartingNavbar"
 const Home = ({page, setPage, setIndicated, indicated}) => {
     return (
         <div className={page == 1 ? s.home_wrapper : s.hideHome} id="Home">
-            <div className={s.left}>
+            <div className={`${s.left} ${a.animateLeft}`}>
                 <div className={s.wrapTop}>
                     <h1>
-                        Welcome User
-                        <img src="./web-icon.png" className={s.icon} />
+                        Welcome User ! 
                     </h1>
                     <p>Write, read and document your work and studies using the Acad Web App for free!</p>
                     <a href="#Tasks">
@@ -23,7 +23,7 @@ const Home = ({page, setPage, setIndicated, indicated}) => {
                 </div>
             </div>
             <div className={s.right}>
-                <img src="./StartingPage/Working.png"/>
+                <img src="./StartingPage/Working.png" className={a.animateImg}/>
             </div>
         </div>
     )

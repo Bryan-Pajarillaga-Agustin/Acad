@@ -2,7 +2,8 @@ import s from "./Changes.module.css"
 import Button from "../../../Components/Button"
 import { db } from "../../../Firebase/Firebase"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
-const Changes = ({showSaveChanges, setShowSaveChanges, setUpdateTask, setNumberOfChanges, numberOfChanges, user, paging, setPage}) => {
+import { useEffect } from "react"
+const Changes = ({showSaveChanges, setShowSaveChanges, setUpdateTask, setNumberOfChanges, numberOfChanges, user, paging, setPage, setShowNavbar, setLoading}) => {
     
 
     const saveToDataBase = async () => {
@@ -13,6 +14,7 @@ const Changes = ({showSaveChanges, setShowSaveChanges, setUpdateTask, setNumberO
         })
         const userUID = user?.uid?.toString();
         const docRef = doc(db, `Users/${userUID}`);
+        setLoading(true)
         try {
             await updateDoc(docRef, {tasks: changes});  //Update from local state after successful write
             setNumberOfChanges(null)
@@ -26,10 +28,16 @@ const Changes = ({showSaveChanges, setShowSaveChanges, setUpdateTask, setNumberO
                 link = link.concat(paging?.link)
                 window.location.href = link
                 setPage(paging.page)
+                setLoading(fase)
             }
         } catch (error) {
+            alert("Error Saving Your Changes")
+            setShowSaveChanges(false)
             console.log("Error writing task:", error);
+            setLoading(fase)
         }
+
+        setShowNavbar(true)
     }
 
     if (showSaveChanges) return (
@@ -43,7 +51,7 @@ const Changes = ({showSaveChanges, setShowSaveChanges, setUpdateTask, setNumberO
                 <div className={s.Options}>
                     <Button 
                             content={"No"}
-                            func={()=>{setShowSaveChanges(false), localStorage.removeItem("Changes"), window.location.reload}} />
+                            func={()=>{setShowSaveChanges(false), localStorage.removeItem("Changes"), window.location.reload()}} />
                     <Button 
                             content={"Yes"}
                             func={()=>{setShowSaveChanges(false), saveToDataBase()}}/>

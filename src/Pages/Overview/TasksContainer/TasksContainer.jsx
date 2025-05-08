@@ -25,7 +25,6 @@ const TasksContainer = ({ handleSelectedTasks, selectTask, tasks, setTasks, sear
             }
 
             if(i == data.length - 1) {
-                console.log(data)
                 handleSelectedTasks(checkedData)
                 checkedData = []
             }

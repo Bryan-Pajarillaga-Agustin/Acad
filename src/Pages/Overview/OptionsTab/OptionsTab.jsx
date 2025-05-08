@@ -3,7 +3,7 @@ import Button from "../../../Components/Button"
 import { useEffect, useState } from "react"
 import { db } from "../../../Firebase/Firebase"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
-export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching, optionTabNumber, handleMarking, unselectAll, setShowTaskPrompt, setShowSortPrompt, numberOfChanges, setNumberOfChanges, user, setUpdateTask, setLoading}) => {
+export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching, optionTabNumber, handleMarking, unselectAll, setShowTaskPrompt, setShowSortPrompt, numberOfChanges, setNumberOfChanges, user, setUpdateTask, setLoading, setShowNavbar}) => {
     const [optionDataVal, setOptionDataVal] = useState(optionTabNumber)
     const [showChangePrompt, setShowChangePrompt] = useState(false)
     const [bgColorPrompt, setbgColorPrompt] = useState(false)
@@ -13,24 +13,23 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
     const [italic, setItalic] = useState(false)
 
     function handleMark(state, changeColor, changeBGColor, bold, italicize, borderColor){
+        let prevData = updateTasks
         let upData = updateTasks
         let data = filteredTasks
         let changedData = []
-    
-        for(let i in selectedTask) {
-            if (searching) {
-                for(let j in data) {
 
-                    if(j == selectedTask[i].index){
-                        data[j].isChecked = true
+        for(let i in selectedTask) {
+            if(searching) {
+                for(let j in data) {
+                    if(data[j].id == selectedTask[i].id) {
                         if(state != false){
                             data[selectedTask[i].index].type = state
                             changedData.push(data[selectedTask[i].index])
                         } 
-                        
+
                         if(state == false) {
-                            if(data[selectedTask[i].index].style == "default" || data[selectedTask[i].index].style == null) 
-                                data[selectedTask[i].index].style = {
+                            if(data[j].style == "default" || data[j].style == null) 
+                                data[j].style = {
                                                                         color: "default", 
                                                                         border: "default", 
                                                                         fontStyle: "default", 
@@ -39,35 +38,33 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                                                                     }
 
                             if (changeColor) {
-                                data[selectedTask[i].index].style.color = changeColor
-                                changedData.push(data[selectedTask[i].index])
+                                data[j].style.color = changeColor
+                                changedData.push(data[j])
                             }
 
                             if (changeBGColor) {
-                                data[selectedTask[i].index].style.backgroundColor = changeBGColor
-                                changedData.push(data[selectedTask[i].index])
+                                data[j].style.backgroundColor = changeBGColor
+                                changedData.push(data[j])
                             }
 
                             if (bold) {
-                                data[selectedTask[i].index].style.fontWeight = bold
-                                changedData.push(data[selectedTask[i].index])
+                                data[j].style.fontWeight = bold
+                                changedData.push(data[j])
                             }
 
                             if (italicize) {
-                                data[selectedTask[i].index].style.fontStyle = italicize
-                                changedData.push(data[selectedTask[i].index])
+                                data[j].style.fontStyle = italicize
+                                changedData.push(data[j])
                             }
 
                             if (borderColor) {
-                                data[selectedTask[i].index].style.borderColor = borderColor 
-                                changedData.push(data[selectedTask[i].index])
+                                data[j].style.borderColor = borderColor 
+                                changedData.push(data[j])
                             }
                         }
                     } else {
                         changedData.push(data[selectedTask[i].index])
                     }
-
-                    
                 }
             }
         }
@@ -101,27 +98,31 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
             })
         }
 
-        if(!searching) {handleMarking(data, [...upData])}
-        else {handleMarking([...data], [...upData])}
+        if(!searching) {handleMarking(data, [...upData], prevData)}
+        else {handleMarking([...data], [...upData], prevData)}
     }
 
     function handleRedo(){
         let numChanges = numberOfChanges + 1
         let changes = JSON.parse(localStorage.getItem("Changes"))
         changes = changes[numChanges]
-        setUpdateTask(changes)
+        setUpdateTask([...changes])
         setNumberOfChanges(numChanges)
+        console.log(JSON.parse(localStorage.getItem("Changes")))
     }
     
     function handleUndo(){
         let numChanges = numberOfChanges - 1
         let changes = JSON.parse(localStorage.getItem("Changes"))
         changes = changes[numChanges]
-        setUpdateTask(changes)
+        setUpdateTask([...changes])
         setNumberOfChanges(numChanges)
+        console.log(JSON.parse(localStorage.getItem("Changes")))
     }
 
     const saveToDataBase = async () => {
+        setLoading(true)
+        setShowNavbar(false)
         let changes = JSON.parse(localStorage.getItem("Changes"))
         changes = [...changes[numberOfChanges]]
         changes = changes.map((task)=>{
@@ -135,15 +136,15 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
             setUpdateTask([...changes])
             localStorage.removeItem("Changes")
         } catch (error) {
-            console.log("Error writing task:", error);
+            alert(error.message)
         }
+        setShowNavbar(true)
+        setLoading(false)
     }
 
     useEffect(()=>{
         setOptionDataVal(optionTabNumber)
     },[optionTabNumber])
-
-    useEffect(()=>{console.log(searching, filteredTasks)},[searching, filteredTasks])
 
     return (
         <div className={s.Options_tab}>
@@ -225,8 +226,8 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                 <Button 
                         icon={(<i className="fa fa-save"></i>)}
                         content={"Save Changes"}
-                        className={numberOfChanges == 0 || numberOfChanges == null ?  `${s.notWorking}` : null}
-                        func={()=>{numberOfChanges != 0 && numberOfChanges != null ? saveToDataBase() : null}} />
+                        className={numberOfChanges == null ?  `${s.notWorking}` : null}
+                        func={()=>{numberOfChanges != null ? saveToDataBase() : null}} />
                 <Button 
                         icon={(<i className="material-icons">undo</i>)}
                         content={"Undo"}
@@ -240,16 +241,16 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                 <Button icon={(<i className="fa fa-plus"></i>)}
                         content={(<span> Create New Task</span>)}
                         className={s.createTask}
-                        func={()=>setShowTaskPrompt(true)}/>
+                        func={()=>{setShowTaskPrompt(true), setShowNavbar(false)}}/>
                 <Button icon={(<i className="fa fa-edit"></i>)}
                         content={(<span> Mark As Finished</span>)}
-                        func={()=>{handleMark("finished", "white",  "#51af0f", false, false, "rgb(8, 97, 20)"), unselectAll()}} />
+                        func={()=>{handleMark("finished", "white",  "#51af0f", false, false, "rgb(8, 97, 20)")}} />
                 <Button icon={(<i className="fa fa-edit"></i>)}
                         content={(<span> Mark As Pending</span>)}
-                        func={()=>{handleMark("pending", "white", "#f09c2e", false, false, "rgb(209, 108, 6)"), unselectAll()}}/>
+                        func={()=>{handleMark("pending", "white", "#f09c2e", false, false, "rgb(209, 108, 6)")}}/>
                 <Button icon={(<i className="fa fa-sort"></i>)}
                         content={(<span> Sort</span>)}
-                        func={()=>{setShowSortPrompt(true)}}/>
+                        func={()=>{setShowSortPrompt(true), setShowNavbar(false)}}/>
                 <Button icon={(<i className="material-icons">format_color_fill</i>)}
                         content={(<span> BG Color </span>)}
                         func={()=>{setbgColorPrompt(true), setColorPrompt(false), setBorderPrompt(false), setFontWeight(false), setItalic(false)}}/>

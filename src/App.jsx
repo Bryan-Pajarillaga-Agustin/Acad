@@ -15,8 +15,7 @@ import { db } from "./Firebase/Firebase"
 function App() {
 
   // Booleans
-  const [showTaskPrompt, setShowTaskPrompt] = useState(false)
-  const [showSortPrompt, setShowSortPrompt] = useState(false)
+  const [showNavBar, setShowNavbar] = useState(true)
   const [editing, setEditing] = useState(false)
   const [url, setUrl] = useState(window.location.href)
   const [showSignInPrompt, setShowSignInPrompt] = useState(false)
@@ -26,9 +25,7 @@ function App() {
   const [showPersonalInformation, setShowPersonalInformation] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [showSaveChanges, setShowSaveChanges] = useState(false)
-
   // Page Indicators
-  const [MainPage, setMainPage] = useState(0)
   const [page, setPage] = useState(1)
   const [indicated, setIndicated] = useState(0)
 
@@ -56,10 +53,10 @@ function App() {
 
   onAuthStateChanged(auth, (current)=>{
     setUser(current)
+
   })
 
   useEffect(()=>{
-    console.log(user)
     if(user != null) {
       handleGetTask()
     }
@@ -83,7 +80,6 @@ function App() {
     link.toLowerCase()
     let index = link.search("/Acad/")
     link = link.slice(0, index + 6)
-    console.log(link)
     switch(page) {
       case 1:
         link = link.concat("#Home")
@@ -101,7 +97,6 @@ function App() {
         link = link.concat("#Contacts")
         setUrl(link)
         break;
-        
     }
   },[page])
 
@@ -109,85 +104,86 @@ function App() {
     <>
       <div>
         <StartingNavbar 
-                        setPage={(i)=>{setPage(i)}} 
-                        page={page} 
-                        setIndicated={(i)=>{setIndicated(i)}} 
-                        indicated={indicated} 
-                        showTaskPrompt={showTaskPrompt} 
-                        editing={editing} 
-                        url={url}
-                        setUrl={(val)=>{setUrl(val)}}
-                        showSignInPrompt={showSignInPrompt} 
-                        setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
-                        showSignUpPrompt={showSignUpPrompt} 
-                        setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
-                        showSortPrompt={showSortPrompt}
-                        user={user}
-                        continueAs={continueAs}
-                        setIsSigningOut={(val)=>{setIsSigningOut(val)}}
-                        showSaveChanges={showSaveChanges}
-                        setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
-                        setPaging={(val)=>{setPaging(val)}} />
+                    setPage={(i)=>{setPage(i)}} 
+                    page={page} 
+                    setIndicated={(i)=>{setIndicated(i)}} 
+                    indicated={indicated} 
+                    editing={editing} 
+                    url={url}
+                    setUrl={(val)=>{setUrl(val)}}
+                    showSignInPrompt={showSignInPrompt} 
+                    setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
+                    showSignUpPrompt={showSignUpPrompt} 
+                    setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+                    user={user}
+                    continueAs={continueAs}
+                    setIsSigningOut={(val)=>{setIsSigningOut(val)}}
+                    setPaging={(val)=>{setPaging(val)}}
+                    showNavBar={showNavBar}
+                    setShowNavbar={(val)=>{setShowNavbar(val)}}
+                    setShowSaveChanges={(val)=>{setShowSaveChanges(val)}} />
                         
         <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
-          <Home page={page}
-                setPage={(i)=>{setPage(i)}}
-                setIndicated={(i)=>{setIndicated(i)}} 
-                indicated={indicated}
-                user={user} />
+          <Home 
+              page={page}
+              setPage={(i)=>{setPage(i)}}
+              setIndicated={(i)=>{setIndicated(i)}} 
+              indicated={indicated}
+              user={user} />
           <Tasks 
-                setPage={(val)=>setPage(val)}
-                page={page}
-                setShowTaskPrompt={(val)=>{setShowTaskPrompt(val)}}
-                showTaskPrompt={showTaskPrompt} 
-                editing={editing}
-                setEditing={(val)=>{setEditing(val)}}
-                showSortPrompt={showSortPrompt}
-                setShowSortPrompt={(val)=>setShowSortPrompt(val)}
-                user={user}
-                setUser={(val)=>{setUser(val)}}
-                getTask={getTask}
-                showSaveChanges={showSaveChanges}
-                setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
-                setLoading={(val)=>setLoading(val)}
-                loading={loading}
-                setPaging={(val)=>{setPaging(val)}}
-                paging={paging} />
+              setPage={(val)=>setPage(val)}
+              page={page}
+              getTask={getTask}
+              editing={editing}
+              setEditing={(val)=>{setEditing(val)}}
+              user={user}
+              setUser={(val)=>{setUser(val)}}
+              loading={loading}
+              setLoading={(val)=>setLoading(val)}
+              paging={paging}
+              setPaging={(val)=>{setPaging(val)}}
+              showNavBar={showNavBar}
+              setShowNavbar={(val)=>{setShowNavbar(val)}}
+              showSaveChanges={showSaveChanges} 
+              setShowSaveChanges={val=>setShowSaveChanges(val)} />
         </div>
-        <SignIn page={page} 
-                setPage={(i)=>setPage(i)} 
-                showSignInPrompt={showSignInPrompt} 
-                setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
-                setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}} 
-                user={user}
-                setUser={(val)=>{setUser(val)}} 
-                setLoading={(val)=>setLoading(val)}
-                setContinueAs={(val)=>setContinueAs(val)}
-                loading={loading}/>
-        <Signup page={page} 
-                setPage={(i)=>setPage(i)} 
-                showSignUpPrompt={showSignUpPrompt} 
-                setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
-                setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
-                users={users}
-                setUsers={(val)=>{setUsers(val)}}
-                user={user}
-                setUser={(val)=>{setUser(val)}} 
-                setLoading={(val)=>setLoading(val)}
-                setContinueAs={(val)=>setContinueAs(val)}
-                loading={loading} >
+        <SignIn 
+              page={page} 
+              setPage={(i)=>setPage(i)} 
+              showSignInPrompt={showSignInPrompt} 
+              setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+              setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}} 
+              user={user}
+              setUser={(val)=>{setUser(val)}} 
+              setLoading={(val)=>setLoading(val)}
+              setContinueAs={(val)=>setContinueAs(val)}
+              loading={loading}/>
+        <Signup 
+              page={page} 
+              setPage={(i)=>setPage(i)} 
+              showSignUpPrompt={showSignUpPrompt} 
+              setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
+              setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+              users={users}
+              setUsers={(val)=>{setUsers(val)}}
+              user={user}
+              setUser={(val)=>{setUser(val)}} 
+              setLoading={(val)=>setLoading(val)}
+              setContinueAs={(val)=>setContinueAs(val)}
+              loading={loading} >
         </Signup>
-        <Loading loading={loading}/>
+        <Loading 
+              loading={loading}/>
         <ContinueAs
-                  continueAs={continueAs}
-                  setContinueAs={(val)=>{setContinueAs(val)}}
-                  user={user}
-                  setLoading={(val)=>setLoading(val)} />
+              continueAs={continueAs}
+              setContinueAs={(val)=>{setContinueAs(val)}}
+              user={user}
+              setLoading={(val)=>setLoading(val)} />
         <SigningOut 
-                  isSigningOut={isSigningOut}
-                  setIsSigningOut={(val)=>{setIsSigningOut(val)}}
-                  setLoading={(val)=>{setLoading(val)}}
-                  setUser={(val)=>{setUser(val)}} />
+              isSigningOut={isSigningOut}
+              setIsSigningOut={(val)=>{setIsSigningOut(val)}}
+              setLoading={(val)=>{setLoading(val)}}
+              setUser={(val)=>{setUser(val)}} />
       </div>
     </>
   )

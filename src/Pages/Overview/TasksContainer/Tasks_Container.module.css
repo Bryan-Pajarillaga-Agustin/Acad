@@ -10,6 +10,7 @@
     border: 1.5vw solid #f09c2e;
     border-top: 0vw;
     overflow-y: auto;
+    padding-bottom: .5rem;
 }
 
 .Task_Container > ul {
