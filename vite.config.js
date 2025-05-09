@@ -7,5 +7,5 @@ import dotenv from 'dotenv'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/Acad/",
+  base: "/Acad/#Home",
 })

@@ -46,7 +46,8 @@ export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPr
             setShowSignInPrompt(false)
             setContinueAs(true)
         } catch (error) {
-            console.log(error)
+            alert(error.message)
+            setLoading(false)
         }   
     }
 

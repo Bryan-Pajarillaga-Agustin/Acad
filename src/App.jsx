@@ -1,17 +1,33 @@
 import { use, useEffect, useState } from "react"
+
+// Tabs Components
+
 import Home from "./Pages/Home/Home"
-import { Tasks } from "./Pages/Overview/Tasks"
+import Tasks from "./Pages/Overview/Tasks"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
+
+// Other component
+
+import Loading from "./Components/Loading"
+
+// Import Authentication Components
+
+import ContinueAs from "./Authentication/ContinueAs/ContinueAs"
 import SignIn from "./Authentication/SignIn/SignIn"
 import Signup from "./Authentication/SignUp/SignUp"
-import Loading from "./Components/Loading"
-import ContinueAs from "./Authentication/ContinueAs/ContinueAs"
 import SigningOut from "./Authentication/VerifySigningOut/VerifySigningOut"
+import MakeUserSignIn from "./Authentication/MakeUserSignIn/MakeUserSignIn"
+
+
 import s from "./App.module.css"
+
+// Import Firebase components variables
+
 import { auth } from "./Firebase/Firebase"
 import { getDoc, doc } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 import { db } from "./Firebase/Firebase"
+
 function App() {
 
   // Booleans
@@ -25,41 +41,50 @@ function App() {
   const [showPersonalInformation, setShowPersonalInformation] = useState(false)
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [showSaveChanges, setShowSaveChanges] = useState(false)
+  const [showMakeUserSignIn, setShowMakeUserSignIn] = useState(false)
+
   // Page Indicators
   const [page, setPage] = useState(1)
   const [indicated, setIndicated] = useState(0)
 
   // Array of users
-
-  // test the users in localStorage
-  const [users, setUsers] = useState( JSON.parse(localStorage.getItem("Users")) != null ? JSON.parse(localStorage.getItem("Users")) : [])
-  // User variable for the authentication of firebase
-  const [user, setUser] = useState(null)
+  
+  const [users, setUsers] = useState(
+    JSON.parse(localStorage.getItem("Users")) != null ? 
+    JSON.parse(localStorage.getItem("Users")) : []
+  ) // test the users in localStorage
+ 
+  const [user, setUser] = useState(null) // User variable for the authentication of firebase
   const [paging, setPaging] = useState(null)
   const [getTask, setGetTask] = useState([])
 
   const handleGetTask = async () => {
-    
-    try{
+    if(user) {
       const docRef = doc(db, "Users", user?.uid)
-      const docSnap = await getDoc(docRef)
-      if(docSnap.exists) {
-          setGetTask(docSnap.data())
-      }  
-    } catch(e){
-      console.log(error)
+
+      try{
+        const docSnap = await getDoc(docRef)
+        if(docSnap.exists) {
+            setGetTask(docSnap.data())
+        }
+      } catch(error){console.log(error)}
+    } else {
+      setGetTask(null)
     }
   }
 
   onAuthStateChanged(auth, (current)=>{
-    setUser(current)
+    if(current?.uid != null){
+      console.log(current.uid)
+      setUser(current)
+    } else {
+      setGetTask(null)
+    }
 
   })
 
   useEffect(()=>{
-    if(user != null) {
-      handleGetTask()
-    }
+    handleGetTask()
   },[user])
 
 
@@ -121,7 +146,8 @@ function App() {
                     setPaging={(val)=>{setPaging(val)}}
                     showNavBar={showNavBar}
                     setShowNavbar={(val)=>{setShowNavbar(val)}}
-                    setShowSaveChanges={(val)=>{setShowSaveChanges(val)}} />
+                    setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
+                    setShowMakeUserSignIn={val=>setShowMakeUserSignIn(val)} />
                         
         <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
           <Home 
@@ -184,6 +210,12 @@ function App() {
               setIsSigningOut={(val)=>{setIsSigningOut(val)}}
               setLoading={(val)=>{setLoading(val)}}
               setUser={(val)=>{setUser(val)}} />
+        <MakeUserSignIn 
+              showMakeUserSignIn={showMakeUserSignIn}
+              setShowMakeUserSignIn={val=>setShowMakeUserSignIn(val)}
+              setPage={val=>setPage(val)}
+              setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
+              setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}  />
       </div>
     </>
   )

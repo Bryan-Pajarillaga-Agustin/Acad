@@ -7,6 +7,7 @@
     --bg-indicator: #d67b13;
 }
 
+
 li{
     cursor: pointer;
     list-style: none;
@@ -312,7 +313,7 @@ nav .right .SignUpButt:active {
     .sidebar > ul, .hideSideBar > ul {
         background-color: #F5AE6F;
         font-weight: bolder;
-        height: fit-content;
+        height: 120vh;
     }
 
     .sidebar > ul > .HamburgerButt, .hideSideBar > ul > .HamburgerButt {

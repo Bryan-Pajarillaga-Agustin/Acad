@@ -8,7 +8,7 @@ const SigningOut = ({isSigningOut, setIsSigningOut, setLoading, setUser}) => {
         setLoading(true)
         try {
             await signOut(auth)
-            setUser({})
+            setUser(null)
             setLoading(false)
             setIsSigningOut(false)
         } catch (e) {

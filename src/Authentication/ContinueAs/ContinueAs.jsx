@@ -23,6 +23,7 @@ const ContinueAs = ({continueAs, setContinueAs, user, setLoading}) => {
         }
 
     const getName = async () => {
+       if(user?.uid != null){
         try{
             const docRef = doc(db, "Users", user?.uid)
             const docSnap = await getDoc(docRef)
@@ -30,6 +31,7 @@ const ContinueAs = ({continueAs, setContinueAs, user, setLoading}) => {
                 setName(docSnap.data())
             } 
         } catch (error) {console.log(error)}
+       }
     }
  
     useEffect(()=>{

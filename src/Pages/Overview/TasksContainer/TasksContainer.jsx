@@ -1,6 +1,4 @@
 import { useEffect, useOptimistic, useRef, useState } from "react";
-import Button from "../../../Components/Button";
-import { Tasks } from "../Tasks";
 import s from "./Tasks_Container.module.css"
 
 

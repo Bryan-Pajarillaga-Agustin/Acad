@@ -14,7 +14,8 @@ import { auth } from "../../Firebase/Firebase"
 import { arrayUnion, doc, updateDoc } from "firebase/firestore"
 import { db } from "../../Firebase/Firebase"
 import Loading from "../../Components/Loading"
-export const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, getTask, setShowNavbar, setShowSaveChanges, showSaveChanges, setLoading }) => {
+
+const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, getTask, setShowNavbar, setShowSaveChanges, showSaveChanges, setLoading }) => {
 
     // LocalStorage
 
@@ -188,11 +189,15 @@ export const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, us
 
     useEffect(() => {
         // Update parent component with changes
+        console.log(updateTasks)
         setTasks([...updateTasks]);
-        setFilteredTasks([...updateTasks.filter((task) => task.task.toLowerCase().includes(searchValue.current.value.toLowerCase()))])
+        setFilteredTasks([...updateTasks.filter((task) => task.task.toLowerCase().includes(searchValue.current?.value.toLowerCase()))])
     }, [ updateTasks ]);
 
-    useEffect(()=>{if(getTask?.tasks){setUpdateTasks(getTask.tasks)}},[getTask])
+    useEffect(()=>{
+        if(getTask?.tasks){setUpdateTasks(getTask.tasks)}
+        else {setUpdateTasks([])}
+    },[getTask])
 
     useEffect(()=>{
         const locStor = JSON.parse(localStorage.getItem("Changes"))
@@ -334,3 +339,5 @@ export const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, us
         </>
     )
 }
+
+export default Tasks

@@ -128,7 +128,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
         changes = changes.map((task)=>{
             return {...task, isChecked: false}
         })
-        const userUID = user?.uid?.toString();
+        const userUID = user?.uid.toString();
         const docRef = doc(db, `Users/${userUID}`);
         try {
             await updateDoc(docRef, {tasks: changes});  //Update from local state after successful write

@@ -3,32 +3,32 @@ import Button from "../../Components/Button"
 import { useEffect, useState } from 'react'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../Firebase/Firebase'
-const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, user, setShowPersonalInformation, continueAs, setIsSigningOut, showNavBar, showSaveChanges, setShowSaveChanges, setShowNavbar}) => {
+const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, user, setShowPersonalInformation, continueAs, setIsSigningOut, showNavBar, showSaveChanges, setShowSaveChanges, setShowNavbar, setShowMakeUserSignIn}) => {
 
     const [showSideBar, setShowSideBar] = useState(false)
     const links = [
         {
             content: "Home",
             link: "#Home",
-            icon: ()=>{return (<i class="fa fa-home"></i>)},
+            icon: ()=>{return (<i className="fa fa-home"></i>)},
             paging: 1
         },
         {
             content: "Tasks",
             link: "#Tasks",
-            icon: ()=>{return (<i class="fa fa-book"></i>)},
+            icon: ()=>{return (<i className="fa fa-book"></i>)},
             paging: 2
         },
         {
             content: "About",
             link: "#About",
-            icon: ()=>{return (<i class="fa fa-user"></i>)},
+            icon: ()=>{return (<i className="fa fa-user"></i>)},
             paging: 3
         },
         {
             content: "Contacts",
             link: "#Contacts",
-            icon: ()=>{return (<i class="fa fa-phone"></i>)},
+            icon: ()=>{return (<i className="fa fa-phone"></i>)},
             paging: 4
         }
     ]
@@ -43,16 +43,30 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
 
     const handlePagination = (link, i) => {
         const locStor = JSON.parse(localStorage.getItem("Changes"))
-        if(locStor == null) {
-            setIndicated(0)
-            setPage(link.paging)
-            handleLink(link.link)
+        if(user != null){
+            if(locStor == null) {
+                setIndicated(0)
+                setPage(link.paging)
+                handleLink(link.link)
+            } else {
+                setShowSaveChanges(true)
+                setShowNavbar(false)
+                setShowSideBar(false)
+                setPaging({link: link.link, page: link.paging})
+            }
         } else {
-            setShowSaveChanges(true)
-            setShowNavbar(false)
-            setShowSideBar(false)
-            setPaging({link: link.link, page: link.paging})
+            if(locStor == null && link.paging != 2) {
+                setIndicated(0)
+                setPage(link.paging)
+                handleLink(link.link)
+            }
+
+            if(link.paging == 2) {
+                setShowMakeUserSignIn(true)
+                setShowSideBar(false)
+            }
         }
+        console.log(link)
     }
 
 
@@ -66,7 +80,6 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
         } else if (url.includes("#Contacts")) {
             setIndicated(3)
         } 
-        window.location.href = url
     },[url])
 
 
