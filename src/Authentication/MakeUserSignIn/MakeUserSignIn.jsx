@@ -10,8 +10,8 @@ const MakeUserSignIn = ({ showMakeUserSignIn, setShowMakeUserSignIn, setPage, se
                             className={s.Hide_Prompt_Button}
                             func={()=>{setShowMakeUserSignIn(false), setPage(1)}}/>
                     <div className={s.Images}>
-                        <img src="./Public/cat.png" />
-                        <img src="./Public/!.png" />
+                        <img src="./cat.png" />
+                        <img src="./!.png" />
                     </div>
                     <h1>You're not Signed In !</h1>
                     <p>Create an account, log in and get free access to the advanced To-Do List Web Application</p>
