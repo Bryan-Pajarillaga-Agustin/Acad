@@ -13,7 +13,8 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
     const [italic, setItalic] = useState(false)
 
     function handleMark(state, changeColor, changeBGColor, bold, italicize, borderColor){
-        let prevData = updateTasks
+        if(selectedTask.length >= 1) {
+            let prevData = updateTasks
         let upData = updateTasks
         let data = filteredTasks
         let changedData = []
@@ -65,6 +66,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
                     } else {
                         changedData.push(data[selectedTask[i].index])
                     }
+                    
                 }
             }
         }
@@ -100,6 +102,7 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
 
         if(!searching) {handleMarking(data, [...upData], prevData)}
         else {handleMarking([...data], [...upData], prevData)}
+        }
     }
 
     function handleRedo(){
@@ -145,6 +148,10 @@ export const OptionsTab = ({selectedTask, filteredTasks, updateTasks, searching,
     useEffect(()=>{
         setOptionDataVal(optionTabNumber)
     },[optionTabNumber])
+
+    useEffect(()=>{
+        console.log(selectedTask)
+    },[selectedTask])
 
     return (
         <div className={s.Options_tab}>

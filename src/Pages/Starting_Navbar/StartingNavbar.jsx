@@ -70,18 +70,6 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
     }
 
 
-    useEffect(()=>{
-        if(url.includes("#Home")) {
-            setIndicated(0)
-        } else if (url.includes("#Tasks")) {
-            setIndicated(1)
-        } else if (url.includes("#About")) {
-            setIndicated(2)
-        } else if (url.includes("#Contacts")) {
-            setIndicated(3)
-        } 
-    },[url])
-
 
     return (
         <>

@@ -96,8 +96,7 @@
 .form .password_con > img {
     position: absolute;
     right: 5px;
-    top: 50%;
-    transform: translateY(-20%);
+    top: 30%;
     width: 30px;
     cursor: pointer;
     transition: all .15s ease-in-out;
@@ -105,6 +104,14 @@
 
 .form .password_con > img:hover {
     filter: drop-shadow(0 0 .5rem black);
+}
+
+.form .username_con > span, 
+.form .password_con > span {
+    color: rgb(231, 74, 74);
+    font-size: .7rem;
+    text-indent: .5rem;
+    margin: .3rem;
 }
 
 .sign_in_button {

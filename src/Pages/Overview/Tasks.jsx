@@ -125,6 +125,7 @@ const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, get
 
             setUpdateTasks([...upData]);
         }
+
     }
 
     function handleSearch() {
@@ -175,16 +176,14 @@ const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, get
             handleSelectedTasks(null)
         }
 
-
-        if(!searching) {
-            setUpdateTasks(prevCheckboxes => {
-                return prevCheckboxes.map(task => {
-                    return { ...task, isChecked: false };;
-                });
+        setUpdateTasks(prevCheckboxes => {
+            return prevCheckboxes.map(task => {
+                return { ...task, isChecked: false };;
             });
-         } else {
+        });
+        if(searching) {
             setFilteredTasks([...filtTasks])
-         }
+        }
     };
 
     useEffect(() => {

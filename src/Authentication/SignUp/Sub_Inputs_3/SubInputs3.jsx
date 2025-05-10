@@ -1,5 +1,5 @@
 import s from "./SubInputs3.module.css"
-const Form_3 = ({show, indicated, showConfirm, nickNameInput, schoolInput, grSecInput, nameWarning, schoolWarning, grSecWarning}) => {
+const Form_3 = ({ indicated, nickNameInput, schoolInput, grSecInput, nameWarning, schoolWarning, grSecWarning }) => {
 
     return (
         <div className={indicated == 2 ? s.inputs_3 : s.hide}>

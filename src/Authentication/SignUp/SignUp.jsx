@@ -1,4 +1,4 @@
-import { useEffect, useInsertionEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import Form_1 from "./Sub_Inputs_1/SubInputs1"
 import Form_2 from "./Sub_Inputs_2/SubInputs2"
 import Form_3 from "./Sub_Inputs_3/SubInputs3"
@@ -8,7 +8,8 @@ import Button from "../../Components/Button"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import { doc, setDoc } from "firebase/firestore"
 import { auth, db } from "../../Firebase/Firebase"
-const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, setLoading, setContinueAs}) => {
+import { get } from "firebase/database"
+const Signup = ({ setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, setLoading, setContinueAs, setUser, setPage}) => {
 
 
     // Refs
@@ -35,7 +36,7 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
 
     // Array and object variables
     const [indicated, setIndication] = useState(0)
-    const [usage, setUsage] = useState()
+    const [usage, setUsage] = useState([])
     const [selectedSubjects, setSelectedSubjects] = useState([])
     
     const [usageOptions, setUsageOptions] = useState([
@@ -82,12 +83,110 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
         }
     ])
 
-    const handleIndication = (par) => {
-        if(par == "next" && indicated != 3){
+    const getInputs = () => {
+        const email = emailInput.current?.value
+        const passWord = passwordInput.current?.value
+        const confirm = confirmPasswordInput.current?.value
+        const nick = nickNameInput.current?.value
+        const school = schoolInput.current?.value
+        const grSec = grSecInput.current?.value
+
+        const eWarn = emailWarning.current
+        const pWarn = passWarning.current
+        const cWarn = confirmWarning.current
+        const nWarn = nameWarning.current
+        const sWarn = schoolWarning.current
+        const grWarn = grSecWarning.current
+
+        const inputs = [[email, passWord, confirm, nick, school, grSec],
+        [eWarn, pWarn, cWarn, nWarn, sWarn, grWarn]]
+
+        return inputs
+    }
+
+    const handleIndication = async (par) => {
+        const arrayOfInputs = getInputs()
+        let testWarning
+
+        if(indicated == 0) {
+            testWarning = handleWarning(arrayOfInputs[0], arrayOfInputs[1], indicated)
+            if(!testWarning) {
+                setLoading(true)
+                try{
+                    await createUserWithEmailAndPassword(auth, arrayOfInputs[0][0], arrayOfInputs[0][1])
+                    setUser(auth.currentUser)
+                    await setDoc(doc(db, "Users", user.uid), {
+                        email: arrayOfInputs[0][0]
+                    })
+                } catch (error) {
+                    console.log(error)
+                    if(error.code == "auth/email-already-in-use") {
+                        arr2[i].innerText = "Email is already taken."
+                    }
+                }
+                
+                setLoading(false)
+                setIndication(indicated + 1)
+            }
+        } else if (indicated == 1) {
+            testWarning = handleWarning(arrayOfInputs[0], arrayOfInputs[1], indicated)
+        } else if (indicated == 2) {
+            
+            testWarning = handleWarning(arrayOfInputs[0], arrayOfInputs[1], indicated)
+        } else if (indicated == 3 && par == "Submit") {
+            createUserFromFirebase(arrayOfInputs[0])
+        }
+
+        if(par == "next" && indicated != 3 && !testWarning){
             setIndication(indicated + 1)
-        } else if (par == "back" && indicated != 0) {
+        } else if (par == "back" && indicated != 1) {
             setIndication(indicated - 1)
         }
+    }
+
+    const handleWarning = (arr1, arr2, ind) => {
+        let error = false
+        for(let i in arr1){
+            if(ind == 0 && i < 3) {
+                if(arr1[i] == "") {
+                    arr2[i].innerText = "The input field is blank."
+                    error = true
+                }
+    
+                if(i == 0) {
+                    if(arr1[i].includes("@gmail.com") || arr1[i].includes("@email.com")){
+                        arr2[i].innerText = ""
+                    } else {
+                        arr2[i].innerText = "This is not an email!"
+                        error = true
+                    }
+                } else if(i == 1) {
+                    if(arr1[i].length <= 7){
+                        arr2[i].innerText = "The password is too short(maximum of 8 characters)."
+                        error = true
+                    } else {
+                        arr2[i].innerText = ""
+                    }
+                } else if(i == 2) {
+                    if(arr1[i] != arr1[i-1]){
+                        arr2[i].innerText = "The password isn't match."
+                        error = true
+                    } else {
+                        arr2[i].innerText = ""
+                    }
+                }
+            } else if (ind == 2 && i > 2) {
+                if(arr1[i] == ""){
+                    arr2[i].innerText = "The input field is blank."
+                    error = true
+                } else {
+                    arr2[i].innerText = ""
+                    error = false
+                }
+            }
+        }
+
+        return error ? true : false
     }
 
     const handleUsageOptions = (i) => {
@@ -140,44 +239,26 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
         })
     }
 
-    const createNewUser = async () => {
-        const newUser = {
-            password: passwordInput.current.value,
-            email: emailInput.current.value,
-            school: schoolInput.current.value,
-            grSec: grSecInput.current.value,
-            favSubjects: selectedSubjects
-        }
-
-        
-        try {
-            await createUserWithEmailAndPassword(auth, emailInput.current.value, passwordInput.current.value)
-            const user = auth.currentUser
-            setLoading(true)
-            setShowSignUpPrompt(false)
-            if(user) {
+    const createUserFromFirebase = async (arr1) => {
+        setLoading(true)
+            try {
+                const user = auth.currentUser
                 await setDoc(doc(db, "Users", user.uid), {
-                    email: emailInput.current.value,
-                    school: schoolInput.current.value,
-                    name: nickNameInput.current.value,
-                    grSec: grSecInput.current.value,
+                    school: arr1[4],
+                    name: arr1[3],
+                    grSec: arr1[5],
                     favSubjects: selectedSubjects,
                     usingAs: usingAsInput?.current.value,
                     purpose: usage
                 })
+                setShowSignUpPrompt(false)
+                handleInputs()
+                setContinueAs(true)
+            } catch (error) {
+                console.log(error.message)
             }
-
-            setUsers((prev)=>{
-                return [...prev, newUser]
-            })
-            setLoading(false)
-            setContinueAs(true)
-        }
-        catch (error) {
-            console.log(error)
-        }
+        setLoading(false)
     }
-
     function handleInputs(){
         passwordInput.current.value = ""
         passWarning.current.value = ""
@@ -205,13 +286,14 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
         })
         setUsage(null)
         setSelectedSubjects([])
+        setIndication(0)
     }
 
     if (showSignUpPrompt == true) return (
         <>
             <div className={s.sign_up_wrapper}>
                 
-            <Button func={()=>{setShowSignUpPrompt(false), handleInputs()}} content={"X"} className={s.goToStartingPage}></Button>
+            <Button func={()=>{setShowSignUpPrompt(false), handleInputs(), setPage(1)}} content={"X"} className={s.goToStartingPage}></Button>
                 <form onSubmit={(e)=>{e.preventDefault()}} className={s.form_1}>
                     <header>SIGN UP</header>
                     <div className={s.to_bottom}>
@@ -244,7 +326,7 @@ const Signup = ({setUsers ,setShowSignInPrompt, showSignUpPrompt, setShowSignUpP
                         <div className={s.bottom}>
                             <div className={s.buttons}>
                                 <Button content={"BACK"} func={()=>{handleIndication("back")}}></Button>
-                                <Button content={indicated == 3 ? "SUBMIT" : "NEXT"} func={()=>{indicated == 3 ? createNewUser() : handleIndication("next")}} ></Button>
+                                <Button content={indicated == 3 || indicated == 0  ? "SUBMIT" : "NEXT"} func={()=>{indicated == 3 || indicated == 0 ? handleIndication("Submit") : handleIndication("next")}} ></Button>
                             </div>
                             <div className={s.indicator}>
                                 <div className={indicated == 0 ? s.indicated : s.not_indicated}></div>

@@ -34,7 +34,7 @@ const Changes = ({showSaveChanges, setShowSaveChanges, setUpdateTask, setNumberO
             alert("Error Saving Your Changes")
             setShowSaveChanges(false)
             console.log("Error writing task:", error);
-            setLoading(fase)
+            setLoading(false)
         }
 
         setShowNavbar(true)

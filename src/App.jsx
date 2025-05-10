@@ -70,12 +70,12 @@ function App() {
       } catch(error){console.log(error)}
     } else {
       setGetTask(null)
+      setShowMakeUserSignIn(true)
     }
   }
 
   onAuthStateChanged(auth, (current)=>{
     if(current?.uid != null){
-      console.log(current.uid)
       setUser(current)
     } else {
       setGetTask(null)
@@ -92,7 +92,11 @@ function App() {
       if(url.includes("#Home")) {
         setPage(1)
       } else if (url.includes("#Tasks")) {
-        setPage(2)
+        if(user){
+          setPage(2)
+        } else {
+          setShowMakeUserSignIn(true)
+        }
       } else if (url.includes("#About")) {
         setPage(3)
       } else if (url.includes("#Contacts")) {
@@ -109,18 +113,26 @@ function App() {
       case 1:
         link = link.concat("#Home")
         setUrl(link)
+        setIndicated(0)
         break;
       case 2:
-        link = link.concat("#Tasks")
-        setUrl(link)
+        if(user){
+          link = link.concat("#Tasks")
+          setUrl(link)
+          setIndicated(1)
+        } else {
+          setShowMakeUserSignIn(true)
+        }
         break;
       case 3:
         link = link.concat("#About")
         setUrl(link)
+        setIndicated(2)
         break;
       case 4:
         link = link.concat("#Contacts")
         setUrl(link)
+        setIndicated(3)
         break;
     }
   },[page])
@@ -190,8 +202,6 @@ function App() {
               showSignUpPrompt={showSignUpPrompt} 
               setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
               setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
-              users={users}
-              setUsers={(val)=>{setUsers(val)}}
               user={user}
               setUser={(val)=>{setUser(val)}} 
               setLoading={(val)=>setLoading(val)}
@@ -204,6 +214,7 @@ function App() {
               continueAs={continueAs}
               setContinueAs={(val)=>{setContinueAs(val)}}
               user={user}
+              setUser={val=>setUser(val)}
               setLoading={(val)=>setLoading(val)} />
         <SigningOut 
               isSigningOut={isSigningOut}

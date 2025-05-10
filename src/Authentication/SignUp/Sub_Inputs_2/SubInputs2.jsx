@@ -1,11 +1,7 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import s from "./SubInputs2.module.css"
 import Button from "../../../Components/Button"
 const Form_2 = ({ indicated, usingAsInput, usageOptions, handleUsageOptions }) => {
-
-    
-
-    
 
     return (
         <div className={indicated == 1 ? s.inputs_2 : s.hide}>

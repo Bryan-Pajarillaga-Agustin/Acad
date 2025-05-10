@@ -5,7 +5,7 @@ import { db } from "../../Firebase/Firebase"
 import { getDoc, doc } from "firebase/firestore"
 import { signOut } from "firebase/auth"
 import { auth } from "../../Firebase/Firebase"
-const ContinueAs = ({continueAs, setContinueAs, user, setLoading}) => {
+const ContinueAs = ({continueAs, setContinueAs, user, setUser, setLoading}) => {
     const [name, setName] = useState(null)
 
     const handleSignOut = async () => { 

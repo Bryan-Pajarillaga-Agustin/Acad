@@ -1,11 +1,12 @@
 import s from "./SignIn.module.css"
 import Button from "../../Components/Button.jsx"
 import { useEffect, useRef, useState } from "react"
-import { auth } from "../../Firebase/Firebase.js"
+import { auth, db } from "../../Firebase/Firebase.js"
 import { signInWithEmailAndPassword } from "firebase/auth"
-import { onAuthStateChanged } from "firebase/auth"
+import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { doc, getDoc } from "firebase/firestore"
 
-export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPrompt, setShowSignUpPrompt, setLoading, setContinueAs}){
+export default function SignIn({setPage, setUser, showSignInPrompt, setShowSignInPrompt, setShowSignUpPrompt, setLoading, setContinueAs}){
     const [showPass, setShowPass] = useState(false)
     // const dbRef = ref(db, 'Users')
     // const [data, setdata] = useState()
@@ -19,42 +20,101 @@ export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPr
     const emailInput = useRef(null)
     const passWordInput = useRef(null) // Replace 'your/data/path' with the actual path to your data
 
-    
+    const getInputs = () => {
+        const email = emailInput?.current.value
+        const pass = passWordInput?.current.value
+        const warning1 = refInvalid1.current
+        const warning2 = refInvalid2.current
+        
+        return {email: email, pass: pass, warning1: warning1, warning2: warning2}
+    }
+
+    const clearInputs = () => {
+        const inputs = getInputs()
+        if(inputs.email) inputs.email = ""
+        if(inputs.pass) inputs.pass = ""
+        inputs.warning1.innerText = ""
+        inputs.warning2.innerText = ""
+    }   
     
     const userTestValue = (e) => {
-        if(e.target.value == null || e.target.value != null) {
+        const inputs = getInputs()
+        let error = false
+        if(e?.target.value == "" || inputs.email == "") {
+            refInvalid1.current.textContent = "The input field is blank!"
+        } else {
             refInvalid1.current.textContent = ""
         }
+        
+        return error ? true : false
     }
     const passTestValue = (e) => {
-        if(e.target.value == null || e.target.value != null) {
+        const inputs = getInputs()
+        let error = false
+        if(e?.target.value == "" || inputs.pass == "") {
+            refInvalid2.current.textContent = "The input field is blank!"
+        } else {
             refInvalid2.current.textContent = ""
         }
+
+        return error ? true : false
     }
-    const signIn = async ()  => {
-        setLoading(true)
 
-        try {
-            await signInWithEmailAndPassword(
-                auth,
-                emailInput.current.value,
-                passWordInput.current.value
-            )
+    const signInByEmailAndPassword = async ()  => {
+        const err1 = userTestValue()
+        const err2 = passTestValue()
+        
+        if(!err1 && !err2) {
+            setLoading(true)
+            try {
+                await signInWithEmailAndPassword(
+                    auth,
+                    emailInput.current.value,
+                    passWordInput.current.value
+                )
+                clearInputs()
+                setUser(auth.currentUser)
+                setShowSignInPrompt(false)
+                setContinueAs(true)
+            } catch (error) {
+                if(error.code == 'auth/invalid-email') {
+                    refInvalid1.current.textContent = "Invalid email/Email doesn't exist."
+                }
 
-            setUser(auth.currentUser)
+                if(error.code == 'auth/invalid-credential') {
+                    refInvalid2.current.textContent = "Password does not match."
+                }
+            } 
             setLoading(false)
-            setShowSignInPrompt(false)
+        }
+    }
+
+    const signInWithGoogle = async () => {
+        const provider = new GoogleAuthProvider()
+        setLoading(true)
+        try {
+            await signInWithPopup(auth, provider)
+            clearInputs()
+            setUser(auth.currentUser)
+            const docRef = doc(db, "Users", auth.currentUser?.uid)
+            const docSnap = await getDoc(docRef)
+            if(docSnap.exists()){
+                setShowSignInPrompt(false)
+            } else {
+                setShowSignUpPrompt(true)
+            }
             setContinueAs(true)
         } catch (error) {
-            alert(error.message)
-            setLoading(false)
-        }   
+            console.log(error)
+        }
+        setLoading(false)
     }
+
 
     if (showSignInPrompt == true) return(
         <>
             <div className={s.sign_up_container}>
-                <Button func={()=>{setShowSignInPrompt(false)}} content={"X"} className={s.goToStartingPage}></Button>
+                <Button func={()=>{setShowSignInPrompt(false), clearInputs(), setPage(1)}} content={"X"} className={s.goToStartingPage}></Button>
                 <div className={s.top_arc}>SIGN IN</div>
                 <div className={s.form}>
                     <div className={s.username_con}>
@@ -74,12 +134,12 @@ export default function SignIn({user, setUser, showSignInPrompt, setShowSignInPr
                         <span className={s.forgot_pass}>Forgot Password</span>
                         <span className={s.create_acc} onClick={()=>{setShowSignInPrompt(false), setShowSignUpPrompt(true)}}>Doesn't Have An Account?</span>
                     </div>
-                    <Button className={s.sign_in_button} func={()=>{signIn()}} content={"SIGN IN"}></Button>
+                    <Button className={s.sign_in_button} func={()=>{signInByEmailAndPassword()}} content={"SIGN IN"}></Button>
                 </div>
 
                 <div className={s.other_platforms_container}>
                     <div className={s.icon_wrapper}>
-                        <div className={s.wrapper}><img src="./platforms/GG.png "/></div>
+                        <div className={s.wrapper} onClick={()=>{signInWithGoogle()}}><img src="./platforms/GG.png "/></div>
                         <div className={s.wrapper}><img src="./platforms/facebook.png"/></div>
                         <div className={s.wrapper}><img src="./platforms/Instagram.png"/></div>
                     </div>
