@@ -3,7 +3,7 @@ import Button from "../../Components/Button"
 import { useEffect, useState } from 'react'
 import { signOut } from 'firebase/auth'
 import { auth } from '../../Firebase/Firebase'
-const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, user, setShowPersonalInformation, continueAs, setIsSigningOut, showNavBar, showSaveChanges, setShowSaveChanges, setShowNavbar, setShowMakeUserSignIn}) => {
+const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, showTaskPrompt, url, setUrl, showSignInPrompt, showSignUpPrompt, setShowSignInPrompt, setShowSignUpPrompt, user, continueAs, setIsSigningOut, showNavBar, showSaveChanges, setShowSaveChanges, setShowNavbar, setShowMakeUserSignIn, getAccountInformation, setShowPersonalInformation}) => {
 
     const [showSideBar, setShowSideBar] = useState(false)
     const links = [
@@ -69,8 +69,6 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
         console.log(link)
     }
 
-
-
     return (
         <>
         <nav className={!showSignInPrompt && !showSignUpPrompt && !showTaskPrompt && !editing && !continueAs && showNavBar ? s.nav : s.hideNav}>
@@ -94,7 +92,7 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
                 </div>
                 {user ?
                         <div className={`${s.right} ${s.LoggedIn}`}>
-                            <Button icon={(<i className='fa fa-user'></i>)} className={`${s.User_Button}`} content={"Account"} func={()=>setShowPersonalInformation(true)}/>
+                            <Button icon={(<i className='fa fa-user'></i>)} className={`${s.User_Button}`} content={"Account"} func={()=>{getAccountInformation(), setShowPersonalInformation(true)}}/>
                             <Button content={"Sign Out"} func={()=>{setIsSigningOut(true)}} className={s.SignUpButt}></Button>
                             <Button className={s.HamburgerButt} func={()=>{setShowSideBar(true)}} content={(<i className="fa fa-list-ul" ></i>)}></Button>
                         </div>

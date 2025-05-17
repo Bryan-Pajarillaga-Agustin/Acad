@@ -1,9 +1,10 @@
-import { use, useEffect, useState } from "react"
+import React, { use, useEffect, useState, useContext, useRef } from "react"
 
 // Tabs Components
 
 import Home from "./Pages/Home/Home"
 import Tasks from "./Pages/Overview/Tasks"
+import AccountInformation from "./Pages/AccountInformation/AccountInformation"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
 
 // Other component
@@ -24,7 +25,7 @@ import s from "./App.module.css"
 // Import Firebase components variables
 
 import { auth } from "./Firebase/Firebase"
-import { getDoc, doc } from "firebase/firestore"
+import { getDoc, doc, setDoc, updateDoc } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 import { db } from "./Firebase/Firebase"
 
@@ -42,21 +43,14 @@ function App() {
   const [isSigningOut, setIsSigningOut] = useState(false)
   const [showSaveChanges, setShowSaveChanges] = useState(false)
   const [showMakeUserSignIn, setShowMakeUserSignIn] = useState(false)
-
   // Page Indicators
   const [page, setPage] = useState(1)
   const [indicated, setIndicated] = useState(0)
 
-  // Array of users
-  
-  const [users, setUsers] = useState(
-    JSON.parse(localStorage.getItem("Users")) != null ? 
-    JSON.parse(localStorage.getItem("Users")) : []
-  ) // test the users in localStorage
- 
   const [user, setUser] = useState(null) // User variable for the authentication of firebase
   const [paging, setPaging] = useState(null)
   const [getTask, setGetTask] = useState([])
+  const [accInformation, setAccInformation] = useState(null)
 
   const handleGetTask = async () => {
     if(user) {
@@ -68,9 +62,17 @@ function App() {
             setGetTask(docSnap.data())
         }
       } catch(error){console.log(error)}
-    } else {
-      setGetTask(null)
-      setShowMakeUserSignIn(true)
+    }
+  }
+
+  const getAccountInformation = async () => {
+    try {
+      const data = await getDoc(doc(db, "Users", user?.uid))
+      if(data) {
+        setAccInformation(data.data())
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -80,29 +82,36 @@ function App() {
     } else {
       setGetTask(null)
     }
-
   })
 
   useEffect(()=>{
-    handleGetTask()
+    if(user?.uid) {
+      handleGetTask()
+      getAccountInformation()
+    }
   },[user])
 
-
   useEffect(()=>{
-      if(url.includes("#Home")) {
-        setPage(1)
-      } else if (url.includes("#Tasks")) {
-        if(user){
-          setPage(2)
-        } else {
-          setShowMakeUserSignIn(true)
-        }
-      } else if (url.includes("#About")) {
-        setPage(3)
-      } else if (url.includes("#Contacts")) {
-        setPage(4)
-      } 
-  },[])
+      if(url) {
+        if(url.includes("#Home")) {
+          setPage(1)
+        } else if (url.includes("#Tasks")) {
+          console.log(url)
+          if(user?.uid != null){
+            setPage(2)
+            setShowMakeUserSignIn(false)
+          } else {
+            setShowMakeUserSignIn(true)
+          }
+        } else if (url.includes("#About")) {
+          setPage(3)
+        } else if (url.includes("#Contacts")) {
+          setPage(4)
+        } 
+      }
+
+      if(user?.uid) getAccountInformation()
+  },[user])
 
   useEffect(()=>{
     let link = window.location.href
@@ -137,8 +146,8 @@ function App() {
     }
   },[page])
 
+
   return (
-    <>
       <div>
         <StartingNavbar 
                     setPage={(i)=>{setPage(i)}} 
@@ -159,9 +168,12 @@ function App() {
                     showNavBar={showNavBar}
                     setShowNavbar={(val)=>{setShowNavbar(val)}}
                     setShowSaveChanges={(val)=>{setShowSaveChanges(val)}}
-                    setShowMakeUserSignIn={val=>setShowMakeUserSignIn(val)} />
+                    setShowMakeUserSignIn={val=>setShowMakeUserSignIn(val)}
+                    getAccountInformation={()=>getAccountInformation()}
+                    showPersonalInformation={showPersonalInformation}
+                    setShowPersonalInformation={val=>setShowPersonalInformation(val)} />
                         
-        <div className={!showSignInPrompt && !showSignUpPrompt ? s.Pages : s.Hide_Pages}>
+        <div className={!showSignInPrompt && !showSignUpPrompt && !showPersonalInformation ? s.Pages : s.Hide_Pages}>
           <Home 
               page={page}
               setPage={(i)=>{setPage(i)}}
@@ -183,8 +195,17 @@ function App() {
               showNavBar={showNavBar}
               setShowNavbar={(val)=>{setShowNavbar(val)}}
               showSaveChanges={showSaveChanges} 
-              setShowSaveChanges={val=>setShowSaveChanges(val)} />
+              setShowSaveChanges={val=>setShowSaveChanges(val)}
+          />
         </div>
+        <AccountInformation 
+            showPersonalInformation={showPersonalInformation}
+            setShowPersonalInformation={(val)=>setShowPersonalInformation(val)}
+            accInformation={accInformation}
+            setAccInformation={setAccInformation}
+            user={user}
+            setLoading={(val)=>setLoading(val)}
+        />
         <SignIn 
               page={page} 
               setPage={(i)=>setPage(i)} 
@@ -195,7 +216,8 @@ function App() {
               setUser={(val)=>{setUser(val)}} 
               setLoading={(val)=>setLoading(val)}
               setContinueAs={(val)=>setContinueAs(val)}
-              loading={loading}/>
+              loading={loading}
+              getAccountInformation={()=>getAccountInformation()} />
         <Signup 
               page={page} 
               setPage={(i)=>setPage(i)} 
@@ -226,9 +248,9 @@ function App() {
               setShowMakeUserSignIn={val=>setShowMakeUserSignIn(val)}
               setPage={val=>setPage(val)}
               setShowSignUpPrompt={(val)=>{setShowSignUpPrompt(val)}}
-              setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}  />
-      </div>
-    </>
+              setShowSignInPrompt={(val)=>{setShowSignInPrompt(val)}}
+              user={user?.uid}  />
+    </div>
   )
 }
 

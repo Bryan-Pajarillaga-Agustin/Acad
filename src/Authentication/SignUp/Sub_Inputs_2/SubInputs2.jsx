@@ -5,7 +5,7 @@ const Form_2 = ({ indicated, usingAsInput, usageOptions, handleUsageOptions }) =
 
     return (
         <div className={indicated == 1 ? s.inputs_2 : s.hide}>
-            <h3>Why am I using the To-Do List Web App?</h3>
+            <h3>I am using the Web Application as?</h3>
             <div>
                 <div className={s.top}>
                     {
@@ -19,7 +19,9 @@ const Form_2 = ({ indicated, usingAsInput, usageOptions, handleUsageOptions }) =
                             )
                         })
                     }
-                    <input type="text" placeholder="Other reason..." ref={usingAsInput}/>
+
+                    <h3>What is your purpose?</h3>
+                    <textarea type="text" placeholder="Other reason..." ref={usingAsInput}/>
                 </div>
             </div>
         </div>

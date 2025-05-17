@@ -8,7 +8,7 @@ const Home = ({page, setPage, setIndicated, indicated}) => {
             <div className={`${s.left} ${a.animateLeft}`}>
                 <div className={s.wrapTop}>
                     <h1>
-                        Welcome User ! 
+                        Welcome User! 
                     </h1>
                     <p>Write, read and document your work and studies using the Acad Web App for free!</p>
                     <a href="#Tasks">

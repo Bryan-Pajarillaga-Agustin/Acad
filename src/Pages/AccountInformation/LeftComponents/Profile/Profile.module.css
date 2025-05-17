@@ -1,0 +1,192 @@
+.Profile_Img_Wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.Profile_Img_Wrapper .profPic {
+    width: 10rem;
+    height: 10rem;
+    cursor: pointer;
+    border: .5rem solid #EAAE2C;
+    border-radius: 50%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.Profile_Img_Wrapper .uploadPictureWrapper h2 {
+    font-weight: 800;
+    color: var(--bg-color);
+}
+
+.Profile_Img_Wrapper .uploadPictureWrapper > button {
+    color: #fff;
+    background-color: var(--bg-color);
+    border: none;
+    font-weight: bold;
+    padding: clamp(.25rem, 2vw, .5rem) clamp(.25rem, 2vw, 2rem);
+    font-size: clamp(.1rem, 2vw, 1.3rem);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px -1px black;
+    font-family: Kanit;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    transition: .5s ease;
+}
+
+.Profile_Img_Wrapper .uploadPictureWrapper > button:hover {
+    color: var(--bg-color);
+    background-color: #fff;
+}
+
+.showUploadedPictures, .hideUploadedPictures {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 1rem;
+    background-color: rgba(206, 206, 69, 0.541);
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    color: white;
+}
+
+.hideUploadedPictures {
+    display: none;
+    animation: hide 1s forwards ease-out ;
+}   
+
+.hideUploadedPictures .uploadedPicBox {
+    display: flex;
+    animation: hidePrompt .5s forwards ease-out ;
+}
+
+.showUploadedPictures .uploadedPicBox {
+    animation: showPrompt .5s forwards ease-out ;
+}
+
+.uploadedPicBox > * {
+    margin: .75rem;
+    text-align: center;
+}
+
+.uploadedPicBox {
+    width: 400px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 20px;
+    background-color: var(--bg-color);
+    position: relative;
+}
+
+.uploadedPicBox .bottom {
+    height: 100%;
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.uploadedPicBox .bottom > div .clearButt {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2rem;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    border: none;
+    border-radius: 5px;
+    color: #EAAE2C;
+    font-size: clamp(.1rem, 2vw, 1.3rem);
+    background-color: white;
+    z-index: 1;
+}
+
+.uploadedPicBox .bottom > label{
+    font-size: 3rem;
+}
+
+.uploadedPicBox .bottom > div > img {
+    width: 100%;
+    height: 100%;  
+} 
+
+.uploadedPicBox .bottom > label, .uploadedPicBox .bottom > div{
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #afa7a7;
+    margin: .2rem;
+    border: .3rem solid #ec6e06;
+    border-radius: 1rem;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+
+.uploadedPicBox .hidePromptButt {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    align-items: center;
+    border: none;
+    border-radius: 20px;
+    background-color: #EAAE2C;
+    color: white;
+    z-index: 1;
+}
+
+.uploadedPicBox .hidePromptButt:hover {
+    color: var(--bg-color);
+    background-color: #fff;
+}
+
+@keyframes showPrompt {
+    0%{
+        scale: 0;
+    }
+    90%{
+        scale: 1.15;
+    }
+    100% {
+        scale: 1;
+    }
+}
+
+@keyframes hidePrompt {
+    20%{
+        scale: 1.15;
+    }
+    100%{
+        scale: 0;
+    }
+}
+
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+        display: flex;
+    }    
+    99.9% {
+        opacity: 0;
+        display: none;
+    }
+}

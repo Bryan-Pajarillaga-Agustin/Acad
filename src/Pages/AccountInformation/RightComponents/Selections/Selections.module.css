@@ -1,0 +1,116 @@
+.Selections_Wrapper {
+    width: 100%;
+    height: fit-content;
+    color: var(--bg-color);
+}
+
+.Selections_Wrapper .top {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Selections_Wrapper .top > h3 {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    margin: .5rem;
+}
+
+.Selections_Wrapper .top > h3 > label {
+    cursor: pointer;
+    display: flex;
+}
+
+.Selections_Wrapper .top > h3 > label > i {
+    width: 15px;
+    height: 15px;
+    background-color: rgb(223, 223, 232);
+    display: grid;
+    place-items: center;
+    border-radius: .5rem;
+    border: 2px solid var(--bg-color);
+    box-shadow: 0 2px 5px -2px black;
+}
+
+.Selections_Wrapper .top > h3 > label > i:nth-child(1){
+    margin-right: .5rem;
+}
+
+.Selections_Wrapper .top .Subjects_Wrapper {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.Subjects_Wrapper > button, .Subjects_Wrapper .makeSubjectButt{
+    width: 150px;
+    border: none;
+    font-weight: bolder;
+    font-size: .75rem;
+    color: #fff;
+    background-color: var(--bg-color);
+    padding: clamp(.1rem ,2vw, .5rem) clamp(.2rem ,2vw, .6rem);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px -1px black;
+    transition: all .13s ease-in-out;
+    font-size: clamp(.5rem ,2vw, 1.2rem);
+}
+
+.Subjects_Wrapper .IndicatedButt:hover {
+    background-color: #fff;
+    color: var(--bg-color);
+}
+
+.Selections_Wrapper .notIndicatedButt {
+    background-color: red;
+    color: var(--bg-color);
+}
+
+.Subjects_Wrapper .hideMakeSubjectButt {
+    display: none;
+}
+
+.Subjects_Wrapper .makeSubjectButt > input {
+    width: 100%;
+    border: none;
+    border-bottom: .2rem solid white;
+    background-color: transparent;
+    font-size: clamp(.5rem ,2vw, 1.2rem);
+    outline: none;
+    color: #fff;
+}
+
+.Selections_Wrapper .bottom {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Selections_Wrapper .bottom > div {
+    margin: .5rem;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Selections_Wrapper .bottom > div > textarea, .Selections_Wrapper .bottom > div > p{
+    resize: none;
+    font-size: clamp(.5rem, 2vw, 1.3rem);
+    border: 0;
+    outline: none;
+    text-indent: .5rem;
+    background-color: transparent;
+    border-bottom: .2rem solid #EAAE2C;
+    color: #EAAE2C;
+    font-family: Kanit;
+    font-weight: 500;
+    width: 90%;
+    height: fit-content;
+    text-wrap: wrap;
+    align-self: center;
+}

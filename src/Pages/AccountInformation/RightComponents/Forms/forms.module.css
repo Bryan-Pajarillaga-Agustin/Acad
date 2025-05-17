@@ -1,0 +1,42 @@
+.Forms_Wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.Forms_Wrapper .accountInfoWrapper {
+    margin: .5rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.Forms_Wrapper .accountInfoWrapper .inputWrapper > h4 {
+    color: #EAAE2C;
+    font-family: Kanit;
+    font-weight: 500;
+    color: #EAAE2C;
+}
+
+
+.Forms_Wrapper .accountInfoWrapper .inputWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+.inputWrapper > input {
+    font-size: clamp(.5rem, 2vw, 1.3rem);
+    border: 0;
+    outline: none;
+    text-indent: .5rem;
+    background-color: transparent;
+    border-bottom: .2rem solid #EAAE2C;
+    color: #EAAE2C;
+    font-family: Kanit;
+    font-weight: 500;
+    width: 90%;
+    align-self: center;
+}

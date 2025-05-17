@@ -21,6 +21,11 @@
     gap: .5rem;
 }
 
+.inputs_2 .top > h3 {
+    margin-top: 1rem;
+    color: white;
+}
+
 .inputs_2 .top > button {
     background-color: #fff;
     color: var(--bg-color);
@@ -48,7 +53,8 @@
     color: #fff;
 }
 
-.inputs_2 .top > input {
+.inputs_2 .top > textarea {
+    resize: none;
     border: none;
     outline: none;
     color: white;

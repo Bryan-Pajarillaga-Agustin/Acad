@@ -1,0 +1,76 @@
+.Account_Information_Wrapper, .Hide_Account_Information_Wrapper {
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+    font-family: Kanit;
+}
+
+.Account_Information_Wrapper {
+    display: flex;
+}
+
+.Hide_Account_Information_Wrapper {
+    display: none;
+}
+
+.navBar {
+    height: 5.5rem;
+    width: 100vw;
+    position: fixed;
+    flex-direction: row;
+    align-items: center;
+    background-color: #EAAE2C;
+    font-size: clamp(.5rem, 2vw, 1.2rem);
+}
+
+.navBar > *{
+    margin: .5rem;
+    color: white;
+}
+
+.Account_Information_Box {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-top: 7.3rem;
+}
+
+.Account_Information_Box > div {
+    margin-bottom: 2rem;
+    padding: 1rem 0;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+.Account_Information_Box .left {
+    width: 30vw;
+    height: 80vh;
+    background-color: #e4e4e4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.Account_Information_Box .left > *, .Account_Information_Box .right > * {
+    font-size: clamp(.5rem, 2vw, 1.3rem);
+}
+
+.Account_Information_Box .right {
+    width: 65vw;
+    height: 80vh;
+    background-color: #e4e4e4;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+

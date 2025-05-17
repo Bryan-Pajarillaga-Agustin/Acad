@@ -1,0 +1,42 @@
+.Contacts_Wrapper {
+    display: flex;
+    margin: 1rem;
+    width: 80%;
+    flex-direction: column;
+    align-items: center;
+    color: #EAAE2C;
+}
+
+.Contacts_Wrapper > h3{
+    width: 100%;
+}
+
+.Contacts_Wrapper .Contacts_Box {
+    width: 90%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: clamp(.1rem, 2vw, .5rem);
+    gap: clamp(.1rem, 2vw, .5rem);
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.Contacts_Wrapper .Contacts_Box > li {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Contacts_Wrapper .Contacts_Box > li > i {
+    font-size: clamp(.5rem ,2vw, 1.2rem);
+}
+
+.Contacts_Wrapper .Contacts_Box li > input {
+    width: 80%;
+    outline: none;
+    border: none;
+    color: #EAAE2C;
+    background-color: transparent;
+    font-size: clamp(.25rem, 2vw, .75rem);
+}

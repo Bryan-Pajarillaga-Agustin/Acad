@@ -28,7 +28,7 @@ const ContinueAs = ({continueAs, setContinueAs, user, setUser, setLoading}) => {
             const docRef = doc(db, "Users", user?.uid)
             const docSnap = await getDoc(docRef)
             if(docSnap.exists) {
-                setName(docSnap.data())
+                setName(docSnap.data().perInfo)
             } 
         } catch (error) {console.log(error)}
        }

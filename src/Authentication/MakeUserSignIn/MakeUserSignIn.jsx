@@ -1,7 +1,7 @@
 import s from "./MakeUserSignIn.module.css"
 import Button from "../../Components/Button"
 
-const MakeUserSignIn = ({ showMakeUserSignIn, setShowMakeUserSignIn, setPage, setShowSignInPrompt, setShowSignUpPrompt }) => {
+const MakeUserSignIn = ({ showMakeUserSignIn, setShowMakeUserSignIn, setPage, setShowSignInPrompt, setShowSignUpPrompt, user }) => {
     
     function handleExitMakeUserSignIn(){
         setShowMakeUserSignIn(false)
@@ -16,7 +16,7 @@ const MakeUserSignIn = ({ showMakeUserSignIn, setShowMakeUserSignIn, setPage, se
     
     return (
         <>
-            <div className={showMakeUserSignIn ? s.Make_User_Sign_In_Wrapper : s.Hide_Make_User_Sign_In_Wrapper}>
+            <div className={showMakeUserSignIn && !user ? s.Make_User_Sign_In_Wrapper : s.Hide_Make_User_Sign_In_Wrapper}>
                 <div className={s.Make_User_Sign_In_Box}>
                     <Button icon={(<i className="fa fa-close"></i>)}
                             className={s.Hide_Prompt_Button}

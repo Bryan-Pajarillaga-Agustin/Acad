@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword } from "firebase/auth"
 import { onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { doc, getDoc } from "firebase/firestore"
 
-export default function SignIn({setPage, setUser, showSignInPrompt, setShowSignInPrompt, setShowSignUpPrompt, setLoading, setContinueAs}){
+export default function SignIn({setPage, setUser, showSignInPrompt, setShowSignInPrompt, setShowSignUpPrompt, setLoading, setContinueAs, getAccountInformation}){
     const [showPass, setShowPass] = useState(false)
     // const dbRef = ref(db, 'Users')
     // const [data, setdata] = useState()
@@ -76,13 +76,19 @@ export default function SignIn({setPage, setUser, showSignInPrompt, setShowSignI
                 setUser(auth.currentUser)
                 setShowSignInPrompt(false)
                 setContinueAs(true)
+                getAccountInformation()
             } catch (error) {
+                console.log(error.code)
                 if(error.code == 'auth/invalid-email') {
                     refInvalid1.current.textContent = "Invalid email/Email doesn't exist."
                 }
 
                 if(error.code == 'auth/invalid-credential') {
                     refInvalid2.current.textContent = "Password does not match."
+                }
+
+                if(error.code == "auth/network-request-failed") {
+                    alert("Network Error, unable to sign in. Please try again.")   
                 }
             } 
             setLoading(false)
@@ -104,6 +110,7 @@ export default function SignIn({setPage, setUser, showSignInPrompt, setShowSignI
                 setShowSignUpPrompt(true)
             }
             setContinueAs(true)
+            getAccountInformation()
         } catch (error) {
             console.log(error)
         }

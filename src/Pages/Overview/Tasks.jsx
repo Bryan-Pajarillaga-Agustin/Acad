@@ -117,7 +117,6 @@ const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, get
             locStor.push(upData)
         }
         localStorage.setItem("Changes", JSON.stringify(locStor))
-        console.log(JSON.parse(localStorage.getItem("Changes")))
         setNumberOfChanges(locStor.length - 1)
         if(selectedTasks.length >= 1) { //Updates the UI in the client-server
             if(searching) 
@@ -188,7 +187,6 @@ const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, get
 
     useEffect(() => {
         // Update parent component with changes
-        console.log(updateTasks)
         setTasks([...updateTasks]);
         setFilteredTasks([...updateTasks.filter((task) => task.task.toLowerCase().includes(searchValue.current?.value.toLowerCase()))])
     }, [ updateTasks ]);
@@ -207,9 +205,6 @@ const Tasks = ({page, paging, setPage, setPaging, setEditing, editing, user, get
         }
     },[])
 
-    useEffect(()=>{
-        console.log(selectedTasks)
-    },[selectedTasks])
 
     if(page == 2) return  (
         <>

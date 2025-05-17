@@ -1,0 +1,43 @@
+.Actions_Tab_Wrapper{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.editButt {
+    color: #fff;
+    background-color: var(--bg-color);
+    border: none;
+    font-weight: bold;
+    padding: clamp(.25rem, 2vw, .5rem) clamp(.25rem, 2vw, 1rem);
+    font-size: clamp(.2rem, 2vw, 1.2rem);
+    border-radius: 5px;
+    box-shadow: 0 2px 5px -1px black;
+    font-family: Kanit;
+    letter-spacing: 1.2px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    transition: .5s ease;
+}
+
+.editButt:hover {
+    color: var(--bg-color);
+    background-color: #fff;
+}
+
+.Hide_Prompt_Button {
+    height: 3.5rem;
+    width: 3.5rem;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background-color: var(--bg-color);
+    margin: 0;
+}
+
+.Hide_Prompt_Button:hover {
+    background-color: white;
+    color: #EAAE2C;
+}

@@ -1,0 +1,29 @@
+.bioWrapper {
+    display: flex;
+    flex-direction: column;
+    color: var(--bg-color);
+    align-items: center;
+}
+
+.bioWrapper > h3 {
+    width: 90%;
+    margin: .5rem;
+}
+
+.bioWrapper > textarea, .bioWrapper > p {
+    resize: none;
+    font-size: clamp(.5rem, 2vw, 1rem);
+    border: 0;
+    outline: none;
+    text-indent: .5rem;
+    background-color: #ffffff97;
+    border: .2rem solid #EAAE2C;
+    color: #EAAE2C;
+    font-family: Kanit;
+    font-weight: 500;
+    width: 80%;
+    height: fit-content;
+    text-wrap: wrap;
+    align-self: center;
+    padding: .5rem;
+}

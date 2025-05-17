@@ -40,10 +40,10 @@ const Signup = ({ setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, se
     const [selectedSubjects, setSelectedSubjects] = useState([])
     
     const [usageOptions, setUsageOptions] = useState([
-        {content: "For Studies", isIndicated: false},
-        {content: "For Teaching Purposes", isIndicated: false},
-        {content: "For My Job", isIndicated: false},
-        {content: "Just for Fun", isIndicated: false}
+        {content: "As a Student", isIndicated: false},
+        {content: "As a Teacher", isIndicated: false},
+        {content: "As a Employee", isIndicated: false},
+        {content: "I Am Just Using It.", isIndicated: false}
     ])
     const [subjects, setSubjects] = useState([
         {
@@ -115,18 +115,19 @@ const Signup = ({ setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, se
                 try{
                     await createUserWithEmailAndPassword(auth, arrayOfInputs[0][0], arrayOfInputs[0][1])
                     setUser(auth.currentUser)
-                    await setDoc(doc(db, "Users", user.uid), {
+                    await setDoc(doc(db, "Users", auth.currentUser?.uid), {
                         email: arrayOfInputs[0][0]
                     })
+                    setIndication(indicated + 1)
                 } catch (error) {
                     console.log(error)
                     if(error.code == "auth/email-already-in-use") {
-                        arr2[i].innerText = "Email is already taken."
+                        arrayOfInputs[1][0].innerText = "Email is already taken."
                     }
                 }
                 
                 setLoading(false)
-                setIndication(indicated + 1)
+                
             }
         } else if (indicated == 1) {
             testWarning = handleWarning(arrayOfInputs[0], arrayOfInputs[1], indicated)
@@ -244,12 +245,26 @@ const Signup = ({ setShowSignInPrompt, showSignUpPrompt, setShowSignUpPrompt, se
             try {
                 const user = auth.currentUser
                 await setDoc(doc(db, "Users", user.uid), {
-                    school: arr1[4],
-                    name: arr1[3],
-                    grSec: arr1[5],
+                    
                     favSubjects: selectedSubjects,
-                    usingAs: usingAsInput?.current.value,
-                    purpose: usage
+                    usingAs: usage,
+                    perInfo: {
+                        school: arr1[4],
+                        name: arr1[3],
+                        grSec: arr1[5],
+                        age: "",
+                        bDay: "",
+                        gender: "",
+                        hobbies: "",
+                        placeOfBirth: "",
+                        skills: "",
+                        contacts: {
+                            gMail: "",
+                            number: "",
+                            faceBook: "",
+                        },
+                        purpose: usingAsInput?.current.value,
+                    }
                 })
                 setShowSignUpPrompt(false)
                 handleInputs()
