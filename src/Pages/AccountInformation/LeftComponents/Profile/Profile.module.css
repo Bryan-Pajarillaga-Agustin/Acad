@@ -190,3 +190,12 @@
         display: none;
     }
 }
+
+
+
+@media (max-width: 600px) and (max-height: 800px) { 
+    .Profile_Img_Wrapper .uploadPictureWrapper > button {
+        padding: clamp(.25rem, 2vw, .5rem) clamp(.25rem, 2vw, 2rem);
+        font-size: clamp(1rem, 2vw, 1.3rem);
+    }
+}
