@@ -74,3 +74,24 @@
     overflow-y: scroll;
 }
 
+
+@media (max-width: 600px) and (max-height: 800px) {
+    .Account_Information_Wrapper > .navBar {
+        height: 3rem;
+    }
+
+    .Account_Information_Box  {
+        flex-direction: column;
+        margin-top: 4rem;
+    }
+
+    .Account_Information_Wrapper .Account_Information_Box > div {
+        width: 90vw;
+        height: 50vh;
+        margin-top: .5rem;
+    }
+
+    .Account_Information_Box .left > *, .Account_Information_Box .right > * {
+        font-size: clamp(1.2rem, 2vw, 2rem);
+    }
+}

@@ -114,3 +114,16 @@
     text-wrap: wrap;
     align-self: center;
 }
+
+
+@media (max-width: 600px) and (max-height: 800px) {
+    
+    .Selections_Wrapper .bottom > div > textarea, .Selections_Wrapper .bottom > div > p{
+       font-size: clamp(1rem, 2vw, 1.6rem);
+    }
+
+    .Subjects_Wrapper > button, .Subjects_Wrapper .makeSubjectButt {
+       font-size: clamp(1rem, 2vw, 1.6rem);
+    }
+    
+}

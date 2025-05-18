@@ -30,6 +30,7 @@
 
 .Contacts_Wrapper .Contacts_Box > li > i {
     font-size: clamp(.5rem ,2vw, 1.2rem);
+    font-weight: bolder;
 }
 
 .Contacts_Wrapper .Contacts_Box li > input {
@@ -39,4 +40,13 @@
     color: #EAAE2C;
     background-color: transparent;
     font-size: clamp(.25rem, 2vw, .75rem);
+    font-weight: bolder;
+}
+
+
+@media (max-width: 600px) and (max-height: 800px) {
+    .Contacts_Wrapper .Contacts_Box > li > i,
+    .Contacts_Wrapper .Contacts_Box li > input {
+        font-size: clamp(.75rem ,2vw, 1.5rem);
+    }
 }

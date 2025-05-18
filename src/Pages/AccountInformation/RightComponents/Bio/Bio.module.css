@@ -27,3 +27,12 @@
     align-self: center;
     padding: .5rem;
 }
+
+@media (max-width: 600px) and (max-height: 800px) {
+    
+   .bioWrapper > textarea, .bioWrapper > p {
+         font-size: clamp(1rem, 2vw, 1.6rem);
+        
+    }
+    
+}

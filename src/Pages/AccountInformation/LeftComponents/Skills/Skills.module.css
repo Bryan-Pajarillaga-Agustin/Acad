@@ -54,6 +54,7 @@
     color: #EAAE2C;
     background-color: transparent;
     font-size: clamp(.25rem, 2vw, .75rem);
+    font-weight: bold;
 }
 
 .Skills_Wrapper .Skills_Box > li > button {
@@ -97,4 +98,10 @@
 .Skills_Wrapper .Skills_Box .showInput > button:hover {
     background-color: white;
     color: #EAAE2C;
+}
+
+@media (max-width: 600px) and (max-height: 800px){
+    .Skills_Wrapper .Skills_Box > li > span > input {
+        font-size: clamp(.75rem, 2vw, 1.5rem);
+    }
 }
