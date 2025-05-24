@@ -6,6 +6,7 @@ import Home from "./Pages/Home/Home"
 import Tasks from "./Pages/Overview/Tasks"
 import AccountInformation from "./Pages/AccountInformation/AccountInformation"
 import StartingNavbar from "./Pages/Starting_Navbar/StartingNavbar"
+import Folders from "./Pages/Folders/Folders"
 
 // Other component
 
@@ -134,7 +135,7 @@ function App() {
         }
         break;
       case 3:
-        link = link.concat("#About")
+        link = link.concat("#Folders")
         setUrl(link)
         setIndicated(2)
         break;
@@ -195,8 +196,9 @@ function App() {
               showNavBar={showNavBar}
               setShowNavbar={(val)=>{setShowNavbar(val)}}
               showSaveChanges={showSaveChanges} 
-              setShowSaveChanges={val=>setShowSaveChanges(val)}
-          />
+              setShowSaveChanges={val=>setShowSaveChanges(val)} />
+          <Folders page={page}
+                   accountInformation={accInformation}/>
         </div>
         <AccountInformation 
             showPersonalInformation={showPersonalInformation}

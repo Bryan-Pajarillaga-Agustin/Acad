@@ -20,9 +20,9 @@ const StartingNavbar = ({setPaging, editing, setPage, indicated, setIndicated, s
             paging: 2
         },
         {
-            content: "About",
-            link: "#About",
-            icon: ()=>{return (<i className="fa fa-user"></i>)},
+            content: "Folders",
+            link: "#Folders",
+            icon: ()=>{return (<i className="fa fa-folder"></i>)},
             paging: 3
         },
         {

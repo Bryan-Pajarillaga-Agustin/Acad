@@ -10,6 +10,7 @@ const Profile = ({accInformation, editAccount, user, setLoading}) => {
     // refs
     const inputImgRef = useRef()
 
+    const [profPic, setProfPic] = useState(null)
     const [showUpPic, setShowUpPic] = useState(false)
     const [upPicLinks, setUpPicLinks] = useState([])
     const [data, setData] = useState([])
@@ -52,7 +53,7 @@ const Profile = ({accInformation, editAccount, user, setLoading}) => {
         }
         setLoading(false)
     }
-
+ 
     const handleChangePic = async (url) => {
         setLoading(true)
         try {
@@ -81,52 +82,74 @@ const Profile = ({accInformation, editAccount, user, setLoading}) => {
         getImages()
     }, [user])
 
+// Component 1
+
+    const ViewProfile = () => {
+
+
+        if (profPic) return (
+            <div className={s.Picture_Wrapper}>
+                <div className={s.Picture_Box}>
+                    <Button icon={(<i className="fa fa-close"></i>)}
+                            className={s.hidePromptButt}
+                            func={()=>{setProfPic(false)}}>
+                    </Button>
+                    <img src={profPic} />
+                </div>
+            </div>
+        )
+    }
+
 
     return (
-        <div className={s.Profile_Img_Wrapper}>
-            <div ref={inputImgRef}  
-                 className={s.profPic} style={accInformation?.profPic 
-                 ? {backgroundImage: `url(${accInformation.profPic})`} 
-                 : {backgroundImage: "url(./blue-circle-with-white-user.png)"}}>
-            </div>
-            <div className={s.uploadPictureWrapper}>
-                {
-                    editAccount ? 
-                    <Button content={"Change Profile"} 
-                            func={()=>{showUpPic ? setShowUpPic(false) : setShowUpPic(true)}}
-                    ></Button> :
-                    <h2>Profile Picture</h2>
-                }
+        <>
+            <div className={s.Profile_Img_Wrapper}>
+                <div ref={inputImgRef}  
+                    className={s.profPic} style={accInformation?.profPic 
+                    ? {backgroundImage: `url(${accInformation.profPic})`} 
+                    : {backgroundImage: "url(./blue-circle-with-white-user.png)"}}
+                    onClick={()=>{setProfPic(accInformation.profPic)}}>
+                </div>
+                <div className={s.uploadPictureWrapper}>
+                    {
+                        editAccount ? 
+                        <Button content={"Change Profile"} 
+                                func={()=>{showUpPic ? setShowUpPic(false) : setShowUpPic(true)}}
+                        ></Button> :
+                        <h2>Profile Picture</h2>
+                    }
 
-                <div className={showUpPic ? s.showUploadedPictures : s.hideUploadedPictures}>
-                    <div className={s.uploadedPicBox}>
-                        <Button icon={(<i className="fa fa-close"></i>)}
-                                className={s.hidePromptButt}
-                                func={()=>{setShowUpPic(false)}}>
-                        </Button>
-                        <h2>Upload Task</h2>
-                        <div className={s.bottom}>
-                            <label htmlFor="imgInput">
-                                <i className="fa fa-plus"></i>
-                            </label>
-                            <input type="file" accept="image/*" id="imgInput" onChange={(e)=>{handleOnChangePic(e.target.files[0])}} style={{display: "none"}} />
-                            {
-                                upPicLinks?.map((link)=>{
-                                    return (
-                                        <div key={link?.id} >
-                                            <Button icon={( <i className="fa fa-close"></i> ) }
-                                                    className={s.clearButt}
-                                                    func={()=>handleDeletePic(link?.fileName)}></Button>
-                                            <img src={link?.img} onClick={()=>{handleChangePic(link?.img)}}/>
-                                        </div>
-                                    )
-                                })
-                            }
+                    <div className={showUpPic ? s.showUploadedPictures : s.hideUploadedPictures}>
+                        <div className={s.uploadedPicBox}>
+                            <Button icon={(<i className="fa fa-close"></i>)}
+                                    className={s.hidePromptButt}
+                                    func={()=>{setShowUpPic(false)}}>
+                            </Button>
+                            <h2>Upload Task</h2>
+                            <div className={s.bottom}>
+                                <label htmlFor="imgInput">
+                                    <i className="fa fa-plus"></i>
+                                </label>
+                                <input type="file" accept="image/*" id="imgInput" onChange={(e)=>{handleOnChangePic(e.target.files[0])}} style={{display: "none"}} />
+                                {
+                                    upPicLinks?.map((link)=>{
+                                        return (
+                                            <div key={link?.id} >
+                                                <Button icon={( <i className="fa fa-close"></i> ) }
+                                                        className={s.clearButt}
+                                                        func={()=>handleDeletePic(link?.fileName)}></Button>
+                                                <div style={{backgroundImage: `url(${link.img})`}} onClick={()=>{handleChangePic(link?.img)}}></div>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <ViewProfile/>
+        </>
     )
 }
 

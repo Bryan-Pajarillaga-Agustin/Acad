@@ -14,12 +14,12 @@
     border-radius: 50%;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-size: cover;
 }
 
-.Profile_Img_Wrapper .uploadPictureWrapper h2 {
+.Profile_Img_Wrapper .uploadPictureWrapper > h2 {
     font-weight: 800;
-    color: var(--bg-color);
+    color: var(--bg-color); 
 }
 
 .Profile_Img_Wrapper .uploadPictureWrapper > button {
@@ -48,7 +48,6 @@
     align-items: center;
     width: 100vw;
     height: 100vh;
-    padding: 1rem;
     background-color: rgba(206, 206, 69, 0.541);
     position: fixed;
     left: 0;
@@ -77,7 +76,7 @@
 }
 
 .uploadedPicBox {
-    width: 400px;
+    width: 320px;
     height: 350px;
     display: flex;
     flex-direction: column;
@@ -86,6 +85,11 @@
     border-radius: 20px;
     background-color: var(--bg-color);
     position: relative;
+    color: white;
+}
+
+.uploadedPicBox > h3 {
+    color: white;
 }
 
 .uploadedPicBox .bottom {
@@ -117,9 +121,12 @@
     font-size: 3rem;
 }
 
-.uploadedPicBox .bottom > div > img {
+.uploadedPicBox .bottom > div > div {
     width: 100%;
     height: 100%;  
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 } 
 
 .uploadedPicBox .bottom > label, .uploadedPicBox .bottom > div{
@@ -156,6 +163,49 @@
 .uploadedPicBox .hidePromptButt:hover {
     color: var(--bg-color);
     background-color: #fff;
+}
+
+.Picture_Wrapper {
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
+    background-color: rgba(168, 167, 167, 0.362);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+}
+
+.Picture_Wrapper .Picture_Box {
+    width: auto;
+    height: 100vh;
+    position: relative;
+}
+
+.Picture_Wrapper .Picture_Box > img {
+    width: auto;
+    height: 100vh;
+}
+
+.Picture_Wrapper .Picture_Box > button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2rem;
+    width: 70px;
+    height: 70px;
+    align-items: center;
+    border: none;
+    background-color: rgba(188, 185, 185, 0.759);
+    color: white;
+    z-index: 1;
+}
+
+.Picture_Wrapper .Picture_Box > button:hover {
+    color: rgba(188, 185, 185, 0.759);
+    background-color: white;
 }
 
 @keyframes showPrompt {
@@ -197,5 +247,14 @@
     .Profile_Img_Wrapper .uploadPictureWrapper > button {
         padding: clamp(.25rem, 2vw, .5rem) clamp(.25rem, 2vw, 2rem);
         font-size: clamp(1rem, 2vw, 1.3rem);
+    }
+
+    .uploadedPicBox {
+        width: 300px;
+        height: 350px;
+    }
+
+    .Profile_Img_Wrapper .uploadPictureWrapper h2 {
+        font-size: 1.25rem;
     }
 }

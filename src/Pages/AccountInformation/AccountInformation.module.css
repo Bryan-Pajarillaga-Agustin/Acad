@@ -91,6 +91,11 @@
         margin-top: .5rem;
     }
 
+    .Account_Information_Box > div {
+        margin-bottom: 0em;
+    }
+
+
     .Account_Information_Box .left > *, .Account_Information_Box .right > * {
         font-size: clamp(1.2rem, 2vw, 2rem);
     }

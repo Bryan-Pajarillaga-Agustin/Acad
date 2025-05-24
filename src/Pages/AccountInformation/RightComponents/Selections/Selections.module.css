@@ -25,8 +25,7 @@
 }
 
 .Selections_Wrapper .top > h3 > label > i {
-    width: 15px;
-    height: 15px;
+    padding: .25rem;
     background-color: rgb(223, 223, 232);
     display: grid;
     place-items: center;
